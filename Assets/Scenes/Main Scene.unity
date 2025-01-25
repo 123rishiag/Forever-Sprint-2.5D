@@ -971,8 +971,10 @@ MonoBehaviour:
   jumpForce: 25
   airJumpForce: 15
   jumpDuration: 0.1
-  consectiveJumpsAllowed: 3
+  consectiveJumpsAllowed: 2
+  jumpSmoothingFactor: 5
   gravityScaleFactor: 9.81
+  rollDuration: 1
 --- !u!1 &1600199019
 GameObject:
   m_ObjectHideFlags: 0
