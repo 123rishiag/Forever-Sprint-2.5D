@@ -15,7 +15,11 @@ public class PlayerService : MonoBehaviour
     [SerializeField] private float airJumpForce;
     [SerializeField] private float jumpDuration;
     [SerializeField] private int consectiveJumpsAllowed;
+    [SerializeField] private float jumpSmoothingFactor;
     [SerializeField] private float gravityScaleFactor;
+
+    [Header("Roll Variables")]
+    [SerializeField] private float rollDuration;
 
     // Private Variables
     private CharacterController characterController;
@@ -31,11 +35,15 @@ public class PlayerService : MonoBehaviour
     private float jumpTimer;
     private int currentJumpCounter;
 
+    private float rollTimer;
+
     // Animator Hash
     private int xVelocityHash = Animator.StringToHash("xVelocity");
     private int moveIdleHash = Animator.StringToHash("Move/Idle");
     private int yVelocityHash = Animator.StringToHash("yVelocity");
-    private int jumpFallHash = Animator.StringToHash("Jump/Fall");
+    private int jumpHash = Animator.StringToHash("Jump");
+    private int airJumpHash = Animator.StringToHash("Air Jump");
+    private int rollHash = Animator.StringToHash("Roll");
 
     private void Awake()
     {
@@ -47,6 +55,7 @@ public class PlayerService : MonoBehaviour
         playerState = PlayerState.IDLE;
         playerDirection = new Vector3(0f, 0f, 0f);
         jumpTimer = jumpDuration;
+        rollTimer = 0;
         currentJumpCounter = 0;
     }
     private void Update()
@@ -56,6 +65,7 @@ public class PlayerService : MonoBehaviour
         MoveIdle();
         JumpFall();
         HandleJump();
+        HandleRoll();
         PlayAnimations();
     }
 
@@ -86,7 +96,10 @@ public class PlayerService : MonoBehaviour
 
     private void ChangeState()
     {
-        if (jumpTimer > 0 && isJumping &&
+        if (characterController.isGrounded && rollTimer > 0)
+            playerState = PlayerState.ROLL;
+
+        else if (jumpTimer > 0 && isJumping &&
             (currentJumpCounter > 0 && currentJumpCounter < consectiveJumpsAllowed))
             playerState = PlayerState.AIR_JUMP;
 
@@ -124,7 +137,7 @@ public class PlayerService : MonoBehaviour
         else
             targetY = verticalVelocity;
 
-        playerDirection.y = Mathf.Lerp(playerDirection.y, targetY, Time.deltaTime * 10f); // Adjust 10f for speed of transition
+        playerDirection.y = Mathf.Lerp(playerDirection.y, targetY, Time.deltaTime * jumpSmoothingFactor);
     }
     private void HandleJump()
     {
@@ -140,25 +153,37 @@ public class PlayerService : MonoBehaviour
             currentJumpCounter = 0;
         }
     }
+    private void HandleRoll()
+    {
+        rollTimer -= Time.deltaTime;
+        if (playerState == PlayerState.AIR_JUMP_FALL)
+        {
+            rollTimer = rollDuration;
+        }
+    }
 
     private void PlayAnimations()
     {
-        /*
-        if (playerState == PlayerState.AIR_JUMP || playerState == PlayerState.AIR_JUMP_FALL)
+        if (playerState == PlayerState.ROLL)
         {
-            playerAnimator.SetFloat(yVelocityHash, rb.velocity.normalized.y * consectiveJumpsAllowed + 1);
-            playerAnimator.Play(jumpFallHash);
-        }*/
-        if (playerState == PlayerState.JUMP || playerState == PlayerState.FALL)
+            playerAnimator.Play(rollHash);
+        }
+
+        else if (playerState == PlayerState.AIR_JUMP)
         {
             playerAnimator.SetFloat(yVelocityHash, playerDirection.y);
-            playerAnimator.Play(jumpFallHash);
+            playerAnimator.CrossFade(airJumpHash, 0.2f);
         }
-        
-        if (playerState == PlayerState.MOVE || playerState == PlayerState.IDLE)
+
+        else if (playerState == PlayerState.JUMP)
+        {
+            playerAnimator.SetFloat(yVelocityHash, playerDirection.y);
+            playerAnimator.Play(jumpHash);
+        }
+
+        else if (playerState == PlayerState.MOVE || playerState == PlayerState.IDLE)
         {
             playerAnimator.SetFloat(xVelocityHash, playerDirection.x);
-            playerAnimator.Play(moveIdleHash);
         }
     }
 }
