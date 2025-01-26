@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class InputService : MonoBehaviour
+public class InputManager : MonoBehaviour
 {
     // Private Variables
     private InputControls inputControls;
@@ -15,18 +15,15 @@ public class InputService : MonoBehaviour
     }
     private void Update()
     {
-        IsMoving = inputControls.Player.Move.IsPressed();
-        IsJumping = inputControls.Player.Jump.IsPressed();
         WasJumpPressed = inputControls.Player.Jump.WasPressedThisFrame();
+        IsSlidePressed = inputControls.Player.Slide.IsPressed();
     }
     private void OnDisable()
     {
         inputControls.Disable();
     }
 
-    public bool IsMoving { get; private set; }
-
-    public bool IsJumping { get; private set; }
-
     public bool WasJumpPressed { get; private set; }
+
+    public bool IsSlidePressed { get; private set; }
 }

@@ -6,18 +6,18 @@
             "id": "0bde056f-48e1-439c-b931-e703f7183c2f",
             "actions": [
                 {
-                    "name": "Move",
+                    "name": "Jump",
                     "type": "Button",
-                    "id": "5e3aa4a8-5095-4a39-8d3d-72c8e7db7e46",
+                    "id": "95e6cf5b-ec38-463e-b05f-1a6e61198c21",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Jump",
+                    "name": "Slide",
                     "type": "Button",
-                    "id": "95e6cf5b-ec38-463e-b05f-1a6e61198c21",
+                    "id": "4cbbb209-4e90-40c4-ac7d-f9bba3177c67",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -27,30 +27,8 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "dd2d5873-4d24-40f1-afbc-b67856a7c377",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "98c60988-2cc6-4606-8481-9458ab7f06ca",
-                    "path": "<Keyboard>/rightArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "c8d8e6b7-3b16-487b-b22a-dbcb62e637ee",
-                    "path": "<Keyboard>/w",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -60,12 +38,12 @@
                 },
                 {
                     "name": "",
-                    "id": "d513c8d9-38ee-4590-81fa-5e0b6a25e50a",
-                    "path": "<Keyboard>/upArrow",
+                    "id": "a84d1061-7e74-44fb-a23c-d88400c6fb32",
+                    "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Jump",
+                    "action": "Slide",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
