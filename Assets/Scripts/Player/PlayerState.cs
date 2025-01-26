@@ -3,13 +3,13 @@ public enum PlayerState
     IDLE,
     MOVE,
     JUMP,
-    AIR_JUMP,
+    POWER_JUMP,
     FALL,
     BIG_FALL,
     ROLL,
-    CLIMB,
     SLIDE,
     DASH,
-    KNOCKED,
+    CLIMB,
+    KNOCK,
     DEAD
 }
