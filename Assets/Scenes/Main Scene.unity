@@ -2017,7 +2017,7 @@ MonoBehaviour:
   inputManager: {fileID: 1943752133}
   moveSpeed: 5
   jumpForce: 10
-  airJumpForce: 8
+  powerJumpForce: 8
   gravityForce: 9.81
   fallThreshold: 1
   bigFallThreshold: 10

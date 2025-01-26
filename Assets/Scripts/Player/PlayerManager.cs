@@ -8,7 +8,7 @@ public class PlayerManager : MonoBehaviour
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpForce;
-    [SerializeField] private float airJumpForce;
+    [SerializeField] private float powerJumpForce;
     [SerializeField] private float gravityForce;
     [SerializeField] private float fallThreshold;
     [SerializeField] private float bigFallThreshold;
@@ -64,13 +64,11 @@ public class PlayerManager : MonoBehaviour
             case PlayerState.MOVE:
                 playerAnimator.Play("Move");
                 break;
-            case PlayerState.SLIDE:
-                break;
             case PlayerState.JUMP:
                 playerAnimator.Play("Jump");
                 break;
-            case PlayerState.AIR_JUMP:
-                playerAnimator.Play("Air Jump");
+            case PlayerState.POWER_JUMP:
+                playerAnimator.Play("Power Jump");
                 break;
             case PlayerState.FALL:
                 playerAnimator.Play("Fall");
@@ -81,7 +79,17 @@ public class PlayerManager : MonoBehaviour
             case PlayerState.ROLL:
                 playerAnimator.Play("Roll");
                 break;
-            case PlayerState.KNOCKED:
+            case PlayerState.SLIDE:
+                break;
+            case PlayerState.DASH:
+                break;
+            case PlayerState.CLIMB:
+                break;
+            case PlayerState.KNOCK:
+                break;
+            case PlayerState.DEAD:
+                break;
+            default:
                 break;
         }
     }
@@ -114,8 +122,8 @@ public class PlayerManager : MonoBehaviour
                 HandleJumpState();
                 break;
 
-            case PlayerState.AIR_JUMP:
-                HandleAirJumpState();
+            case PlayerState.POWER_JUMP:
+                HandlePowerJumpState();
                 break;
 
             case PlayerState.FALL:
@@ -132,6 +140,18 @@ public class PlayerManager : MonoBehaviour
 
             case PlayerState.SLIDE:
                 HandleSlideState();
+                break;
+
+            case PlayerState.DASH:
+                break;
+
+            case PlayerState.CLIMB:
+                break;
+
+            case PlayerState.KNOCK:
+                break;
+
+            case PlayerState.DEAD:
                 break;
 
             default:
@@ -170,15 +190,15 @@ public class PlayerManager : MonoBehaviour
     {
         if (inputManager.WasJumpPressed)
         {
-            playerVelocity.y = airJumpForce;
-            playerState = PlayerState.AIR_JUMP;
+            playerVelocity.y = powerJumpForce;
+            playerState = PlayerState.POWER_JUMP;
         }
         else if (IsFalling(out PlayerState fallState))
         {
             playerState = fallState;
         }
     }
-    private void HandleAirJumpState()
+    private void HandlePowerJumpState()
     {
         if (IsGrounded())
         {
