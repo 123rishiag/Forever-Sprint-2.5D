@@ -5,7 +5,7 @@ public enum PlayerState
     JUMP,
     AIR_JUMP,
     FALL,
-    AIR_JUMP_FALL,
+    BIG_FALL,
     ROLL,
     CLIMB,
     SLIDE,
