@@ -882,7 +882,7 @@ Transform:
   m_GameObject: {fileID: 1436896635}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.5, y: 2.5, z: 0}
+  m_LocalPosition: {x: -1.5, y: 2, z: 0}
   m_LocalScale: {x: 2, y: 1, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2234,6 +2234,11 @@ MonoBehaviour:
   fallThreshold: 1
   bigFallThreshold: 10
   rollDuration: 1
+  slideDuration: 3
+  groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  groundAboveDetectionDistance: 0.3
   rollingHeightMultiplier: 0.5
   slidingHeightMultiplier: 0.7
 --- !u!4 &3004558874011713085
