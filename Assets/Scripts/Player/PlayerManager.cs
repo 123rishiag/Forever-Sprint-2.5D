@@ -185,6 +185,11 @@ public class PlayerManager : MonoBehaviour
         {
             playerState = PlayerState.SLIDE;
         }
+        else if (!IsGrounded())
+        {
+            playerVelocity.y = 0;
+            playerState = PlayerState.FALL;
+        }
     }
     private void HandleJumpState()
     {
