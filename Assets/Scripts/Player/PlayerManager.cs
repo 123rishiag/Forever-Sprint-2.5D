@@ -265,8 +265,12 @@ public class PlayerManager : MonoBehaviour
         }
 
         slideTimer -= Time.deltaTime;
-
-        if (inputManager.WasJumpPressed && !HasGroundAbove())
+        if (!IsGrounded())
+        {
+            playerVelocity.y = 0;
+            playerState = PlayerState.FALL;
+        }
+        else if (inputManager.WasJumpPressed && !HasGroundAbove())
         {
             playerVelocity.y = jumpForce;
             playerState = PlayerState.JUMP;
