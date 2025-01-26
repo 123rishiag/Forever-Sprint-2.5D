@@ -3,7 +3,7 @@ public enum PlayerState
     IDLE,
     MOVE,
     JUMP,
-    POWER_JUMP,
+    AIR_JUMP,
     FALL,
     BIG_FALL,
     ROLL,

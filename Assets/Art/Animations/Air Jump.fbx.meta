@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Power Jump
+      name: Air Jump
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 10
-      lastFrame: 66
+      lastFrame: 58
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
