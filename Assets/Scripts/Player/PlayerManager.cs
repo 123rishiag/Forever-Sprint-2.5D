@@ -2,17 +2,6 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    private PlayerState playerState;
-    private CharacterController characterController;
-    private Animator playerAnimator;
-
-    private Vector3 velocity;
-    private Vector3 moveDirection;
-    private float rollTimer;
-
-    private float defaultHeight;
-    private Vector3 defaultCenter;
-
     [Header("Inspector Attachments")]
     [SerializeField] private InputManager inputManager;
 
@@ -29,14 +18,29 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float rollingHeightMultiplier;
     [SerializeField] private float slidingHeightMultiplier;
 
+    // Private Components
+    private PlayerState playerState;
+    private Animator playerAnimator;
+    private CharacterController characterController;
+
+    // Private Variables
+    private Vector3 playerVelocity;
+    private Vector3 playerDirection;
+    private float rollTimer;
+
+    private float defaultHeight;
+    private Vector3 defaultCenter;
+
     private void Awake()
     {
-        characterController = GetComponent<CharacterController>();
+        // Setting Components
         playerAnimator = GetComponent<Animator>();
+        characterController = GetComponent<CharacterController>();
     }
 
     private void Start()
     {
+        // Setting Variables
         defaultHeight = characterController.height;
         defaultCenter = characterController.center;
     }
@@ -86,10 +90,10 @@ public class PlayerManager : MonoBehaviour
     #region MovementHandling
     private void HandleMovement()
     {
-        moveDirection = Vector3.right * moveSpeed; // Default movement direction
-        velocity.y -= gravityForce * Time.deltaTime; // Apply gravity
-        moveDirection.y = velocity.y; // Update vertical movement
-        characterController.Move(moveDirection * Time.deltaTime); // Apply movement
+        playerDirection = Vector3.right * moveSpeed; // Default movement direction
+        playerVelocity.y -= gravityForce * Time.deltaTime; // Apply gravity
+        playerDirection.y = playerVelocity.y; // Update vertical movement
+        characterController.Move(playerDirection * Time.deltaTime); // Apply movement
     }
     #endregion
 
@@ -138,7 +142,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (inputManager.WasJumpPressed)
         {
-            velocity.y = jumpForce;
+            playerVelocity.y = jumpForce;
             playerState = PlayerState.JUMP;
         }
         else if (inputManager.IsSlidePressed)
@@ -154,7 +158,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (inputManager.WasJumpPressed)
         {
-            velocity.y = jumpForce;
+            playerVelocity.y = jumpForce;
             playerState = PlayerState.JUMP;
         }
         else if (inputManager.IsSlidePressed)
@@ -166,7 +170,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (inputManager.WasJumpPressed)
         {
-            velocity.y = airJumpForce;
+            playerVelocity.y = airJumpForce;
             playerState = PlayerState.AIR_JUMP;
         }
         else if (IsFalling(out PlayerState fallState))
@@ -230,12 +234,12 @@ public class PlayerManager : MonoBehaviour
     }
     private bool IsFalling(out PlayerState _fallState)
     {
-        if (velocity.y < -bigFallThreshold)
+        if (playerVelocity.y < -bigFallThreshold)
         {
             _fallState = PlayerState.BIG_FALL;
             return true;
         }
-        else if (velocity.y < -fallThreshold)
+        else if (playerVelocity.y < -fallThreshold)
         {
             _fallState = PlayerState.FALL;
             return true;
