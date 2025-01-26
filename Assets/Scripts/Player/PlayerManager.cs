@@ -8,7 +8,7 @@ public class PlayerManager : MonoBehaviour
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpForce;
-    [SerializeField] private float powerJumpForce;
+    [SerializeField] private float airJumpForce;
     [SerializeField] private float gravityForce;
     [SerializeField] private float fallThreshold;
     [SerializeField] private float bigFallThreshold;
@@ -67,8 +67,8 @@ public class PlayerManager : MonoBehaviour
             case PlayerState.JUMP:
                 playerAnimator.Play("Jump");
                 break;
-            case PlayerState.POWER_JUMP:
-                playerAnimator.Play("Power Jump");
+            case PlayerState.AIR_JUMP:
+                playerAnimator.Play("Air Jump");
                 break;
             case PlayerState.FALL:
                 playerAnimator.Play("Fall");
@@ -122,8 +122,8 @@ public class PlayerManager : MonoBehaviour
                 HandleJumpState();
                 break;
 
-            case PlayerState.POWER_JUMP:
-                HandlePowerJumpState();
+            case PlayerState.AIR_JUMP:
+                HandleAirJumpState();
                 break;
 
             case PlayerState.FALL:
@@ -195,15 +195,15 @@ public class PlayerManager : MonoBehaviour
     {
         if (inputManager.WasJumpPressed)
         {
-            playerVelocity.y = powerJumpForce;
-            playerState = PlayerState.POWER_JUMP;
+            playerVelocity.y = airJumpForce;
+            playerState = PlayerState.AIR_JUMP;
         }
         else if (IsFalling(out PlayerState fallState))
         {
             playerState = fallState;
         }
     }
-    private void HandlePowerJumpState()
+    private void HandleAirJumpState()
     {
         if (IsGrounded())
         {
