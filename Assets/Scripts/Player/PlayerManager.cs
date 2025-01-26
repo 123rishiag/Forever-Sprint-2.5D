@@ -20,6 +20,7 @@ public class PlayerManager : MonoBehaviour
     [Header("Ground Detection")]
     [SerializeField] private LayerMask groundLayerMask;
     [SerializeField] private float groundAboveDetectionDistance;
+    [SerializeField] private float groundRightDetectionDistance;
 
     [Header("Collider Settings")]
     [SerializeField] private float rollingHeightMultiplier;
@@ -94,6 +95,7 @@ public class PlayerManager : MonoBehaviour
             case PlayerState.DASH:
                 break;
             case PlayerState.CLIMB:
+                playerAnimator.Play("Climb");
                 break;
             case PlayerState.KNOCK:
                 break;
@@ -108,6 +110,8 @@ public class PlayerManager : MonoBehaviour
     #region MovementHandling
     private void HandleMovement()
     {
+        if (playerState == PlayerState.CLIMB) return;
+
         playerDirection = Vector3.right * moveSpeed; // Default movement direction
         playerVelocity.y -= gravityForce * Time.deltaTime; // Apply gravity
         playerDirection.y = playerVelocity.y; // Update vertical movement
@@ -156,6 +160,7 @@ public class PlayerManager : MonoBehaviour
                 break;
 
             case PlayerState.CLIMB:
+                HandleClimbState();
                 break;
 
             case PlayerState.KNOCK:
@@ -208,6 +213,10 @@ public class PlayerManager : MonoBehaviour
             playerVelocity.y = airJumpForce;
             playerState = PlayerState.AIR_JUMP;
         }
+        else if (CanClimb())
+        {
+            playerState = PlayerState.CLIMB;
+        }
         else if (IsFalling(out PlayerState fallState))
         {
             playerState = fallState;
@@ -218,6 +227,11 @@ public class PlayerManager : MonoBehaviour
         if (IsGrounded())
         {
             playerState = PlayerState.IDLE;
+        }
+        else if (CanClimb())
+        {
+            playerVelocity.y = 0f;
+            playerState = PlayerState.CLIMB;
         }
         else if (IsFalling(out PlayerState fallState))
         {
@@ -230,6 +244,11 @@ public class PlayerManager : MonoBehaviour
         {
             playerState = PlayerState.IDLE;
         }
+        else if (CanClimb())
+        {
+            playerVelocity.y = 0f;
+            playerState = PlayerState.CLIMB;
+        }
         else if (IsFalling(out PlayerState fallState))
         {
             playerState = fallState;
@@ -241,6 +260,11 @@ public class PlayerManager : MonoBehaviour
         {
             playerState = PlayerState.ROLL;
             rollTimer = rollDuration;
+        }
+        else if (CanClimb())
+        {
+            playerVelocity.y = 0f;
+            playerState = PlayerState.CLIMB;
         }
         else if (IsFalling(out PlayerState fallState))
         {
@@ -280,6 +304,15 @@ public class PlayerManager : MonoBehaviour
             playerState = PlayerState.IDLE;
         }
     }
+    private void HandleClimbState()
+    {
+        if (ClimbFinished())
+        {
+            transform.position = playerAnimator.bodyPosition;
+            transform.position -= new Vector3(0f, characterController.height, 0f);
+            playerState = PlayerState.IDLE;
+        }
+    }
     #endregion
 
     #region CollisonHandling
@@ -304,6 +337,29 @@ public class PlayerManager : MonoBehaviour
     #endregion
 
     #region Getters
+    private bool ClimbFinished()
+    {
+        return playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Climb") &&
+               playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f;
+    }
+    private bool CanClimb()
+    {
+        // Defining the ray length and vertical offset
+        float baseHeight = characterController.height * 1.25f; // Base height above the player
+        float verticalOffset = 0.1f; // Small vertical offset between the rays
+
+        // Defining the ray origin and direction
+        Vector3 upperRayOrigin = transform.position + Vector3.up * (baseHeight + verticalOffset);
+        Vector3 lowerRayOrigin = transform.position + Vector3.up * baseHeight;
+        Vector3 rayDirection = transform.forward;
+
+        // Performing Raycasts
+        bool isUpperRayNonGround = !Physics.Raycast(upperRayOrigin, rayDirection, groundRightDetectionDistance, groundLayerMask);
+        bool isLowerRayGround = Physics.Raycast(lowerRayOrigin, rayDirection, groundRightDetectionDistance, groundLayerMask);
+
+        // Climbing trigger condition
+        return isUpperRayNonGround && isLowerRayGround;
+    }
     private bool HasGroundAbove()
     {
         RaycastHit hit;
@@ -344,8 +400,34 @@ public class PlayerManager : MonoBehaviour
     {
         if (characterController != null)
         {
+            DrawClimbDetectionGizmos();
             DrawGroundAboveGizmos();
         }
+    }
+    private void DrawClimbDetectionGizmos()
+    {
+        // Defining the ray length and vertical offset
+        float baseHeight = characterController.height * 1.25f; // Base height above the player
+        float verticalOffset = 0.1f; // Small vertical offset between the rays
+
+        // Defining the ray origin and direction
+        Vector3 upperRayOrigin = transform.position + Vector3.up * (baseHeight + verticalOffset);
+        Vector3 lowerRayOrigin = transform.position + Vector3.up * baseHeight;
+        Vector3 rayDirection = transform.forward;
+
+        // Calculating the end positions of the rays
+        Vector3 upperRayEnd = upperRayOrigin + rayDirection * groundRightDetectionDistance;
+        Vector3 lowerRayEnd = lowerRayOrigin + rayDirection * groundRightDetectionDistance;
+
+        // Drawing the upper ray and sphere at the end of the ray
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(upperRayOrigin, rayDirection * groundRightDetectionDistance);
+        Gizmos.DrawWireSphere(upperRayEnd, 0.1f);
+
+        // Drawing the lower ray and sphere at the end of the ray
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawRay(lowerRayOrigin, rayDirection * groundRightDetectionDistance);
+        Gizmos.DrawWireSphere(lowerRayEnd, 0.1f);
     }
     private void DrawGroundAboveGizmos()
     {
