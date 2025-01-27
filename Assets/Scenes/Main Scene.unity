@@ -2262,6 +2262,7 @@ MonoBehaviour:
   moveSpeed: 5
   jumpForce: 10
   airJumpForce: 8
+  airJumpAllowed: 1
   gravityForce: 9.81
   fallThreshold: 1
   bigFallThreshold: 10
