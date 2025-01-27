@@ -368,8 +368,14 @@ public class PlayerManager : MonoBehaviour
         dashTimer -= Time.deltaTime;
         if (inputManager.WasJumpPressed && !HasGroundAbove())
         {
+            currentSpeed /= dashSpeedIncreaseFactor;
             playerVelocity.y = jumpForce;
             playerState = PlayerState.JUMP;
+        }
+        else if (inputManager.IsSlidePressed)
+        {
+            currentSpeed /= dashSpeedIncreaseFactor;
+            playerState = PlayerState.SLIDE;
         }
         else if (!IsGrounded())
         {
@@ -379,6 +385,7 @@ public class PlayerManager : MonoBehaviour
         }
         else if (HasGroundRight())
         {
+            currentSpeed /= dashSpeedIncreaseFactor;
             playerState = PlayerState.IDLE;
         }
         else if (dashTimer <= 0)
