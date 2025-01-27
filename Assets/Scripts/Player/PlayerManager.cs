@@ -139,6 +139,8 @@ public class PlayerManager : MonoBehaviour
         if (playerState == PlayerState.DEAD) playerVelocity.x = 0f;
         else playerVelocity.x = currentSpeed * Time.deltaTime; // Default movement direction
 
+        transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
+
         playerVelocity.y -= gravityForce * Time.deltaTime; // Apply gravity
 
         playerDirection.x = playerVelocity.x; // Update horizontal movement
@@ -447,7 +449,8 @@ public class PlayerManager : MonoBehaviour
             playerState = PlayerState.IDLE;
         }
     }
-    private void HandleDeadState() { }
+    private void HandleDeadState() 
+    { }
     #endregion
 
     #region CollisonHandling
@@ -508,11 +511,11 @@ public class PlayerManager : MonoBehaviour
     private bool HasGroundRight()
     {
         // Defining the box dimensions
-        Vector3 boxSize = new Vector3(characterController.radius * 2, characterController.height,
+        Vector3 boxSize = new Vector3(characterController.radius * 2, characterController.height - 0.1f,
             groundRightDetectionDistance);
 
         // Calculating the center of the boxcast
-        Vector3 boxCenter = transform.position + Vector3.up * (characterController.height / 2);
+        Vector3 boxCenter = transform.position + new Vector3(0f, 0.1f, 0f) + Vector3.up * (characterController.height / 2);
 
         // Performing the boxcast
         if (Physics.BoxCast(boxCenter, boxSize / 2, transform.forward, out RaycastHit hit, transform.rotation,
@@ -602,10 +605,10 @@ public class PlayerManager : MonoBehaviour
     private void DrawGroundRightGizmos()
     {
         // Defining the box dimensions
-        Vector3 boxSize = new Vector3(characterController.radius * 2, characterController.height, groundRightDetectionDistance);
+        Vector3 boxSize = new Vector3(characterController.radius * 2, characterController.height - 0.1f, groundRightDetectionDistance);
 
         // Calculating the center of the boxcast
-        Vector3 boxCenter = transform.position + Vector3.up * (characterController.height / 2);
+        Vector3 boxCenter = transform.position + new Vector3(0f, 0.1f, 0f) + Vector3.up * (characterController.height / 2);
 
         // Setting Gizmo color based on whether a ground is detected
         Gizmos.color = HasGroundRight() ? Color.red : Color.green;
