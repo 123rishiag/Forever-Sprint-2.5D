@@ -9,6 +9,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpForce;
     [SerializeField] private float airJumpForce;
+    [SerializeField] private int airJumpAllowed;
     [SerializeField] private float gravityForce;
     [SerializeField] private float fallThreshold;
     [SerializeField] private float bigFallThreshold;
@@ -34,6 +35,7 @@ public class PlayerManager : MonoBehaviour
     // Private Variables
     private Vector3 playerVelocity;
     private Vector3 playerDirection;
+    private int airJumpCount;
     private float rollTimer;
 
     private float slideTimer;
@@ -51,6 +53,7 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         // Setting Variables
+        airJumpCount = 0;
         defaultHeight = characterController.height;
         defaultCenter = characterController.center;
     }
@@ -175,19 +178,8 @@ public class PlayerManager : MonoBehaviour
     }
     private void HandleIdleState()
     {
-        if (inputManager.WasJumpPressed)
-        {
-            playerVelocity.y = jumpForce;
-            playerState = PlayerState.JUMP;
-        }
-        else if (inputManager.IsSlidePressed)
-        {
-            playerState = PlayerState.SLIDE;
-        }
-        else
-        {
-            playerState = PlayerState.MOVE;
-        }
+        airJumpCount = 0;
+        playerState = PlayerState.MOVE;
     }
     private void HandleMoveState()
     {
@@ -208,8 +200,9 @@ public class PlayerManager : MonoBehaviour
     }
     private void HandleJumpState()
     {
-        if (inputManager.WasJumpPressed)
+        if (inputManager.WasJumpPressed && airJumpCount < airJumpAllowed)
         {
+            airJumpCount++;
             playerVelocity.y = airJumpForce;
             playerState = PlayerState.AIR_JUMP;
         }
@@ -224,7 +217,13 @@ public class PlayerManager : MonoBehaviour
     }
     private void HandleAirJumpState()
     {
-        if (IsGrounded())
+        if (inputManager.WasJumpPressed && airJumpCount < airJumpAllowed)
+        {
+            airJumpCount++;
+            playerVelocity.y = airJumpForce;
+            playerState = PlayerState.AIR_JUMP;
+        }
+        else if (IsGrounded())
         {
             playerState = PlayerState.IDLE;
         }
@@ -240,7 +239,13 @@ public class PlayerManager : MonoBehaviour
     }
     private void HandleFallState()
     {
-        if (IsGrounded())
+        if (inputManager.WasJumpPressed && airJumpCount < airJumpAllowed)
+        {
+            airJumpCount++;
+            playerVelocity.y = airJumpForce;
+            playerState = PlayerState.AIR_JUMP;
+        }
+        else if (IsGrounded())
         {
             playerState = PlayerState.IDLE;
         }
@@ -256,7 +261,13 @@ public class PlayerManager : MonoBehaviour
     }
     private void HandleBigFallState()
     {
-        if (IsGrounded())
+        if (inputManager.WasJumpPressed && airJumpCount < airJumpAllowed)
+        {
+            airJumpCount++;
+            playerVelocity.y = airJumpForce;
+            playerState = PlayerState.AIR_JUMP;
+        }
+        else if (IsGrounded())
         {
             playerState = PlayerState.ROLL;
             rollTimer = rollDuration;
@@ -289,15 +300,15 @@ public class PlayerManager : MonoBehaviour
         }
 
         slideTimer -= Time.deltaTime;
-        if (!IsGrounded())
-        {
-            playerVelocity.y = 0;
-            playerState = PlayerState.FALL;
-        }
-        else if (inputManager.WasJumpPressed && !HasGroundAbove())
+        if (inputManager.WasJumpPressed && !HasGroundAbove())
         {
             playerVelocity.y = jumpForce;
             playerState = PlayerState.JUMP;
+        }
+        else if(!IsGrounded())
+        {
+            playerVelocity.y = 0;
+            playerState = PlayerState.FALL;
         }
         else if (slideTimer <= 0 && !HasGroundAbove())
         {
