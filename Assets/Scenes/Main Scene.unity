@@ -2267,6 +2267,7 @@ MonoBehaviour:
   gravityForce: 9.81
   fallThreshold: 1
   bigFallThreshold: 10
+  deadThreshold: 15
   rollDuration: 1
   slideDuration: 3
   dashDuration: 3
