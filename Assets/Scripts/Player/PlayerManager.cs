@@ -285,8 +285,11 @@ public class PlayerManager : MonoBehaviour
     private void HandleRollState()
     {
         rollTimer -= Time.deltaTime;
-
-        if (rollTimer <= 0)
+        if(rollTimer <= 0 && HasGroundAbove())
+        {
+            playerState = PlayerState.SLIDE;
+        }
+        else if (rollTimer <= 0)
         {
             playerState = PlayerState.IDLE;
         }
