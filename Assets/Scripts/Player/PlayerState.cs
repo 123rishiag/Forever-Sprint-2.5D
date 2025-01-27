@@ -11,5 +11,6 @@ public enum PlayerState
     DASH,
     CLIMB,
     KNOCK,
+    GET_UP,
     DEAD
 }
