@@ -14,6 +14,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float gravityForce;
     [SerializeField] private float fallThreshold;
     [SerializeField] private float bigFallThreshold;
+    [SerializeField] private float deadThreshold;
     [SerializeField] private float rollDuration;
 
     [Header("Slide Settings")]
@@ -120,7 +121,8 @@ public class PlayerManager : MonoBehaviour
                 playerAnimator.Play("Get Up");
                 break;
             case PlayerState.DEAD:
-                playerAnimator.Play("Dead");
+                if(!IsGrounded()) playerAnimator.Play("Fall");
+                else playerAnimator.Play("Dead");
                 break;
             default:
                 break;
@@ -132,13 +134,16 @@ public class PlayerManager : MonoBehaviour
     private void HandleMovement()
     {
         if (playerState == PlayerState.IDLE || playerState == PlayerState.CLIMB
-             || playerState == PlayerState.KNOCK || playerState == PlayerState.GET_UP 
-             || playerState == PlayerState.DEAD) return;
+             || playerState == PlayerState.KNOCK || playerState == PlayerState.GET_UP) return;
 
-        playerVelocity.x = currentSpeed * Time.deltaTime; // Default movement direction
+        if (playerState == PlayerState.DEAD) playerVelocity.x = 0f;
+        else playerVelocity.x = currentSpeed * Time.deltaTime; // Default movement direction
+
         playerVelocity.y -= gravityForce * Time.deltaTime; // Apply gravity
+
         playerDirection.x = playerVelocity.x; // Update horizontal movement
         playerDirection.y = playerVelocity.y; // Update vertical movement
+
         characterController.Move(playerDirection * Time.deltaTime); // Apply movement
     }
     #endregion
@@ -538,7 +543,12 @@ public class PlayerManager : MonoBehaviour
     }
     private bool IsFalling(out PlayerState _fallState)
     {
-        if (playerVelocity.y < -bigFallThreshold)
+        if (playerVelocity.y < -deadThreshold)
+        {
+            _fallState = PlayerState.DEAD;
+            return true;
+        }
+        else if (playerVelocity.y < -bigFallThreshold)
         {
             _fallState = PlayerState.BIG_FALL;
             return true;
