@@ -16,8 +16,12 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float bigFallThreshold;
     [SerializeField] private float rollDuration;
 
-    [Header("Sliding Settings")]
+    [Header("Slide Settings")]
     [SerializeField] private float slideDuration;
+
+    [Header("Dash Settings")]
+    [SerializeField] private float dashDuration;
+    [SerializeField] private float dashSpeedIncreaseFactor;
 
     [Header("Ground Detection")]
     [SerializeField] private LayerMask groundLayerMask;
@@ -34,12 +38,15 @@ public class PlayerManager : MonoBehaviour
     private CharacterController characterController;
 
     // Private Variables
+    private float currentSpeed;
     private Vector3 playerVelocity;
     private Vector3 playerDirection;
     private int airJumpCount;
     private float rollTimer;
 
     private float slideTimer;
+
+    private float dashTimer;
 
     private float defaultHeight;
     private Vector3 defaultCenter;
@@ -54,6 +61,7 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         // Setting Variables
+        currentSpeed = moveSpeed * 100;
         airJumpCount = 0;
         defaultHeight = characterController.height;
         defaultCenter = characterController.center;
@@ -70,6 +78,7 @@ public class PlayerManager : MonoBehaviour
     #region AnimationHandling
     private void PlayAnimation()
     {
+        playerAnimator.SetFloat("Dash Factor", 0);
         switch (playerState)
         {
             case PlayerState.IDLE:
@@ -97,6 +106,8 @@ public class PlayerManager : MonoBehaviour
                 playerAnimator.Play("Slide");
                 break;
             case PlayerState.DASH:
+                playerAnimator.SetFloat("Dash Factor", dashSpeedIncreaseFactor);
+                playerAnimator.Play("Move");
                 break;
             case PlayerState.CLIMB:
                 playerAnimator.Play("Climb");
@@ -116,8 +127,9 @@ public class PlayerManager : MonoBehaviour
     {
         if (playerState == PlayerState.IDLE || playerState == PlayerState.CLIMB) return;
 
-        playerDirection = Vector3.right * moveSpeed; // Default movement direction
+        playerVelocity.x = currentSpeed * Time.deltaTime; // Default movement direction
         playerVelocity.y -= gravityForce * Time.deltaTime; // Apply gravity
+        playerDirection.x = playerVelocity.x; // Update horizontal movement
         playerDirection.y = playerVelocity.y; // Update vertical movement
         characterController.Move(playerDirection * Time.deltaTime); // Apply movement
     }
@@ -161,6 +173,7 @@ public class PlayerManager : MonoBehaviour
                 break;
 
             case PlayerState.DASH:
+                HandleDashState();
                 break;
 
             case PlayerState.CLIMB:
@@ -185,6 +198,10 @@ public class PlayerManager : MonoBehaviour
             playerVelocity.y = jumpForce;
             playerState = PlayerState.JUMP;
         }
+        else if (inputManager.IsSlidePressed)
+        {
+            playerState = PlayerState.SLIDE;
+        }
         else if(!HasGroundRight())
         {
             playerState = PlayerState.MOVE;
@@ -205,12 +222,17 @@ public class PlayerManager : MonoBehaviour
         {
             playerState = PlayerState.SLIDE;
         }
+        else if(IsGrounded() && inputManager.IsDashPressed)
+        {
+            currentSpeed *= dashSpeedIncreaseFactor;
+            playerState = PlayerState.DASH;
+        }
         else if (!IsGrounded())
         {
             playerVelocity.y = 0;
             playerState = PlayerState.FALL;
         }
-        else if(HasGroundRight())
+        else if (HasGroundRight())
         {
             playerState = PlayerState.IDLE;
         }
@@ -332,6 +354,37 @@ public class PlayerManager : MonoBehaviour
         }
         else if (slideTimer <= 0 && !HasGroundAbove())
         {
+            playerState = PlayerState.IDLE;
+        }
+    }
+    private void HandleDashState()
+    {
+        // Restarting Dash Timer
+        if (!HasGroundRight() && inputManager.IsDashPressed && dashTimer <= 0)
+        {
+            dashTimer = dashDuration; // Reset dash timer
+        }
+
+        dashTimer -= Time.deltaTime;
+        if (inputManager.WasJumpPressed && !HasGroundAbove())
+        {
+            playerVelocity.y = jumpForce;
+            playerState = PlayerState.JUMP;
+        }
+        else if (!IsGrounded())
+        {
+            currentSpeed /= dashSpeedIncreaseFactor;
+            playerVelocity.y = 0;
+            playerState = PlayerState.FALL;
+        }
+        else if (HasGroundRight())
+        {
+            playerState = PlayerState.IDLE;
+        }
+        else if (dashTimer <= 0)
+        {
+            currentSpeed /= dashSpeedIncreaseFactor;
+            dashTimer = dashDuration;
             playerState = PlayerState.IDLE;
         }
     }
