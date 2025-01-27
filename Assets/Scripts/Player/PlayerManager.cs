@@ -212,7 +212,7 @@ public class PlayerManager : MonoBehaviour
             playerVelocity.y = jumpForce;
             playerState = PlayerState.JUMP;
         }
-        else if (inputManager.IsSlidePressed)
+        else if (inputManager.IsSlidePressed && !HasGroundRight())
         {
             playerState = PlayerState.SLIDE;
         }
@@ -367,6 +367,10 @@ public class PlayerManager : MonoBehaviour
             playerState = PlayerState.FALL;
         }
         else if (slideTimer <= 0 && !HasGroundAbove())
+        {
+            playerState = PlayerState.IDLE;
+        }
+        else if (HasGroundRight())
         {
             playerState = PlayerState.IDLE;
         }
