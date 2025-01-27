@@ -4,6 +4,7 @@ public class PlayerManager : MonoBehaviour
 {
     [Header("Inspector Attachments")]
     [SerializeField] private InputManager inputManager;
+    [SerializeField] private bool allowGizmos;
 
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed;
@@ -113,7 +114,7 @@ public class PlayerManager : MonoBehaviour
     #region MovementHandling
     private void HandleMovement()
     {
-        if (playerState == PlayerState.CLIMB) return;
+        if (playerState == PlayerState.IDLE || playerState == PlayerState.CLIMB) return;
 
         playerDirection = Vector3.right * moveSpeed; // Default movement direction
         playerVelocity.y -= gravityForce * Time.deltaTime; // Apply gravity
@@ -179,7 +180,19 @@ public class PlayerManager : MonoBehaviour
     private void HandleIdleState()
     {
         airJumpCount = 0;
-        playerState = PlayerState.MOVE;
+        if (inputManager.WasJumpPressed)
+        {
+            playerVelocity.y = jumpForce;
+            playerState = PlayerState.JUMP;
+        }
+        else if(!HasGroundRight())
+        {
+            playerState = PlayerState.MOVE;
+        }
+        else
+        {
+            playerState = PlayerState.IDLE;
+        }
     }
     private void HandleMoveState()
     {
@@ -196,6 +209,10 @@ public class PlayerManager : MonoBehaviour
         {
             playerVelocity.y = 0;
             playerState = PlayerState.FALL;
+        }
+        else if(HasGroundRight())
+        {
+            playerState = PlayerState.IDLE;
         }
     }
     private void HandleJumpState()
@@ -285,7 +302,7 @@ public class PlayerManager : MonoBehaviour
     private void HandleRollState()
     {
         rollTimer -= Time.deltaTime;
-        if(rollTimer <= 0 && HasGroundAbove())
+        if (rollTimer <= 0 && HasGroundAbove())
         {
             playerState = PlayerState.SLIDE;
         }
@@ -308,7 +325,7 @@ public class PlayerManager : MonoBehaviour
             playerVelocity.y = jumpForce;
             playerState = PlayerState.JUMP;
         }
-        else if(!IsGrounded())
+        else if (!IsGrounded())
         {
             playerVelocity.y = 0;
             playerState = PlayerState.FALL;
@@ -374,6 +391,25 @@ public class PlayerManager : MonoBehaviour
         // Climbing trigger condition
         return isUpperRayNonGround && isLowerRayGround;
     }
+    private bool HasGroundRight()
+    {
+        // Defining the box dimensions
+        Vector3 boxSize = new Vector3(characterController.radius * 2, characterController.height,
+            groundRightDetectionDistance);
+
+        // Calculating the center of the boxcast
+        Vector3 boxCenter = transform.position + Vector3.up * (characterController.height / 2);
+
+        // Performing the boxcast
+        if (Physics.BoxCast(boxCenter, boxSize / 2, transform.forward, out RaycastHit hit, transform.rotation,
+            groundRightDetectionDistance, groundLayerMask))
+        {
+            // Ground detected
+            return true;
+        }
+
+        return false;
+    }
     private bool HasGroundAbove()
     {
         RaycastHit hit;
@@ -412,9 +448,10 @@ public class PlayerManager : MonoBehaviour
     #region GizmosHandling
     private void OnDrawGizmos()
     {
-        if (characterController != null)
+        if (characterController != null && allowGizmos)
         {
             DrawClimbDetectionGizmos();
+            DrawGroundRightGizmos();
             DrawGroundAboveGizmos();
         }
     }
@@ -442,6 +479,21 @@ public class PlayerManager : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawRay(lowerRayOrigin, rayDirection * groundRightDetectionDistance);
         Gizmos.DrawWireSphere(lowerRayEnd, 0.1f);
+    }
+    private void DrawGroundRightGizmos()
+    {
+        // Defining the box dimensions
+        Vector3 boxSize = new Vector3(characterController.radius * 2, characterController.height, groundRightDetectionDistance);
+
+        // Calculating the center of the boxcast
+        Vector3 boxCenter = transform.position + Vector3.up * (characterController.height / 2);
+
+        // Setting Gizmo color based on whether a ground is detected
+        Gizmos.color = HasGroundRight() ? Color.red : Color.green;
+
+        // Drawing the box representation in the Scene view
+        Gizmos.matrix = Matrix4x4.TRS(boxCenter, transform.rotation, Vector3.one);
+        Gizmos.DrawWireCube(Vector3.zero, boxSize);
     }
     private void DrawGroundAboveGizmos()
     {
