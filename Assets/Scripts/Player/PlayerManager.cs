@@ -63,6 +63,7 @@ public class PlayerManager : MonoBehaviour
         // Setting Variables
         currentSpeed = moveSpeed * 100;
         airJumpCount = 0;
+
         defaultHeight = characterController.height;
         defaultCenter = characterController.center;
     }
@@ -113,8 +114,13 @@ public class PlayerManager : MonoBehaviour
                 playerAnimator.Play("Climb");
                 break;
             case PlayerState.KNOCK:
+                playerAnimator.Play("Knock");
+                break;
+            case PlayerState.GET_UP:
+                playerAnimator.Play("Get Up");
                 break;
             case PlayerState.DEAD:
+                playerAnimator.Play("Dead");
                 break;
             default:
                 break;
@@ -125,7 +131,9 @@ public class PlayerManager : MonoBehaviour
     #region MovementHandling
     private void HandleMovement()
     {
-        if (playerState == PlayerState.IDLE || playerState == PlayerState.CLIMB) return;
+        if (playerState == PlayerState.IDLE || playerState == PlayerState.CLIMB
+             || playerState == PlayerState.KNOCK || playerState == PlayerState.GET_UP 
+             || playerState == PlayerState.DEAD) return;
 
         playerVelocity.x = currentSpeed * Time.deltaTime; // Default movement direction
         playerVelocity.y -= gravityForce * Time.deltaTime; // Apply gravity
@@ -181,9 +189,15 @@ public class PlayerManager : MonoBehaviour
                 break;
 
             case PlayerState.KNOCK:
+                HandleKnockState();
+                break;
+
+            case PlayerState.GET_UP:
+                HandleGetUpState();
                 break;
 
             case PlayerState.DEAD:
+                HandleDeadState();
                 break;
 
             default:
@@ -386,7 +400,7 @@ public class PlayerManager : MonoBehaviour
         else if (HasGroundRight())
         {
             currentSpeed /= dashSpeedIncreaseFactor;
-            playerState = PlayerState.IDLE;
+            playerState = PlayerState.KNOCK;
         }
         else if (dashTimer <= 0)
         {
@@ -401,9 +415,30 @@ public class PlayerManager : MonoBehaviour
         {
             transform.position = playerAnimator.bodyPosition;
             transform.position -= new Vector3(0f, characterController.height, 0f);
+            transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
             playerState = PlayerState.IDLE;
         }
     }
+    private void HandleKnockState()
+    {
+        if(KnockFinished())
+        {
+            transform.position = playerAnimator.bodyPosition;
+            transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
+            playerState = PlayerState.GET_UP;
+        }
+    }
+    private void HandleGetUpState()
+    {
+        if (GetUpFinished())
+        {
+            transform.position = playerAnimator.bodyPosition;
+            transform.position -= new Vector3(0f, 1.5f, 0f);
+            transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
+            playerState = PlayerState.IDLE;
+        }
+    }
+    private void HandleDeadState() { }
     #endregion
 
     #region CollisonHandling
@@ -431,6 +466,16 @@ public class PlayerManager : MonoBehaviour
     private bool ClimbFinished()
     {
         return playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Climb") &&
+               playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f;
+    }
+    private bool KnockFinished()
+    {
+        return playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Knock") &&
+               playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f;
+    }
+    private bool GetUpFinished()
+    {
+        return playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Get Up") &&
                playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f;
     }
     private bool CanClimb()
