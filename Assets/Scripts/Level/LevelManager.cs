@@ -1,43 +1,53 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    [SerializeField] private GameObject[] groundPrefabs;
-    [SerializeField] private GameObject[] platformPrefabs;
     [SerializeField] private Transform playerTransform;
-
     [SerializeField] private float spawnDistance;
     [SerializeField] private float deSpawnDistance;
+    [SerializeField] private LevelConfig levelConfig;
 
-    [SerializeField] private float[] groundSpawnOffsetDistanceRanges;
-    [SerializeField] private float[] groundSpawnOffsetHeightRanges;
-
-    [SerializeField] private float[] platformSpawnOffsetDistanceRanges;
-    [SerializeField] private float[] platformSpawnOffsetHeightRanges;
-
-    private Vector3 nextGroundPosition;
-    private Vector3 nextPlatformPosition;
+    // Private Variables
+    private List<Vector3> nextLevelPositions;
 
     private void Start()
     {
-        // Initialize the startposition of grounds and platforms
-        nextGroundPosition = playerTransform.position - Vector3.forward * 20f;
-        nextPlatformPosition = playerTransform.position + Vector3.forward * 30f;
+        // Setting Variables
+        nextLevelPositions = new List<Vector3>();
+        StartLevels();
+    }
+    private void StartLevels()
+    {
+        // Initializing the start position of all Levels
+        for (int i = 0; i < levelConfig.levelData.Length; ++i)
+        {
+            // Adding the calculated position to the list
+            Vector3 startPosition = playerTransform.position - Vector3.forward * levelConfig.levelData[i].startPositionOffset;
+            nextLevelPositions.Add(startPosition);
+        }
     }
 
     private void Update()
     {
-        // Generating Grounds and Platforms
-        nextGroundPosition = GeneratePlatform(groundPrefabs, groundSpawnOffsetDistanceRanges, groundSpawnOffsetHeightRanges,
-            nextGroundPosition);
-        nextPlatformPosition = GeneratePlatform(platformPrefabs, platformSpawnOffsetDistanceRanges, platformSpawnOffsetHeightRanges,
-            nextPlatformPosition);
+        // Generating Levels
+        GenerateLevels();
 
-        // Destroying Grounds and Platforms
-        DestroyPlaform();
+        // Destroying Levels
+        DestroyLevel();
     }
-
-    private Vector3 GeneratePlatform(GameObject[] _gameObjects, float[] _offsetDistanceRanges, float[] _offsetHeightRanges,
+    private void GenerateLevels()
+    {
+        // Generating Levels
+        for (int i = 0; i < levelConfig.levelData.Length; ++i)
+        {
+            LevelData levelData = levelConfig.levelData[i];
+            nextLevelPositions[i] = GenerateLevel(
+                levelData.groundPrefabs, levelData.groundSpawnOffsetDistanceRanges, levelData.groundSpawnOffsetHeightRanges,
+            nextLevelPositions[i]);
+        }
+    }
+    private Vector3 GenerateLevel(GameObject[] _gameObjects, float[] _offsetDistanceRanges, float[] _offsetHeightRanges,
         Vector3 _nextPosition)
     {
         if ((_nextPosition.x - playerTransform.position.x) < spawnDistance)
@@ -68,8 +78,7 @@ public class LevelManager : MonoBehaviour
         }
         return _nextPosition;
     }
-
-    private void DestroyPlaform()
+    private void DestroyLevel()
     {
         if (transform.childCount > 0)
         {
