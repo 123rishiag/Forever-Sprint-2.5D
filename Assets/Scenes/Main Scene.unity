@@ -132,7 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 620370997}
-  - component: {fileID: 620370996}
+  - component: {fileID: 620370998}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -140,24 +140,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &620370996
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 620370995}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13ff8fee36824374aa4e4929261aa63d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  groundPrefab: {fileID: 6204533728597038627, guid: 094469c6191e740499b257606039db83, type: 3}
-  player: {fileID: 2477523651712875848}
-  spawnDistance: 20
-  despawnDistance: 10
-  groundWidth: 0
-  nextSpawnX: 0
 --- !u!4 &620370997
 Transform:
   m_ObjectHideFlags: 0
@@ -173,6 +155,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &620370998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620370995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f5c831857f6a484eaae2e331a86a6dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  platformPrefabs:
+  - {fileID: 4219994600962826872, guid: b402555b7eb0cf54e80ae52ea6537830, type: 3}
+  - {fileID: 2632172010896301957, guid: d6ffd66fd7c947845ae57b5623ac9623, type: 3}
+  - {fileID: 4527750334226703243, guid: a8705263ddf5c614a9742d5c07467a72, type: 3}
+  playerTransform: {fileID: 2477523651712875848}
+  spawnDistance: 10
+  deSpawnDistance: 20
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1821,7 +1822,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputManager: {fileID: 1943752133}
-  allowGizmos: 1
+  allowGizmos: 0
   moveSpeed: 12
   jumpForce: 10
   airJumpForce: 8
