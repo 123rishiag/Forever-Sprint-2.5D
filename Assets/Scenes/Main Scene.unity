@@ -167,13 +167,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f5c831857f6a484eaae2e331a86a6dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundPrefabs:
+  - {fileID: 5592399913904852559, guid: b402555b7eb0cf54e80ae52ea6537830, type: 3}
   platformPrefabs:
-  - {fileID: 4219994600962826872, guid: b402555b7eb0cf54e80ae52ea6537830, type: 3}
-  - {fileID: 2632172010896301957, guid: d6ffd66fd7c947845ae57b5623ac9623, type: 3}
-  - {fileID: 4527750334226703243, guid: a8705263ddf5c614a9742d5c07467a72, type: 3}
+  - {fileID: 899953855723753725, guid: 07a932509930b4a4091fe76eccde5220, type: 3}
+  - {fileID: 4600710087669771945, guid: d6ffd66fd7c947845ae57b5623ac9623, type: 3}
+  - {fileID: 6470293764356551265, guid: a8705263ddf5c614a9742d5c07467a72, type: 3}
   playerTransform: {fileID: 2477523651712875848}
-  spawnDistance: 10
-  deSpawnDistance: 20
+  spawnDistance: 30
+  deSpawnDistance: 100
+  groundSpawnOffsetDistanceRanges: []
+  groundSpawnOffsetHeightRanges: []
+  platformSpawnOffsetDistanceRanges:
+  - 10
+  - 15
+  - 20
+  - 25
+  - 30
+  platformSpawnOffsetHeightRanges:
+  - 0
+  - 1.5
+  - 3
+  - 5
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1838,7 +1853,7 @@ MonoBehaviour:
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 128
-  groundAboveDetectionDistance: 0.5
+  groundAboveDetectionDistance: 0.7
   groundRightDetectionDistance: 0.4
   rollingHeightMultiplier: 0.5
   slidingHeightMultiplier: 0.5
