@@ -36,3 +36,9 @@ MonoBehaviour:
     - 1.5
     - 3
     - 5
+  - levelType: 3
+    startPositionOffset: -100
+    groundPrefabs:
+    - {fileID: 7675550939011953636, guid: 490496d63d9cfc449ab3b1aec3863d97, type: 3}
+    groundSpawnOffsetDistanceRanges: []
+    groundSpawnOffsetHeightRanges: []

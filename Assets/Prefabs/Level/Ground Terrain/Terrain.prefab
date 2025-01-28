@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8890103376862238249}
   m_Layer: 7
   m_Name: EndPoint
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 6972247588667714311}
   - component: {fileID: 3254992414076778412}
   m_Layer: 7
-  m_Name: Ground
+  m_Name: Terrain
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 7070488685547916585}
   m_Layer: 7
   m_Name: StartPoint
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
