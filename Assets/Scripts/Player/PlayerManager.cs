@@ -121,7 +121,7 @@ public class PlayerManager : MonoBehaviour
                 playerAnimator.Play("Get Up");
                 break;
             case PlayerState.DEAD:
-                if(!IsGrounded()) playerAnimator.Play("Fall");
+                if (!IsGrounded()) playerAnimator.Play("Fall");
                 else playerAnimator.Play("Dead");
                 break;
             default:
@@ -219,11 +219,11 @@ public class PlayerManager : MonoBehaviour
             playerVelocity.y = jumpForce;
             playerState = PlayerState.JUMP;
         }
-        else if (inputManager.IsSlidePressed && !HasGroundRight())
+        else if (inputManager.IsSlidePressed && !CanSlide())
         {
             playerState = PlayerState.SLIDE;
         }
-        else if(!HasGroundRight())
+        else if (!HasGroundRight())
         {
             playerState = PlayerState.MOVE;
         }
@@ -243,7 +243,7 @@ public class PlayerManager : MonoBehaviour
         {
             playerState = PlayerState.SLIDE;
         }
-        else if(IsGrounded() && inputManager.IsDashPressed)
+        else if (IsGrounded() && inputManager.IsDashPressed)
         {
             currentSpeed *= dashSpeedIncreaseFactor;
             playerState = PlayerState.DASH;
@@ -432,7 +432,7 @@ public class PlayerManager : MonoBehaviour
     }
     private void HandleKnockState()
     {
-        if(KnockFinished())
+        if (KnockFinished())
         {
             transform.position = playerAnimator.bodyPosition;
             transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
@@ -449,7 +449,7 @@ public class PlayerManager : MonoBehaviour
             playerState = PlayerState.IDLE;
         }
     }
-    private void HandleDeadState() 
+    private void HandleDeadState()
     { }
     #endregion
 
@@ -489,6 +489,23 @@ public class PlayerManager : MonoBehaviour
     {
         return playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Get Up") &&
                playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f;
+    }
+    private bool CanSlide()
+    {
+        // Defining vertical offsets
+        float centerOffsetHeight = characterController.height / 2; // Center height of the character
+        float legOffsetHeight = 0.1f; // Leg height near the ground
+
+        // Defining the ray origins and direction
+        Vector3 centerRayOrigin = transform.position + Vector3.up * centerOffsetHeight;
+        Vector3 legRayOrigin = transform.position + Vector3.up * legOffsetHeight;
+        Vector3 rayDirection = transform.forward;
+
+        // Checking for ground detection
+        bool isGroundInFrontCenter = Physics.Raycast(centerRayOrigin, rayDirection, groundRightDetectionDistance);
+        bool isGroundInFrontLeg = Physics.Raycast(legRayOrigin, rayDirection, groundRightDetectionDistance);
+
+        return isGroundInFrontCenter && isGroundInFrontLeg;
     }
     private bool CanClimb()
     {
@@ -572,10 +589,41 @@ public class PlayerManager : MonoBehaviour
     {
         if (characterController != null && allowGizmos)
         {
+            DrawSlideDetectionGizmos();
             DrawClimbDetectionGizmos();
             DrawGroundRightGizmos();
             DrawGroundAboveGizmos();
         }
+    }
+    private void DrawSlideDetectionGizmos()
+    {
+        // Defining vertical offsets
+        float centerOffsetHeight = characterController.height / 2; // Center height of the character
+        float legOffsetHeight = 0.1f; // Leg height near the ground
+
+        // Defining the ray origins and direction
+        Vector3 centerRayOrigin = transform.position + Vector3.up * centerOffsetHeight;
+        Vector3 legRayOrigin = transform.position + Vector3.up * legOffsetHeight;
+        Vector3 rayDirection = transform.forward;
+
+        // Checking for ground detection
+        bool isGroundInFrontCenter = Physics.Raycast(centerRayOrigin, rayDirection, groundRightDetectionDistance);
+        bool isGroundInFrontLeg = Physics.Raycast(legRayOrigin, rayDirection, groundRightDetectionDistance);
+
+        // Drawing rays for visualization
+        Gizmos.color = isGroundInFrontCenter ? Color.green : Color.red;
+        Gizmos.DrawRay(centerRayOrigin, rayDirection * groundRightDetectionDistance);
+
+        Gizmos.color = isGroundInFrontLeg ? Color.green : Color.red;
+        Gizmos.DrawRay(legRayOrigin, rayDirection * groundRightDetectionDistance);
+
+        // Drawing spheres at the end of the rays for better visibility
+        Vector3 centerRayEnd = centerRayOrigin + rayDirection * groundRightDetectionDistance;
+        Vector3 legRayEnd = legRayOrigin + rayDirection * groundRightDetectionDistance;
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(centerRayEnd, 0.1f);
+        Gizmos.DrawWireSphere(legRayEnd, 0.1f);
     }
     private void DrawClimbDetectionGizmos()
     {
