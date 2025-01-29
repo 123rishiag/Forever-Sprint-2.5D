@@ -98,7 +98,7 @@ public class CollectibleManager : MonoBehaviour
                 (_collectibleSize.x / 2);
             Vector3 spawnPosition = new Vector3(spawnX, spawnPositionY, _spawnTransform.position.z);
 
-            Instantiate(_collectiblePrefab, spawnPosition, Quaternion.identity, transform);
+            Instantiate(_collectiblePrefab, spawnPosition, _collectiblePrefab.transform.rotation, transform);
         }
     }
 }

@@ -1,5 +1,5 @@
 public enum CollectibleType
 {
-    Medal,
-    Feather
+    Cube,
+    Sphere
 }
