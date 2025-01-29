@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 9221888596922191621}
   - component: {fileID: 5671401592199321411}
   - component: {fileID: 128750089818005639}
+  - component: {fileID: 3136065801147989799}
   m_Layer: 8
   m_Name: Cube
   m_TagString: Collectible
@@ -118,3 +119,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b6a3daa8e6369c43847285d712c9b92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &3136065801147989799
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5374624230930599436}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1531ec518a04197428f739df3de01f79, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
