@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collectibleData:
   - collectibleType: 0
-    collectiblePrefab: {fileID: 2041896557813605250, guid: f7c5390bd5f205a41a5d130ed0e1b9fe, type: 3}
+    collectiblePrefab: {fileID: 5374624230930599436, guid: 0eb25dd94b263164b84044edd69900f8, type: 3}
+  - collectibleType: 1
+    collectiblePrefab: {fileID: 8289384742975992276, guid: c6e8cdb96166d4a4cae2b87b0f69fa9d, type: 3}
