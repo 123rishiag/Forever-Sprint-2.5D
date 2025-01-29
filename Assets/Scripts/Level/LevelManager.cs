@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class LevelManager : MonoBehaviour
 {
+    [Header("Level Elements")]
     [SerializeField] private Transform playerTransform;
     [SerializeField] private float spawnDistance;
     [SerializeField] private float deSpawnDistance;
     [SerializeField] private LevelConfig levelConfig;
+    [SerializeField] CollectibleManager collectibleManager;
 
     // Private Variables
     private List<Vector3> nextLevelPositions;
@@ -43,12 +46,12 @@ public class LevelManager : MonoBehaviour
         {
             LevelData levelData = levelConfig.levelData[i];
             nextLevelPositions[i] = GenerateLevel(
-                levelData.groundPrefabs, levelData.groundSpawnOffsetDistanceRanges, levelData.groundSpawnOffsetHeightRanges,
-            nextLevelPositions[i]);
+                levelData.levelType, levelData.groundPrefabs,
+                levelData.groundSpawnOffsetDistanceRanges, levelData.groundSpawnOffsetHeightRanges, nextLevelPositions[i]);
         }
     }
-    private Vector3 GenerateLevel(GameObject[] _gameObjects, float[] _offsetDistanceRanges, float[] _offsetHeightRanges,
-        Vector3 _nextPosition)
+    private Vector3 GenerateLevel(LevelType _levelType, GameObject[] _gameObjects,
+        float[] _offsetDistanceRanges, float[] _offsetHeightRanges, Vector3 _nextPosition)
     {
         if ((_nextPosition.x - playerTransform.position.x) < spawnDistance)
         {
@@ -71,6 +74,12 @@ public class LevelManager : MonoBehaviour
 
                 // Instantiating prefab
                 GameObject newPlatform = Instantiate(gameObject, spawnPosition, Quaternion.identity, transform);
+
+                // Creating Collectibles
+                if (_levelType == LevelType.Ground_Terrain || _levelType == LevelType.Ground_Platform)
+                {
+                    collectibleManager.GenerateCollectibles(newPlatform.transform);
+                }
 
                 // Setting new position
                 return newPlatform.transform.Find("EndPoint").position;
