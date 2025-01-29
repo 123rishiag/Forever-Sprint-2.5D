@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4710531854031259085}
   - component: {fileID: 8537864467807729433}
   - component: {fileID: -5659174621600788719}
+  - component: {fileID: 2541564458701596565}
   m_Layer: 8
   m_Name: Sphere
   m_TagString: Collectible
@@ -118,3 +119,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b6a3daa8e6369c43847285d712c9b92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &2541564458701596565
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8289384742975992276}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1531ec518a04197428f739df3de01f79, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

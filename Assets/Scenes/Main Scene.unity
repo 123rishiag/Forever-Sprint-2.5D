@@ -1766,7 +1766,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputManager: {fileID: 1943752133}
   allowGizmos: 0
-  moveSpeed: 12
+  moveSpeed: 20
   jumpForce: 10
   airJumpForce: 8
   airJumpAllowed: 1
