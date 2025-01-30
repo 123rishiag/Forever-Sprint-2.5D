@@ -1,8 +1,10 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
+    [Header("Game Manager")]
+    [SerializeField] private GameManager gameManager;
+
     [Header("Inspector Attachments")]
     [SerializeField] private InputManager inputManager;
     [SerializeField] private bool allowGizmos;
@@ -40,6 +42,7 @@ public class PlayerManager : MonoBehaviour
     private CharacterController characterController;
 
     // Private Variables
+    private float defaultSpeed;
     private float currentSpeed;
     private Vector3 playerVelocity;
     private Vector3 playerDirection;
@@ -63,7 +66,8 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         // Setting Variables
-        currentSpeed = moveSpeed * 100;
+        defaultSpeed = moveSpeed * 100;
+        currentSpeed = defaultSpeed;
         airJumpCount = 0;
 
         defaultHeight = characterController.height;
@@ -136,6 +140,9 @@ public class PlayerManager : MonoBehaviour
     {
         if (playerState == PlayerState.IDLE || playerState == PlayerState.CLIMB
              || playerState == PlayerState.KNOCK || playerState == PlayerState.GET_UP) return;
+
+        if (playerState != PlayerState.DASH)
+            currentSpeed = defaultSpeed;
 
         if (playerState == PlayerState.DEAD) playerVelocity.x = 0f;
         else playerVelocity.x = currentSpeed * Time.deltaTime; // Default movement direction
@@ -399,29 +406,24 @@ public class PlayerManager : MonoBehaviour
         dashTimer -= Time.deltaTime;
         if (inputManager.WasJumpPressed && !HasGroundAbove())
         {
-            currentSpeed /= dashSpeedIncreaseFactor;
             playerVelocity.y = jumpForce;
             playerState = PlayerState.JUMP;
         }
         else if (inputManager.IsSlidePressed)
         {
-            currentSpeed /= dashSpeedIncreaseFactor;
             playerState = PlayerState.SLIDE;
         }
         else if (!IsGrounded())
         {
-            currentSpeed /= dashSpeedIncreaseFactor;
             playerVelocity.y = 0;
             playerState = PlayerState.FALL;
         }
         else if (HasGroundRight())
         {
-            currentSpeed /= dashSpeedIncreaseFactor;
             playerState = PlayerState.KNOCK;
         }
         else if (dashTimer <= 0)
         {
-            currentSpeed /= dashSpeedIncreaseFactor;
             dashTimer = dashDuration;
             playerState = PlayerState.IDLE;
         }
@@ -456,9 +458,9 @@ public class PlayerManager : MonoBehaviour
     }
     private void HandleDeadState()
     {
-        if(DeadFinished())
+        if (DeadFinished())
         {
-            SceneManager.LoadScene(0);
+            gameManager.GameOver();
         }
     }
     #endregion
