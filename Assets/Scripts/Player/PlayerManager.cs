@@ -441,7 +441,6 @@ public class PlayerManager : MonoBehaviour
         if (KnockFinished())
         {
             transform.position = playerAnimator.bodyPosition;
-            transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
             playerState = PlayerState.GET_UP;
         }
     }
