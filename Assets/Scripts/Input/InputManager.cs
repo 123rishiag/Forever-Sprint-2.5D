@@ -18,6 +18,7 @@ public class InputManager : MonoBehaviour
         WasJumpPressed = inputControls.Player.Jump.WasPressedThisFrame();
         IsSlidePressed = inputControls.Player.Slide.IsPressed();
         IsDashPressed = inputControls.Player.Dash.IsPressed();
+        IsEscapePressed = inputControls.Game.Escape.IsPressed();
     }
     private void OnDisable()
     {
@@ -29,4 +30,6 @@ public class InputManager : MonoBehaviour
     public bool IsSlidePressed { get; private set; }
 
     public bool IsDashPressed { get; private set; }
+
+    public bool IsEscapePressed { get; private set; }
 }
