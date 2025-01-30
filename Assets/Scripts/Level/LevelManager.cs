@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class LevelManager : MonoBehaviour
 {
@@ -53,7 +52,8 @@ public class LevelManager : MonoBehaviour
     private Vector3 GenerateLevel(LevelType _levelType, GameObject[] _gameObjects,
         float[] _offsetDistanceRanges, float[] _offsetHeightRanges, Vector3 _nextPosition)
     {
-        if ((_nextPosition.x - playerTransform.position.x) < spawnDistance && _nextPosition.x <= playerTransform.position.x + spawnDistance)
+        if ((_nextPosition.x - playerTransform.position.x) < spawnDistance &&
+            _nextPosition.x <= playerTransform.position.x + spawnDistance)
         {
             // Fetching Offset Distance
             float offsetDistance = GetOffsetValue(_offsetDistanceRanges);

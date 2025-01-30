@@ -47,7 +47,7 @@ public class CollectibleManager : MonoBehaviour
         int collectibleCount = GetCollectibleCount(spawnBoundary, collectibleSize);
         float collectibleSpacing = GetCollectibleSpacing(spawnBoundary, collectibleSize, collectibleCount);
 
-        SpawnCollectibles(_spawnTransform, collectiblePrefab, collectibleSize, spawnBoundary, collectibleCount, 
+        SpawnCollectibles(_spawnTransform, collectiblePrefab, collectibleSize, spawnBoundary, collectibleCount,
             collectibleSpacing);
     }
 
@@ -94,7 +94,7 @@ public class CollectibleManager : MonoBehaviour
 
         for (int i = 0; i < _collectibleCount; ++i)
         {
-            float spawnX = startPostionX + (i * (_collectibleSize.x + _collectibleSpacing)) + _collectibleSpacing + 
+            float spawnX = startPostionX + (i * (_collectibleSize.x + _collectibleSpacing)) + _collectibleSpacing +
                 (_collectibleSize.x / 2);
             Vector3 spawnPosition = new Vector3(spawnX, spawnPositionY, _spawnTransform.position.z);
 
