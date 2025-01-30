@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -268,6 +269,8 @@ public class PlayerManager : MonoBehaviour
         }
         else if (CanClimb())
         {
+            playerVelocity.y = 0f;
+            transform.position += new Vector3(0.30f, 0f, 0f);
             playerState = PlayerState.CLIMB;
         }
         else if (IsFalling(out PlayerState fallState))
@@ -290,6 +293,7 @@ public class PlayerManager : MonoBehaviour
         else if (CanClimb())
         {
             playerVelocity.y = 0f;
+            transform.position += new Vector3(0.30f, 0f, 0f);
             playerState = PlayerState.CLIMB;
         }
         else if (IsFalling(out PlayerState fallState))
@@ -312,6 +316,7 @@ public class PlayerManager : MonoBehaviour
         else if (CanClimb())
         {
             playerVelocity.y = 0f;
+            transform.position += new Vector3(0.30f, -0.14f, 0f);
             playerState = PlayerState.CLIMB;
         }
         else if (IsFalling(out PlayerState fallState))
@@ -335,6 +340,7 @@ public class PlayerManager : MonoBehaviour
         else if (CanClimb())
         {
             playerVelocity.y = 0f;
+            transform.position += new Vector3(0.30f, -0.14f, 0f);
             playerState = PlayerState.CLIMB;
         }
         else if (IsFalling(out PlayerState fallState))
@@ -450,7 +456,12 @@ public class PlayerManager : MonoBehaviour
         }
     }
     private void HandleDeadState()
-    { }
+    {
+        if(DeadFinished())
+        {
+            SceneManager.LoadScene(0);
+        }
+    }
     #endregion
 
     #region CollisonHandling
@@ -488,6 +499,11 @@ public class PlayerManager : MonoBehaviour
     private bool GetUpFinished()
     {
         return playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Get Up") &&
+               playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f;
+    }
+    private bool DeadFinished()
+    {
+        return playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Dead") &&
                playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f;
     }
     private bool CanSlide()
