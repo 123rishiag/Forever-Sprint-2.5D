@@ -1,7 +1,7 @@
 public enum LevelType
 {
-    Background,
-    Ground_Terrain,
-    Ground_Platform,
-    Foreground
+    BACKGORUND,
+    GROUND_TERRAIN,
+    GROUND_PLATFORM,
+    FOREGROUND
 }

@@ -76,7 +76,7 @@ public class LevelManager : MonoBehaviour
                 GameObject newPlatform = Instantiate(gameObject, spawnPosition, Quaternion.identity, transform);
 
                 // Creating Collectibles
-                if (_levelType == LevelType.Ground_Terrain || _levelType == LevelType.Ground_Platform)
+                if (_levelType == LevelType.GROUND_TERRAIN || _levelType == LevelType.GROUND_PLATFORM)
                 {
                     collectibleManager.GenerateCollectibles(newPlatform.transform);
                 }
