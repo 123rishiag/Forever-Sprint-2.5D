@@ -2,11 +2,10 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    [Header("Game Manager")]
-    [SerializeField] private GameManager gameManager;
-
     [Header("Inspector Attachments")]
+    [SerializeField] private GameManager gameManager;
     [SerializeField] private InputManager inputManager;
+    [SerializeField] private SoundManager soundManager;
     [SerializeField] private bool allowGizmos;
 
     [Header("Movement Settings")]
@@ -226,10 +225,12 @@ public class PlayerManager : MonoBehaviour
         {
             playerVelocity.y = jumpForce;
             playerState = PlayerState.JUMP;
+            soundManager.PlaySoundEffect(SoundType.PLAYER_JUMP);
         }
         else if (inputManager.IsSlidePressed && !CanSlide())
         {
             playerState = PlayerState.SLIDE;
+            soundManager.PlaySoundEffect(SoundType.PLAYER_SLIDE);
         }
         else if (!HasGroundRight())
         {
@@ -246,10 +247,12 @@ public class PlayerManager : MonoBehaviour
         {
             playerVelocity.y = jumpForce;
             playerState = PlayerState.JUMP;
+            soundManager.PlaySoundEffect(SoundType.PLAYER_JUMP);
         }
         else if (inputManager.IsSlidePressed)
         {
             playerState = PlayerState.SLIDE;
+            soundManager.PlaySoundEffect(SoundType.PLAYER_SLIDE);
         }
         else if (IsGrounded() && inputManager.IsDashPressed)
         {
@@ -273,6 +276,7 @@ public class PlayerManager : MonoBehaviour
             airJumpCount++;
             playerVelocity.y = airJumpForce;
             playerState = PlayerState.AIR_JUMP;
+            soundManager.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);
         }
         else if (CanClimb())
         {
@@ -292,6 +296,7 @@ public class PlayerManager : MonoBehaviour
             airJumpCount++;
             playerVelocity.y = airJumpForce;
             playerState = PlayerState.AIR_JUMP;
+            soundManager.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);
         }
         else if (IsGrounded())
         {
@@ -315,6 +320,7 @@ public class PlayerManager : MonoBehaviour
             airJumpCount++;
             playerVelocity.y = airJumpForce;
             playerState = PlayerState.AIR_JUMP;
+            soundManager.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);
         }
         else if (IsGrounded())
         {
@@ -338,6 +344,7 @@ public class PlayerManager : MonoBehaviour
             airJumpCount++;
             playerVelocity.y = airJumpForce;
             playerState = PlayerState.AIR_JUMP;
+            soundManager.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);
         }
         else if (IsGrounded())
         {
@@ -361,6 +368,7 @@ public class PlayerManager : MonoBehaviour
         if (rollTimer <= 0 && HasGroundAbove())
         {
             playerState = PlayerState.SLIDE;
+            soundManager.PlaySoundEffect(SoundType.PLAYER_SLIDE);
         }
         else if (rollTimer <= 0)
         {
@@ -380,6 +388,7 @@ public class PlayerManager : MonoBehaviour
         {
             playerVelocity.y = jumpForce;
             playerState = PlayerState.JUMP;
+            soundManager.PlaySoundEffect(SoundType.PLAYER_JUMP);
         }
         else if (!IsGrounded())
         {
@@ -408,10 +417,12 @@ public class PlayerManager : MonoBehaviour
         {
             playerVelocity.y = jumpForce;
             playerState = PlayerState.JUMP;
+            soundManager.PlaySoundEffect(SoundType.PLAYER_JUMP);
         }
         else if (inputManager.IsSlidePressed)
         {
             playerState = PlayerState.SLIDE;
+            soundManager.PlaySoundEffect(SoundType.PLAYER_SLIDE);
         }
         else if (!IsGrounded())
         {
@@ -421,6 +432,7 @@ public class PlayerManager : MonoBehaviour
         else if (HasGroundRight())
         {
             playerState = PlayerState.KNOCK;
+            soundManager.PlaySoundEffect(SoundType.PLAYER_KNOCKBACK);
         }
         else if (dashTimer <= 0)
         {
@@ -583,6 +595,7 @@ public class PlayerManager : MonoBehaviour
         if (playerVelocity.y < -deadThreshold)
         {
             _fallState = PlayerState.DEAD;
+            soundManager.PlaySoundEffect(SoundType.PLAYER_DEAD);
             return true;
         }
         else if (playerVelocity.y < -bigFallThreshold)

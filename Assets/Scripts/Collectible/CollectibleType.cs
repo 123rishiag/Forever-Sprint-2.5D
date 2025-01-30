@@ -1,5 +1,5 @@
 public enum CollectibleType
 {
-    Cube,
-    Sphere
+    CUBE,
+    SPHERE
 }

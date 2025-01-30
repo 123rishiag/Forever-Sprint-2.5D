@@ -3,6 +3,7 @@ using UnityEngine;
 public class ScoreManager : MonoBehaviour
 {
     [SerializeField] private UIManager uiManager;
+
     private int score;
 
     private void Start()
