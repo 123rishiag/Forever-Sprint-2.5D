@@ -7,6 +7,10 @@ namespace ServiceLocator.Collectible
 
     public class CollectibleConfig : ScriptableObject
     {
+        [Range(0, 1)] public float spawnProbability;
+        [Range(0, 1)] public float minSpawnRatio;
+        [Range(0, 1)] public float maxSpawnRatio;
+        public float deSpawnDistance;
         public CollectibleData[] collectibleData;
     }
 

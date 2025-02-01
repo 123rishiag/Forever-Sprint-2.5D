@@ -1,7 +1,10 @@
-public enum LevelType
+namespace ServiceLocator.Level
 {
-    BACKGORUND,
-    GROUND_TERRAIN,
-    GROUND_PLATFORM,
-    FOREGROUND
+    public enum LevelType
+    {
+        BACKGORUND,
+        GROUND_TERRAIN,
+        GROUND_PLATFORM,
+        FOREGROUND
+    }
 }

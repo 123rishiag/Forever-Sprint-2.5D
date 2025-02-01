@@ -1,3 +1,5 @@
+using ServiceLocator.Collectible;
+using ServiceLocator.Level;
 using ServiceLocator.Player;
 using ServiceLocator.Sound;
 using ServiceLocator.UI;
@@ -19,6 +21,10 @@ namespace ServiceLocator.Main
         [Header("Game Elements")]
         [SerializeField] public PlayerConfig playerConfig;
         [SerializeField] public PlayerService playerPrefab;
+        [SerializeField] public CollectibleConfig collectibleConfig;
+        [SerializeField] public Transform collectibleParentPanel;
+        [SerializeField] public LevelConfig levelConfig;
+        [SerializeField] public Transform levelParentPanel;
 
         // Private Variables
         private GameController gameController;

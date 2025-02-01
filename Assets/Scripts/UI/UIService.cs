@@ -91,7 +91,7 @@ namespace ServiceLocator.UI
         }
         public void SetMuteButtonText(bool _isMute)
         {
-            mainMenuMuteButtonText.text = _isMute ? "Mute: Off" : "Mute: On"; // Toggle mute text
+            mainMenuMuteButtonText.text = _isMute ? "Mute: On" : "Mute: Off"; // Toggle mute text
         }
     }
 }

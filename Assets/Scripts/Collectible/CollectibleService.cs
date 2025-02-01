@@ -1,39 +1,61 @@
+using ServiceLocator.Player;
 using UnityEngine;
 
 namespace ServiceLocator.Collectible
 {
-    public class CollectibleService : MonoBehaviour
+    public class CollectibleService
     {
-        [SerializeField] private Transform playerTransform;
-        [SerializeField] private float deSpawnDistance;
-        [SerializeField] private CollectibleConfig collectibleConfig;
-        [Space]
-        [Range(0, 1)]
-        [SerializeField] private float spawnProbability;
-        [SerializeField, Range(0, 1)] private float minSpawnRatio;
-        [SerializeField, Range(0, 1)] private float maxSpawnRatio;
+        // Private Variables
+        private CollectibleConfig collectibleConfig;
+        private Transform collectibleParentPanel;
 
-        private void Start()
+        // Private Services
+        private PlayerService playerService;
+
+        public CollectibleService(CollectibleConfig _collectibleConfig, Transform _collectibleParentPanel)
         {
-            if (maxSpawnRatio < minSpawnRatio)
+            // Setting Variables
+            collectibleConfig = _collectibleConfig;
+            collectibleParentPanel = _collectibleParentPanel;
+
+            // Setting Elements
+            if (collectibleConfig.maxSpawnRatio < collectibleConfig.minSpawnRatio)
             {
-                maxSpawnRatio = minSpawnRatio;
+                collectibleConfig.maxSpawnRatio = collectibleConfig.minSpawnRatio;
             }
         }
 
-        private void Update()
+        public void Init(PlayerService _playerService)
         {
-            // Destroying Collectibles
+            // Setting Services
+            playerService = _playerService;
+        }
+
+        public void Reset()
+        {
             DestroyCollectibles();
         }
-        private void DestroyCollectibles()
+
+        public void Destroy()
         {
-            if (transform.childCount > 0)
+            DestroyCollectibles();
+        }
+
+        public void Update()
+        {
+            DestroyCollectibles(true);
+        }
+        private void DestroyCollectibles(bool _checkDespawnDistance = false)
+        {
+            if (collectibleParentPanel.childCount > 0)
             {
-                GameObject collectiblePrefab = transform.GetChild(0).gameObject;
-                if ((playerTransform.position.x - collectiblePrefab.transform.position.x) > deSpawnDistance)
+                GameObject collectiblePrefab = collectibleParentPanel.GetChild(0).gameObject;
+
+                if (!_checkDespawnDistance ||
+                    (playerService.GetPlayerTransform().position.x - collectiblePrefab.transform.position.x)
+                    > collectibleConfig.deSpawnDistance)
                 {
-                    Destroy(collectiblePrefab);
+                    Object.Destroy(collectiblePrefab);
                 }
             }
         }
@@ -53,7 +75,7 @@ namespace ServiceLocator.Collectible
                 collectibleSpacing);
         }
 
-        private bool ShouldSpawnCollectibles() => Random.value <= spawnProbability;
+        private bool ShouldSpawnCollectibles() => Random.value <= collectibleConfig.spawnProbability;
 
         private GameObject GetRandomCollectible()
         {
@@ -78,8 +100,10 @@ namespace ServiceLocator.Collectible
 
         private int GetCollectibleCount(Bounds _spawnBoundary, Vector2 _collectibleSize)
         {
-            int minCollectibleCount = Mathf.FloorToInt((_spawnBoundary.size.x / _collectibleSize.x) * minSpawnRatio);
-            int maxCollectibleCount = Mathf.FloorToInt((_spawnBoundary.size.x / _collectibleSize.x) * maxSpawnRatio);
+            int minCollectibleCount = Mathf.FloorToInt((_spawnBoundary.size.x / _collectibleSize.x) *
+                collectibleConfig.minSpawnRatio);
+            int maxCollectibleCount = Mathf.FloorToInt((_spawnBoundary.size.x / _collectibleSize.x) *
+                collectibleConfig.maxSpawnRatio);
             return Random.Range(minCollectibleCount, maxCollectibleCount + 1);
         }
 
@@ -100,7 +124,8 @@ namespace ServiceLocator.Collectible
                     (_collectibleSize.x / 2);
                 Vector3 spawnPosition = new Vector3(spawnX, spawnPositionY, _spawnTransform.position.z);
 
-                Instantiate(_collectiblePrefab, spawnPosition, _collectiblePrefab.transform.rotation, transform);
+                Object.Instantiate(_collectiblePrefab, spawnPosition, _collectiblePrefab.transform.rotation,
+                    collectibleParentPanel);
             }
         }
     }
