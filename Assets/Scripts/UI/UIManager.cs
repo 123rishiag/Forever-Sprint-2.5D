@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameManager gameManager;
 
     [Header("UI Elements")]
+    [SerializeField] private TMP_Text healthText; // Text for displaying health
     [SerializeField] private TMP_Text scoreText; // Text for displaying score
 
     [Header("Pause Menu Elements")]
@@ -51,7 +52,19 @@ public class UIManager : MonoBehaviour
         uiAnimator.Play("ScoreBar");
     }
 
+    private void HealthBarAnimation()
+    {
+        uiAnimator.Rebind();
+        uiAnimator.Update(0);
+        uiAnimator.Play("HealthBar");
+    }
+
     // Setters
+    public void UpdateHealthText(int _health)
+    {
+        healthText.text = "Health: " + _health;
+        HealthBarAnimation();
+    }
     public void UpdateScoreText(int _score)
     {
         scoreText.text = "Score: " + _score;
