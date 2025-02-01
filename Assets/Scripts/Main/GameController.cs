@@ -1,4 +1,6 @@
+using ServiceLocator.Collectible;
 using ServiceLocator.Controls;
+using ServiceLocator.Level;
 using ServiceLocator.Player;
 using ServiceLocator.Score;
 using ServiceLocator.Sound;
@@ -12,11 +14,14 @@ namespace ServiceLocator.Main
     {
         // Private Variables
         private GameService gameService;
+
         private InputService inputService;
         private SoundService soundService;
         private UIService uiService;
         private ScoreService scoreService;
         private PlayerService playerService;
+        private CollectibleService collectibleService;
+        private LevelService levelService;
 
         public GameController(GameService _gameService)
         {
@@ -36,6 +41,8 @@ namespace ServiceLocator.Main
             uiService = gameService.uiCanvas.GetComponent<UIService>();
             scoreService = new ScoreService();
             playerService = gameService.playerPrefab.GetComponent<PlayerService>();
+            collectibleService = new CollectibleService(gameService.collectibleConfig, gameService.collectibleParentPanel);
+            levelService = new LevelService(gameService.levelConfig, gameService.levelParentPanel);
         }
         private void InjectDependencies()
         {
@@ -44,6 +51,8 @@ namespace ServiceLocator.Main
             uiService.Init(this);
             scoreService.Init(uiService);
             playerService.Init(gameService.playerConfig.playerData, this, inputService, soundService, uiService);
+            collectibleService.Init(playerService);
+            levelService.Init(playerService, collectibleService);
         }
 
         public void Reset()
@@ -52,7 +61,9 @@ namespace ServiceLocator.Main
             soundService.Reset();
             // No UI Service Reset
             scoreService.Reset();
-            // No Player Service Reset
+            playerService.Reset();
+            collectibleService.Reset();
+            levelService.Reset();
         }
 
         public void Destroy()
@@ -62,6 +73,8 @@ namespace ServiceLocator.Main
             uiService.Destroy();
             // No Score Service Destroy
             // No Player Service Destroy
+            collectibleService.Destroy();
+            levelService.Destroy();
         }
 
         public void Update()
@@ -71,6 +84,8 @@ namespace ServiceLocator.Main
             // No UI Service Update
             // No Score Service Update
             playerService.UpdatePlayer();
+            collectibleService.Update();
+            levelService.Update();
 
             // Checking Elements
             if (inputService.IsEscapePressed)
@@ -134,5 +149,8 @@ namespace ServiceLocator.Main
         public SoundService GetSoundService() => soundService;
         public UIService GetUIService() => uiService;
         public ScoreService GetScoreService() => scoreService;
+        public PlayerService GetPlayerService() => playerService;
+        public CollectibleService GetCollectibleService() => collectibleService;
+        public LevelService GetLevelService() => levelService;
     }
 }

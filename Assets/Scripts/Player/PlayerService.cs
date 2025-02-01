@@ -33,6 +33,7 @@ namespace ServiceLocator.Player
         private CharacterController characterController;
         private PlayerData playerData;
         private PlayerState playerState;
+        private Vector3 playerDefaultPosition;
 
         private int currentHealth;
 
@@ -58,6 +59,7 @@ namespace ServiceLocator.Player
             // Setting Components
             playerAnimator = GetComponent<Animator>();
             characterController = GetComponent<CharacterController>();
+            playerDefaultPosition = transform.position;
         }
 
         public void Init(PlayerData _playerData, GameController _gameController,
@@ -79,6 +81,11 @@ namespace ServiceLocator.Player
 
             // Setting Elements
             uiService.UpdateHealthText(currentHealth);
+        }
+
+        public void Reset()
+        {
+            transform.position = playerDefaultPosition;
         }
 
         public void UpdatePlayer()
@@ -672,6 +679,7 @@ namespace ServiceLocator.Player
             _fallState = playerState;
             return false;
         }
+        public Transform GetPlayerTransform() => transform;
         #endregion
 
         #region GizmosHandling

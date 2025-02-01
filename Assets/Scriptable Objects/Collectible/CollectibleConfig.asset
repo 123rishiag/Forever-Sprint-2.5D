@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8d66a9bab38c244b8bb7f4261f98a45, type: 3}
   m_Name: CollectibleConfig
   m_EditorClassIdentifier: 
+  spawnProbability: 0.3
+  minSpawnRatio: 0.1
+  maxSpawnRatio: 0.2
+  deSpawnDistance: 100
   collectibleData:
   - collectibleType: 0
     collectiblePrefab: {fileID: 5374624230930599436, guid: 0eb25dd94b263164b84044edd69900f8, type: 3}

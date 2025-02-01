@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 385d7800ffff3c14794d28169ab34eda, type: 3}
   m_Name: LevelConfig
   m_EditorClassIdentifier: 
+  spawnDistance: 30
+  deSpawnDistance: 100
   levelData:
   - levelType: 0
     startPositionOffset: -100

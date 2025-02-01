@@ -1,21 +1,26 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "LevelConfig", menuName = "ScriptableObjects/LevelConfig")]
-
-public class LevelConfig : ScriptableObject
+namespace ServiceLocator.Level
 {
-    public LevelData[] levelData;
-}
+    [CreateAssetMenu(fileName = "LevelConfig", menuName = "ScriptableObjects/LevelConfig")]
 
-[Serializable]
-public class LevelData
-{
-    public LevelType levelType;
-    public float startPositionOffset;
-    [Space]
-    public GameObject[] groundPrefabs;
-    [Space]
-    public float[] groundSpawnOffsetDistanceRanges;
-    public float[] groundSpawnOffsetHeightRanges;
+    public class LevelConfig : ScriptableObject
+    {
+        public float spawnDistance;
+        public float deSpawnDistance;
+        public LevelData[] levelData;
+    }
+
+    [Serializable]
+    public class LevelData
+    {
+        public LevelType levelType;
+        public float startPositionOffset;
+        [Space]
+        public GameObject[] groundPrefabs;
+        [Space]
+        public float[] groundSpawnOffsetDistanceRanges;
+        public float[] groundSpawnOffsetHeightRanges;
+    }
 }
