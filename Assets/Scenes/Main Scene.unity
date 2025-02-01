@@ -312,7 +312,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 649275163}
-  - component: {fileID: 649275162}
+  - component: {fileID: 649275164}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -320,21 +320,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &649275162
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 649275161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2ab77f8b65278144892aa0b0ce35cb7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputManager: {fileID: 1943752133}
-  soundManager: {fileID: 1555865488}
-  uiManager: {fileID: 7276732068555963277}
 --- !u!4 &649275163
 Transform:
   m_ObjectHideFlags: 0
@@ -350,6 +335,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &649275164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 649275161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 470bd9667a43e414a99492ba77d3f191, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundConfig: {fileID: 11400000, guid: 11dce2c4c78d98348be8bd36f62f5bb4, type: 2}
+  bgmSource: {fileID: 741375384}
+  sfxSource: {fileID: 1432232416}
+  uiCanvas: {fileID: 7276732068555963277}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -699,51 +700,6 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &1060307335
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1060307336}
-  - component: {fileID: 1060307337}
-  m_Layer: 0
-  m_Name: ScoreManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1060307336
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1060307335}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1060307337
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1060307335}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfa591bad319e8f4ebffccd061bf4e23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uiManager: {fileID: 7276732068555963277}
 --- !u!1 &1100571110
 GameObject:
   m_ObjectHideFlags: 0
@@ -927,7 +883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 770763edf1a30dc4e97d37d11eade10a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTransform: {fileID: 1943752134}
+  playerTransform: {fileID: 2477523651712875848}
   deSpawnDistance: 100
   collectibleConfig: {fileID: 11400000, guid: b85458ac06ff8714d8b111052c1afd53, type: 2}
   spawnProbability: 0.3
@@ -1134,53 +1090,6 @@ Transform:
   - {fileID: 1100571111}
   m_Father: {fileID: 1600199020}
   m_LocalEulerAnglesHint: {x: 5.711, y: 0, z: 0}
---- !u!1 &1555865486
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1555865487}
-  - component: {fileID: 1555865488}
-  m_Layer: 0
-  m_Name: SoundManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1555865487
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1555865486}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1555865488
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1555865486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a691299336769b43a0aa10143acd217, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  soundConfig: {fileID: 11400000, guid: 11dce2c4c78d98348be8bd36f62f5bb4, type: 2}
-  bgmSource: {fileID: 741375384}
-  sfxSource: {fileID: 1432232416}
 --- !u!1 &1600199019
 GameObject:
   m_ObjectHideFlags: 0
@@ -1441,50 +1350,6 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1914936091}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1943752132
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1943752134}
-  - component: {fileID: 1943752133}
-  m_Layer: 0
-  m_Name: InputManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1943752133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1943752132}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0f99d1b98f3f8a44a4fefb0662aa7f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1943752134
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1943752132}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -4090,10 +3955,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerConfig: {fileID: 11400000, guid: a9a171c7e53e8ff42bd6e06f2f06f6a9, type: 2}
   allowGizmos: 0
-  gameManager: {fileID: 649275162}
-  inputManager: {fileID: 1943752133}
-  soundManager: {fileID: 1555865488}
-  uiManager: {fileID: 7276732068555963277}
+  gameService: {fileID: 649275164}
   gravityForce: 9.81
   fallThreshold: 1
   bigFallThreshold: 10
@@ -7237,7 +7099,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 781dea732e34e1f4384f0c372a0731ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 649275162}
+  uiAnimator: {fileID: 481279815550866993}
   healthText: {fileID: 1759121457}
   scoreText: {fileID: 5754535242339197987}
   pauseMenuPanel: {fileID: 3680541993646747067}
@@ -7251,7 +7113,6 @@ MonoBehaviour:
   mainMenuQuitButton: {fileID: 6280272691525485275}
   mainMenuMuteButton: {fileID: 1296195509255730481}
   mainMenuMuteButtonText: {fileID: 8798473732883982264}
-  uiAnimator: {fileID: 481279815550866993}
 --- !u!114 &7355657861992491190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8602,12 +8463,9 @@ SceneRoots:
   m_Roots:
   - {fileID: 1600199020}
   - {fileID: 649275163}
-  - {fileID: 1943752134}
-  - {fileID: 2477523651712875848}
-  - {fileID: 620370997}
-  - {fileID: 1238566299}
-  - {fileID: 1060307336}
-  - {fileID: 1555865487}
+  - {fileID: 1909197227}
   - {fileID: 2757341614787473436}
   - {fileID: 1914936094}
-  - {fileID: 1909197227}
+  - {fileID: 620370997}
+  - {fileID: 1238566299}
+  - {fileID: 2477523651712875848}
