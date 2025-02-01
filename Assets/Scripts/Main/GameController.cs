@@ -1,4 +1,5 @@
 using ServiceLocator.Controls;
+using ServiceLocator.Player;
 using ServiceLocator.Score;
 using ServiceLocator.Sound;
 using ServiceLocator.UI;
@@ -15,6 +16,7 @@ namespace ServiceLocator.Main
         private SoundService soundService;
         private UIService uiService;
         private ScoreService scoreService;
+        private PlayerService playerService;
 
         public GameController(GameService _gameService)
         {
@@ -33,6 +35,7 @@ namespace ServiceLocator.Main
             soundService = new SoundService(gameService.soundConfig, gameService.bgmSource, gameService.sfxSource);
             uiService = gameService.uiCanvas.GetComponent<UIService>();
             scoreService = new ScoreService();
+            playerService = gameService.playerConfig.playerPrefab.GetComponent<PlayerService>();
         }
         private void InjectDependencies()
         {
@@ -40,6 +43,7 @@ namespace ServiceLocator.Main
             // No Sound Service Init
             uiService.Init(this);
             scoreService.Init(uiService);
+            playerService.Init(gameService.playerConfig.playerData, this, inputService, soundService, uiService);
         }
 
         public void Reset()
@@ -48,6 +52,7 @@ namespace ServiceLocator.Main
             soundService.Reset();
             // No UI Service Reset
             scoreService.Reset();
+            // No Player Service Reset
         }
 
         public void Destroy()
@@ -56,6 +61,7 @@ namespace ServiceLocator.Main
             // No Sound Service Destroy
             uiService.Destroy();
             // No Score Service Destroy
+            // No Player Service Destroy
         }
 
         public void Update()
@@ -64,6 +70,7 @@ namespace ServiceLocator.Main
             // No Sound Service Update
             // No UI Service Update
             // No Score Service Update
+            playerService.UpdatePlayer();
 
             // Checking Elements
             if (inputService.IsEscapePressed)

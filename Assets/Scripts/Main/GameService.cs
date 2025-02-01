@@ -1,3 +1,4 @@
+using ServiceLocator.Player;
 using ServiceLocator.Sound;
 using ServiceLocator.UI;
 using UnityEngine;
@@ -14,6 +15,9 @@ namespace ServiceLocator.Main
 
         [Header("UI Elements")]
         [SerializeField] public UIService uiCanvas;
+
+        [Header("Game Elements")]
+        [SerializeField] public PlayerConfig playerConfig;
 
         // Private Variables
         private GameController gameController;

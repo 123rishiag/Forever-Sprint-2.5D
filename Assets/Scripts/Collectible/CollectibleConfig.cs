@@ -1,16 +1,19 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "CollectibleConfig", menuName = "ScriptableObjects/CollectibleConfig")]
-
-public class CollectibleConfig : ScriptableObject
+namespace ServiceLocator.Collectible
 {
-    public CollectibleData[] collectibleData;
-}
+    [CreateAssetMenu(fileName = "CollectibleConfig", menuName = "ScriptableObjects/CollectibleConfig")]
 
-[Serializable]
-public class CollectibleData
-{
-    public CollectibleType collectibleType;
-    public GameObject collectiblePrefab;
+    public class CollectibleConfig : ScriptableObject
+    {
+        public CollectibleData[] collectibleData;
+    }
+
+    [Serializable]
+    public class CollectibleData
+    {
+        public CollectibleType collectibleType;
+        public GameObject collectiblePrefab;
+    }
 }

@@ -1,3 +1,4 @@
+using ServiceLocator.Collectible;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private float spawnDistance;
     [SerializeField] private float deSpawnDistance;
     [SerializeField] private LevelConfig levelConfig;
-    [SerializeField] CollectibleManager collectibleManager;
+    [SerializeField] CollectibleService collectibleService;
 
     // Private Variables
     private List<Vector3> nextLevelPositions;
@@ -78,7 +79,7 @@ public class LevelManager : MonoBehaviour
                 // Creating Collectibles
                 if (_levelType == LevelType.GROUND_TERRAIN || _levelType == LevelType.GROUND_PLATFORM)
                 {
-                    collectibleManager.GenerateCollectibles(newPlatform.transform);
+                    collectibleService.GenerateCollectibles(newPlatform.transform);
                 }
 
                 // Setting new position
