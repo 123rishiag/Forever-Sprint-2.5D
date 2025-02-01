@@ -1,19 +1,23 @@
 using ServiceLocator.Main;
+using ServiceLocator.Player;
 using ServiceLocator.Sound;
 using UnityEngine;
 
-public class CollectibleController : MonoBehaviour
+namespace ServiceLocator.Collectible
 {
-    private GameService gameService;
-
-    private void OnTriggerEnter(Collider _collider)
+    public class CollectibleController : MonoBehaviour
     {
-        gameService = GameObject.Find("GameManager").GetComponent<GameService>();
-        if (_collider.GetComponent<PlayerManager>() != null)
+        private GameService gameService;
+
+        private void OnTriggerEnter(Collider _collider)
         {
-            gameService.GetGameController().GetScoreService().AddScore(10);
-            Destroy(gameObject);
-            gameService.GetGameController().GetSoundService().PlaySoundEffect(SoundType.COLLECTIBLE_PICKUP);
+            gameService = GameObject.Find("GameManager").GetComponent<GameService>();
+            if (_collider.GetComponent<PlayerService>() != null)
+            {
+                gameService.GetGameController().GetScoreService().AddScore(10);
+                Destroy(gameObject);
+                gameService.GetGameController().GetSoundService().PlaySoundEffect(SoundType.COLLECTIBLE_PICKUP);
+            }
         }
     }
 }

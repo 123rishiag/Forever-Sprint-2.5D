@@ -1,5 +1,8 @@
-public enum CollectibleType
+namespace ServiceLocator.Collectible
 {
-    CUBE,
-    SPHERE
+    public enum CollectibleType
+    {
+        CUBE,
+        SPHERE
+    }
 }
