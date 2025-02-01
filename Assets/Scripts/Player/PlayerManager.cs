@@ -1,3 +1,7 @@
+using ServiceLocator.Controls;
+using ServiceLocator.Main;
+using ServiceLocator.Sound;
+using ServiceLocator.UI;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
@@ -5,10 +9,7 @@ public class PlayerManager : MonoBehaviour
     [Header("Inspector Attachments")]
     [SerializeField] private PlayerConfig playerConfig;
     [SerializeField] private bool allowGizmos;
-    [SerializeField] private GameManager gameManager;
-    [SerializeField] private InputManager inputManager;
-    [SerializeField] private SoundManager soundManager;
-    [SerializeField] private UIManager uiManager;
+    [SerializeField] private GameService gameService;
 
     [Header("Gravity Settings")]
     [SerializeField] private float gravityForce;
@@ -48,6 +49,11 @@ public class PlayerManager : MonoBehaviour
     private float defaultHeight;
     private Vector3 defaultCenter;
 
+    // Private Services
+    private InputService inputService;
+    private SoundService soundService;
+    private UIService uiService;
+
     private void Awake()
     {
         // Setting Components
@@ -68,8 +74,13 @@ public class PlayerManager : MonoBehaviour
         defaultHeight = characterController.height;
         defaultCenter = characterController.center;
 
-        // Updating UI
-        uiManager.UpdateHealthText(currentHealth);
+        // Setting Services
+        inputService = gameService.GetGameController().GetInputService();
+        soundService = gameService.GetGameController().GetSoundService();
+        uiService = gameService.GetGameController().GetUIService();
+
+        // Setting Elements
+        uiService.UpdateHealthText(currentHealth);
     }
 
     private void Update()
@@ -226,16 +237,16 @@ public class PlayerManager : MonoBehaviour
     private void HandleIdleState()
     {
         airJumpCount = 0;
-        if (inputManager.WasJumpPressed)
+        if (inputService.WasJumpPressed)
         {
             playerVelocity.y = playerData.jumpForce;
             playerState = PlayerState.JUMP;
-            soundManager.PlaySoundEffect(SoundType.PLAYER_JUMP);
+            soundService.PlaySoundEffect(SoundType.PLAYER_JUMP);
         }
-        else if (inputManager.IsSlidePressed && !CanSlide())
+        else if (inputService.IsSlidePressed && !CanSlide())
         {
             playerState = PlayerState.SLIDE;
-            soundManager.PlaySoundEffect(SoundType.PLAYER_SLIDE);
+            soundService.PlaySoundEffect(SoundType.PLAYER_SLIDE);
         }
         else if (!HasGroundRight())
         {
@@ -248,18 +259,18 @@ public class PlayerManager : MonoBehaviour
     }
     private void HandleMoveState()
     {
-        if (inputManager.WasJumpPressed)
+        if (inputService.WasJumpPressed)
         {
             playerVelocity.y = playerData.jumpForce;
             playerState = PlayerState.JUMP;
-            soundManager.PlaySoundEffect(SoundType.PLAYER_JUMP);
+            soundService.PlaySoundEffect(SoundType.PLAYER_JUMP);
         }
-        else if (inputManager.IsSlidePressed)
+        else if (inputService.IsSlidePressed)
         {
             playerState = PlayerState.SLIDE;
-            soundManager.PlaySoundEffect(SoundType.PLAYER_SLIDE);
+            soundService.PlaySoundEffect(SoundType.PLAYER_SLIDE);
         }
-        else if (IsGrounded() && inputManager.IsDashPressed)
+        else if (IsGrounded() && inputService.IsDashPressed)
         {
             currentSpeed *= playerData.dashSpeedIncreaseFactor;
             playerState = PlayerState.DASH;
@@ -276,12 +287,12 @@ public class PlayerManager : MonoBehaviour
     }
     private void HandleJumpState()
     {
-        if (inputManager.WasJumpPressed && airJumpCount < playerData.airJumpAllowed)
+        if (inputService.WasJumpPressed && airJumpCount < playerData.airJumpAllowed)
         {
             airJumpCount++;
             playerVelocity.y = playerData.airJumpForce;
             playerState = PlayerState.AIR_JUMP;
-            soundManager.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);
+            soundService.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);
         }
         else if (CanClimb())
         {
@@ -296,12 +307,12 @@ public class PlayerManager : MonoBehaviour
     }
     private void HandleAirJumpState()
     {
-        if (inputManager.WasJumpPressed && airJumpCount < playerData.airJumpAllowed)
+        if (inputService.WasJumpPressed && airJumpCount < playerData.airJumpAllowed)
         {
             airJumpCount++;
             playerVelocity.y = playerData.airJumpForce;
             playerState = PlayerState.AIR_JUMP;
-            soundManager.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);
+            soundService.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);
         }
         else if (IsGrounded())
         {
@@ -320,12 +331,12 @@ public class PlayerManager : MonoBehaviour
     }
     private void HandleFallState()
     {
-        if (inputManager.WasJumpPressed && airJumpCount < playerData.airJumpAllowed)
+        if (inputService.WasJumpPressed && airJumpCount < playerData.airJumpAllowed)
         {
             airJumpCount++;
             playerVelocity.y = playerData.airJumpForce;
             playerState = PlayerState.AIR_JUMP;
-            soundManager.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);
+            soundService.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);
         }
         else if (IsGrounded())
         {
@@ -344,12 +355,12 @@ public class PlayerManager : MonoBehaviour
     }
     private void HandleBigFallState()
     {
-        if (inputManager.WasJumpPressed && airJumpCount < playerData.airJumpAllowed)
+        if (inputService.WasJumpPressed && airJumpCount < playerData.airJumpAllowed)
         {
             airJumpCount++;
             playerVelocity.y = playerData.airJumpForce;
             playerState = PlayerState.AIR_JUMP;
-            soundManager.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);
+            soundService.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);
         }
         else if (IsGrounded())
         {
@@ -370,26 +381,26 @@ public class PlayerManager : MonoBehaviour
     }
     private void HandleDeadFallState()
     {
-        if (inputManager.WasJumpPressed && airJumpCount < playerData.airJumpAllowed)
+        if (inputService.WasJumpPressed && airJumpCount < playerData.airJumpAllowed)
         {
             airJumpCount++;
             playerVelocity.y = playerData.airJumpForce;
             playerState = PlayerState.AIR_JUMP;
-            soundManager.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);
+            soundService.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);
         }
         else if (IsGrounded())
         {
             --currentHealth;
-            uiManager.UpdateHealthText(currentHealth);
+            uiService.UpdateHealthText(currentHealth);
             if (currentHealth > 0)
             {
                 playerState = PlayerState.KNOCK;
-                soundManager.PlaySoundEffect(SoundType.PLAYER_KNOCK);
+                soundService.PlaySoundEffect(SoundType.PLAYER_KNOCK);
             }
             else
             {
                 playerState = PlayerState.DEAD;
-                soundManager.PlaySoundEffect(SoundType.PLAYER_DEAD);
+                soundService.PlaySoundEffect(SoundType.PLAYER_DEAD);
             }
         }
         else if (CanClimb())
@@ -405,7 +416,7 @@ public class PlayerManager : MonoBehaviour
         if (rollTimer <= 0 && HasGroundAbove())
         {
             playerState = PlayerState.SLIDE;
-            soundManager.PlaySoundEffect(SoundType.PLAYER_SLIDE);
+            soundService.PlaySoundEffect(SoundType.PLAYER_SLIDE);
         }
         else if (rollTimer <= 0)
         {
@@ -420,17 +431,17 @@ public class PlayerManager : MonoBehaviour
     private void HandleSlideState()
     {
         // Restarting Slide Timer
-        if (!HasGroundAbove() && inputManager.IsSlidePressed && slideTimer <= 0)
+        if (!HasGroundAbove() && inputService.IsSlidePressed && slideTimer <= 0)
         {
             slideTimer = playerData.slideDuration; // Reset slide timer
         }
 
         slideTimer -= Time.deltaTime;
-        if (inputManager.WasJumpPressed && !HasGroundAbove())
+        if (inputService.WasJumpPressed && !HasGroundAbove())
         {
             playerVelocity.y = playerData.jumpForce;
             playerState = PlayerState.JUMP;
-            soundManager.PlaySoundEffect(SoundType.PLAYER_JUMP);
+            soundService.PlaySoundEffect(SoundType.PLAYER_JUMP);
         }
         else if (!IsGrounded())
         {
@@ -449,22 +460,22 @@ public class PlayerManager : MonoBehaviour
     private void HandleDashState()
     {
         // Restarting Dash Timer
-        if (!HasGroundRight() && inputManager.IsDashPressed && dashTimer <= 0)
+        if (!HasGroundRight() && inputService.IsDashPressed && dashTimer <= 0)
         {
             dashTimer = playerData.dashDuration; // Reset dash timer
         }
 
         dashTimer -= Time.deltaTime;
-        if (inputManager.WasJumpPressed && !HasGroundAbove())
+        if (inputService.WasJumpPressed && !HasGroundAbove())
         {
             playerVelocity.y = playerData.jumpForce;
             playerState = PlayerState.JUMP;
-            soundManager.PlaySoundEffect(SoundType.PLAYER_JUMP);
+            soundService.PlaySoundEffect(SoundType.PLAYER_JUMP);
         }
-        else if (inputManager.IsSlidePressed)
+        else if (inputService.IsSlidePressed)
         {
             playerState = PlayerState.SLIDE;
-            soundManager.PlaySoundEffect(SoundType.PLAYER_SLIDE);
+            soundService.PlaySoundEffect(SoundType.PLAYER_SLIDE);
         }
         else if (!IsGrounded())
         {
@@ -474,16 +485,16 @@ public class PlayerManager : MonoBehaviour
         else if (HasGroundRight())
         {
             --currentHealth;
-            uiManager.UpdateHealthText(currentHealth);
+            uiService.UpdateHealthText(currentHealth);
             if (currentHealth > 0)
             {
                 playerState = PlayerState.KNOCK;
-                soundManager.PlaySoundEffect(SoundType.PLAYER_KNOCK);
+                soundService.PlaySoundEffect(SoundType.PLAYER_KNOCK);
             }
             else
             {
                 playerState = PlayerState.DEAD;
-                soundManager.PlaySoundEffect(SoundType.PLAYER_DEAD);
+                soundService.PlaySoundEffect(SoundType.PLAYER_DEAD);
             }
         }
         else if (dashTimer <= 0)
@@ -524,7 +535,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (DeadFinished())
         {
-            gameManager.GameOver();
+            gameService.GetGameController().GameOver();
         }
     }
     #endregion

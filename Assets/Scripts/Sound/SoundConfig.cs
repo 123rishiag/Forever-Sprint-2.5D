@@ -1,15 +1,18 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SoundConfig", menuName = "ScriptableObjects/SoundConfig")]
-public class SoundConfig : ScriptableObject
+namespace ServiceLocator.Sound
 {
-    public SoundData[] soundData;
-}
+    [CreateAssetMenu(fileName = "SoundConfig", menuName = "ScriptableObjects/SoundConfig")]
+    public class SoundConfig : ScriptableObject
+    {
+        public SoundData[] soundData;
+    }
 
-[Serializable]
-public class SoundData
-{
-    public SoundType soundType;
-    public AudioClip soundClip;
+    [Serializable]
+    public class SoundData
+    {
+        public SoundType soundType;
+        public AudioClip soundClip;
+    }
 }
