@@ -10,6 +10,6 @@ public enum SoundType
     PLAYER_JUMP,
     PLAYER_AIR_JUMP,
     PLAYER_SLIDE,
-    PLAYER_KNOCKBACK,
+    PLAYER_KNOCK,
     PLAYER_DEAD
 }

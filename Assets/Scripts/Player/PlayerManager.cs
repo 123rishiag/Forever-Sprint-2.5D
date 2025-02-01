@@ -3,28 +3,18 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     [Header("Inspector Attachments")]
+    [SerializeField] private PlayerConfig playerConfig;
+    [SerializeField] private bool allowGizmos;
     [SerializeField] private GameManager gameManager;
     [SerializeField] private InputManager inputManager;
     [SerializeField] private SoundManager soundManager;
-    [SerializeField] private bool allowGizmos;
+    [SerializeField] private UIManager uiManager;
 
-    [Header("Movement Settings")]
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float jumpForce;
-    [SerializeField] private float airJumpForce;
-    [SerializeField] private int airJumpAllowed;
+    [Header("Gravity Settings")]
     [SerializeField] private float gravityForce;
     [SerializeField] private float fallThreshold;
     [SerializeField] private float bigFallThreshold;
-    [SerializeField] private float deadThreshold;
-    [SerializeField] private float rollDuration;
-
-    [Header("Slide Settings")]
-    [SerializeField] private float slideDuration;
-
-    [Header("Dash Settings")]
-    [SerializeField] private float dashDuration;
-    [SerializeField] private float dashSpeedIncreaseFactor;
+    [SerializeField] private float deadFallThreshold;
 
     [Header("Ground Detection")]
     [SerializeField] private LayerMask groundLayerMask;
@@ -41,6 +31,9 @@ public class PlayerManager : MonoBehaviour
     private CharacterController characterController;
 
     // Private Variables
+    private PlayerData playerData;
+    private int currentHealth;
+
     private float defaultSpeed;
     private float currentSpeed;
     private Vector3 playerVelocity;
@@ -65,12 +58,18 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         // Setting Variables
-        defaultSpeed = moveSpeed * 100;
+        playerData = playerConfig.playerData;
+        currentHealth = playerData.maxHealth;
+
+        defaultSpeed = playerData.moveSpeed * 100;
         currentSpeed = defaultSpeed;
         airJumpCount = 0;
 
         defaultHeight = characterController.height;
         defaultCenter = characterController.center;
+
+        // Updating UI
+        uiManager.UpdateHealthText(currentHealth);
     }
 
     private void Update()
@@ -105,6 +104,9 @@ public class PlayerManager : MonoBehaviour
             case PlayerState.BIG_FALL:
                 playerAnimator.Play("Fall");
                 break;
+            case PlayerState.DEAD_FALL:
+                playerAnimator.Play("Fall");
+                break;
             case PlayerState.ROLL:
                 playerAnimator.Play("Roll");
                 break;
@@ -112,7 +114,7 @@ public class PlayerManager : MonoBehaviour
                 playerAnimator.Play("Slide");
                 break;
             case PlayerState.DASH:
-                playerAnimator.SetFloat("Dash Factor", dashSpeedIncreaseFactor);
+                playerAnimator.SetFloat("Dash Factor", playerData.dashSpeedIncreaseFactor);
                 playerAnimator.Play("Move");
                 break;
             case PlayerState.CLIMB:
@@ -125,8 +127,7 @@ public class PlayerManager : MonoBehaviour
                 playerAnimator.Play("Get Up");
                 break;
             case PlayerState.DEAD:
-                if (!IsGrounded()) playerAnimator.Play("Fall");
-                else playerAnimator.Play("Dead");
+                playerAnimator.Play("Dead");
                 break;
             default:
                 break;
@@ -186,6 +187,10 @@ public class PlayerManager : MonoBehaviour
                 HandleBigFallState();
                 break;
 
+            case PlayerState.DEAD_FALL:
+                HandleDeadFallState();
+                break;
+
             case PlayerState.ROLL:
                 HandleRollState();
                 break;
@@ -223,7 +228,7 @@ public class PlayerManager : MonoBehaviour
         airJumpCount = 0;
         if (inputManager.WasJumpPressed)
         {
-            playerVelocity.y = jumpForce;
+            playerVelocity.y = playerData.jumpForce;
             playerState = PlayerState.JUMP;
             soundManager.PlaySoundEffect(SoundType.PLAYER_JUMP);
         }
@@ -245,7 +250,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (inputManager.WasJumpPressed)
         {
-            playerVelocity.y = jumpForce;
+            playerVelocity.y = playerData.jumpForce;
             playerState = PlayerState.JUMP;
             soundManager.PlaySoundEffect(SoundType.PLAYER_JUMP);
         }
@@ -256,7 +261,7 @@ public class PlayerManager : MonoBehaviour
         }
         else if (IsGrounded() && inputManager.IsDashPressed)
         {
-            currentSpeed *= dashSpeedIncreaseFactor;
+            currentSpeed *= playerData.dashSpeedIncreaseFactor;
             playerState = PlayerState.DASH;
         }
         else if (!IsGrounded())
@@ -271,10 +276,10 @@ public class PlayerManager : MonoBehaviour
     }
     private void HandleJumpState()
     {
-        if (inputManager.WasJumpPressed && airJumpCount < airJumpAllowed)
+        if (inputManager.WasJumpPressed && airJumpCount < playerData.airJumpAllowed)
         {
             airJumpCount++;
-            playerVelocity.y = airJumpForce;
+            playerVelocity.y = playerData.airJumpForce;
             playerState = PlayerState.AIR_JUMP;
             soundManager.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);
         }
@@ -291,10 +296,10 @@ public class PlayerManager : MonoBehaviour
     }
     private void HandleAirJumpState()
     {
-        if (inputManager.WasJumpPressed && airJumpCount < airJumpAllowed)
+        if (inputManager.WasJumpPressed && airJumpCount < playerData.airJumpAllowed)
         {
             airJumpCount++;
-            playerVelocity.y = airJumpForce;
+            playerVelocity.y = playerData.airJumpForce;
             playerState = PlayerState.AIR_JUMP;
             soundManager.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);
         }
@@ -315,10 +320,10 @@ public class PlayerManager : MonoBehaviour
     }
     private void HandleFallState()
     {
-        if (inputManager.WasJumpPressed && airJumpCount < airJumpAllowed)
+        if (inputManager.WasJumpPressed && airJumpCount < playerData.airJumpAllowed)
         {
             airJumpCount++;
-            playerVelocity.y = airJumpForce;
+            playerVelocity.y = playerData.airJumpForce;
             playerState = PlayerState.AIR_JUMP;
             soundManager.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);
         }
@@ -339,17 +344,18 @@ public class PlayerManager : MonoBehaviour
     }
     private void HandleBigFallState()
     {
-        if (inputManager.WasJumpPressed && airJumpCount < airJumpAllowed)
+        if (inputManager.WasJumpPressed && airJumpCount < playerData.airJumpAllowed)
         {
             airJumpCount++;
-            playerVelocity.y = airJumpForce;
+            playerVelocity.y = playerData.airJumpForce;
             playerState = PlayerState.AIR_JUMP;
             soundManager.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);
         }
         else if (IsGrounded())
         {
+            playerVelocity.y = 0f;
             playerState = PlayerState.ROLL;
-            rollTimer = rollDuration;
+            rollTimer = playerData.rollDuration;
         }
         else if (CanClimb())
         {
@@ -360,6 +366,37 @@ public class PlayerManager : MonoBehaviour
         else if (IsFalling(out PlayerState fallState))
         {
             playerState = fallState;
+        }
+    }
+    private void HandleDeadFallState()
+    {
+        if (inputManager.WasJumpPressed && airJumpCount < playerData.airJumpAllowed)
+        {
+            airJumpCount++;
+            playerVelocity.y = playerData.airJumpForce;
+            playerState = PlayerState.AIR_JUMP;
+            soundManager.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);
+        }
+        else if (IsGrounded())
+        {
+            --currentHealth;
+            uiManager.UpdateHealthText(currentHealth);
+            if (currentHealth > 0)
+            {
+                playerState = PlayerState.KNOCK;
+                soundManager.PlaySoundEffect(SoundType.PLAYER_KNOCK);
+            }
+            else
+            {
+                playerState = PlayerState.DEAD;
+                soundManager.PlaySoundEffect(SoundType.PLAYER_DEAD);
+            }
+        }
+        else if (CanClimb())
+        {
+            playerVelocity.y = 0f;
+            transform.position += new Vector3(0.30f, -0.14f, 0f);
+            playerState = PlayerState.CLIMB;
         }
     }
     private void HandleRollState()
@@ -374,19 +411,24 @@ public class PlayerManager : MonoBehaviour
         {
             playerState = PlayerState.IDLE;
         }
+        else if (!IsGrounded())
+        {
+            playerVelocity.y = 0f;
+            playerState = PlayerState.FALL;
+        }
     }
     private void HandleSlideState()
     {
         // Restarting Slide Timer
         if (!HasGroundAbove() && inputManager.IsSlidePressed && slideTimer <= 0)
         {
-            slideTimer = slideDuration; // Reset slide timer
+            slideTimer = playerData.slideDuration; // Reset slide timer
         }
 
         slideTimer -= Time.deltaTime;
         if (inputManager.WasJumpPressed && !HasGroundAbove())
         {
-            playerVelocity.y = jumpForce;
+            playerVelocity.y = playerData.jumpForce;
             playerState = PlayerState.JUMP;
             soundManager.PlaySoundEffect(SoundType.PLAYER_JUMP);
         }
@@ -409,13 +451,13 @@ public class PlayerManager : MonoBehaviour
         // Restarting Dash Timer
         if (!HasGroundRight() && inputManager.IsDashPressed && dashTimer <= 0)
         {
-            dashTimer = dashDuration; // Reset dash timer
+            dashTimer = playerData.dashDuration; // Reset dash timer
         }
 
         dashTimer -= Time.deltaTime;
         if (inputManager.WasJumpPressed && !HasGroundAbove())
         {
-            playerVelocity.y = jumpForce;
+            playerVelocity.y = playerData.jumpForce;
             playerState = PlayerState.JUMP;
             soundManager.PlaySoundEffect(SoundType.PLAYER_JUMP);
         }
@@ -431,12 +473,22 @@ public class PlayerManager : MonoBehaviour
         }
         else if (HasGroundRight())
         {
-            playerState = PlayerState.KNOCK;
-            soundManager.PlaySoundEffect(SoundType.PLAYER_KNOCKBACK);
+            --currentHealth;
+            uiManager.UpdateHealthText(currentHealth);
+            if (currentHealth > 0)
+            {
+                playerState = PlayerState.KNOCK;
+                soundManager.PlaySoundEffect(SoundType.PLAYER_KNOCK);
+            }
+            else
+            {
+                playerState = PlayerState.DEAD;
+                soundManager.PlaySoundEffect(SoundType.PLAYER_DEAD);
+            }
         }
         else if (dashTimer <= 0)
         {
-            dashTimer = dashDuration;
+            dashTimer = playerData.dashDuration;
             playerState = PlayerState.IDLE;
         }
     }
@@ -592,10 +644,9 @@ public class PlayerManager : MonoBehaviour
     }
     private bool IsFalling(out PlayerState _fallState)
     {
-        if (playerVelocity.y < -deadThreshold)
+        if (playerVelocity.y < -deadFallThreshold)
         {
-            _fallState = PlayerState.DEAD;
-            soundManager.PlaySoundEffect(SoundType.PLAYER_DEAD);
+            _fallState = PlayerState.DEAD_FALL;
             return true;
         }
         else if (playerVelocity.y < -bigFallThreshold)
