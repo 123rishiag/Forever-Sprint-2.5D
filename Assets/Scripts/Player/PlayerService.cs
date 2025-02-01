@@ -9,8 +9,6 @@ namespace ServiceLocator.Player
     public class PlayerService : MonoBehaviour
     {
         [Header("Inspector Attachments")]
-        [SerializeField] private Animator playerAnimator;
-        [SerializeField] private CharacterController characterController;
         [SerializeField] private bool allowGizmos;
 
         [Header("Gravity Settings")]
@@ -25,15 +23,16 @@ namespace ServiceLocator.Player
         [SerializeField] private float groundRightDetectionDistance;
 
         [Header("Collider Settings")]
+        [SerializeField] private float defaultHeight;
+        [SerializeField] private Vector3 defaultCenter;
         [SerializeField] private float rollingHeightMultiplier;
         [SerializeField] private float slidingHeightMultiplier;
 
         // Private Variables
+        private Animator playerAnimator;
+        private CharacterController characterController;
         private PlayerData playerData;
         private PlayerState playerState;
-
-        private float defaultHeight;
-        private Vector3 defaultCenter;
 
         private int currentHealth;
 
@@ -59,11 +58,6 @@ namespace ServiceLocator.Player
             // Setting Components
             playerAnimator = GetComponent<Animator>();
             characterController = GetComponent<CharacterController>();
-
-            defaultHeight = characterController.height;
-            defaultCenter = characterController.center;
-
-            playerAnimator.Play("Idle");
         }
 
         public void Init(PlayerData _playerData, GameController _gameController,
