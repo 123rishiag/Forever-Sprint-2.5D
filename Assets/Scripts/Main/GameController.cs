@@ -35,7 +35,7 @@ namespace ServiceLocator.Main
             soundService = new SoundService(gameService.soundConfig, gameService.bgmSource, gameService.sfxSource);
             uiService = gameService.uiCanvas.GetComponent<UIService>();
             scoreService = new ScoreService();
-            playerService = gameService.playerConfig.playerPrefab.GetComponent<PlayerService>();
+            playerService = gameService.playerPrefab.GetComponent<PlayerService>();
         }
         private void InjectDependencies()
         {

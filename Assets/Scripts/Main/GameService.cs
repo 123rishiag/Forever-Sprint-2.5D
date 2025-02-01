@@ -18,6 +18,7 @@ namespace ServiceLocator.Main
 
         [Header("Game Elements")]
         [SerializeField] public PlayerConfig playerConfig;
+        [SerializeField] public PlayerService playerPrefab;
 
         // Private Variables
         private GameController gameController;
