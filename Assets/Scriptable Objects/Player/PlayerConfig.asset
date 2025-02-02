@@ -12,13 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9938df22488dfba4ebe07471c1700780, type: 3}
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 5559008140950647349, guid: c45effa8abdea714ca659e1bbda74035, type: 3}
+  playerPrefab: {fileID: 1974195060330079199, guid: c45effa8abdea714ca659e1bbda74035, type: 3}
   playerData:
     maxHealth: 3
-    moveSpeed: 20
+    moveSpeed: 10
     jumpForce: 10
     airJumpForce: 8
     airJumpAllowed: 1
+    gravityForce: 9.81
+    fallThreshold: 0.1
+    bigFallThreshold: 10
+    deadFallThreshold: 18
     rollDuration: 1
     slideDuration: 3
     dashDuration: 3

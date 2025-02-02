@@ -6,7 +6,7 @@ namespace ServiceLocator.Player
     [CreateAssetMenu(fileName = "PlayerConfig", menuName = "ScriptableObjects/PlayerConfig")]
     public class PlayerConfig : ScriptableObject
     {
-        public PlayerService playerPrefab;
+        public PlayerView playerPrefab;
         public PlayerData playerData;
     }
 
@@ -18,9 +18,17 @@ namespace ServiceLocator.Player
 
         [Header("Movement Settings")]
         public float moveSpeed;
+
+        [Header("Gravity Settings")]
         public float jumpForce;
         public float airJumpForce;
         public int airJumpAllowed;
+        public float gravityForce;
+        public float fallThreshold;
+        public float bigFallThreshold;
+        public float deadFallThreshold;
+
+        [Header("Roll Settings")]
         public float rollDuration;
 
         [Header("Slide Settings")]

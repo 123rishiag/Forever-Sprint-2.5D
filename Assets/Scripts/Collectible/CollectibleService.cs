@@ -52,7 +52,7 @@ namespace ServiceLocator.Collectible
                 GameObject collectiblePrefab = collectibleParentPanel.GetChild(0).gameObject;
 
                 if (!_checkDespawnDistance ||
-                    (playerService.GetPlayerTransform().position.x - collectiblePrefab.transform.position.x)
+                    (playerService.GetPlayerController().GetTransform().position.x - collectiblePrefab.transform.position.x)
                     > collectibleConfig.deSpawnDistance)
                 {
                     Object.Destroy(collectiblePrefab);

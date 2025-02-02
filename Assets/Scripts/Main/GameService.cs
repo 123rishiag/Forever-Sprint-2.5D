@@ -1,3 +1,4 @@
+using Cinemachine;
 using ServiceLocator.Collectible;
 using ServiceLocator.Level;
 using ServiceLocator.Player;
@@ -10,6 +11,9 @@ namespace ServiceLocator.Main
     public class GameService : MonoBehaviour
     {
         // Inspector Elements
+        [Header("Camera Elements")]
+        [SerializeField] public CinemachineVirtualCamera virtualCamera;
+
         [Header("Sound Elements")]
         [SerializeField] public SoundConfig soundConfig;
         [SerializeField] public AudioSource bgmSource;
@@ -20,7 +24,6 @@ namespace ServiceLocator.Main
 
         [Header("Game Elements")]
         [SerializeField] public PlayerConfig playerConfig;
-        [SerializeField] public PlayerService playerPrefab;
         [SerializeField] public CollectibleConfig collectibleConfig;
         [SerializeField] public Transform collectibleParentPanel;
         [SerializeField] public LevelConfig levelConfig;
@@ -32,6 +35,11 @@ namespace ServiceLocator.Main
         private void Start()
         {
             gameController = new GameController(this);
+        }
+
+        private void FixedUpdate()
+        {
+            gameController.FixedUpdate();
         }
 
         private void Update()
