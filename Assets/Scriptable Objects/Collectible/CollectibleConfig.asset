@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8d66a9bab38c244b8bb7f4261f98a45, type: 3}
   m_Name: CollectibleConfig
   m_EditorClassIdentifier: 
+  collectiblePrefab: {fileID: 128750089818005639, guid: 0eb25dd94b263164b84044edd69900f8, type: 3}
   spawnProbability: 0.3
   minSpawnRatio: 0.1
   maxSpawnRatio: 0.2
   deSpawnDistance: 100
   collectibleData:
   - collectibleType: 0
-    collectiblePrefab: {fileID: 5374624230930599436, guid: 0eb25dd94b263164b84044edd69900f8, type: 3}
+    collectibleTexture: {fileID: 2800000, guid: fe3e0a556829be24bb87c912d79e872d, type: 3}
+    collectibleScore: 5
   - collectibleType: 1
-    collectiblePrefab: {fileID: 8289384742975992276, guid: c6e8cdb96166d4a4cae2b87b0f69fa9d, type: 3}
+    collectibleTexture: {fileID: 2800000, guid: 988b6610bda0aca4286aff060b8d16b8, type: 3}
+    collectibleScore: 10

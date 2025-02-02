@@ -2,7 +2,7 @@ namespace ServiceLocator.Collectible
 {
     public enum CollectibleType
     {
-        CUBE,
-        SPHERE
+        CUBE_ONE,
+        CUBE_TWO
     }
 }

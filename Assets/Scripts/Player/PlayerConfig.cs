@@ -36,6 +36,6 @@ namespace ServiceLocator.Player
 
         [Header("Dash Settings")]
         public float dashDuration;
-        public float dashSpeedIncreaseFactor;
+        [Range(1, 2)] public float dashSpeedIncreaseFactor;
     }
 }

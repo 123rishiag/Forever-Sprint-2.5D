@@ -7,10 +7,13 @@ namespace ServiceLocator.Collectible
 
     public class CollectibleConfig : ScriptableObject
     {
+        public CollectibleView collectiblePrefab;
+        [Space]
         [Range(0, 1)] public float spawnProbability;
         [Range(0, 1)] public float minSpawnRatio;
         [Range(0, 1)] public float maxSpawnRatio;
         public float deSpawnDistance;
+        [Space]
         public CollectibleData[] collectibleData;
     }
 
@@ -18,6 +21,7 @@ namespace ServiceLocator.Collectible
     public class CollectibleData
     {
         public CollectibleType collectibleType;
-        public GameObject collectiblePrefab;
+        public Texture collectibleTexture;
+        public int collectibleScore;
     }
 }
