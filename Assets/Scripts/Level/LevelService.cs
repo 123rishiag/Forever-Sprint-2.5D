@@ -10,6 +10,8 @@ namespace ServiceLocator.Level
         // Private Variables
         private LevelConfig levelConfig;
         private Transform levelParentPanel;
+
+        private List<LevelController> levelControllers;
         private List<Vector3> nextLevelPositions;
 
         // Private Services
@@ -21,6 +23,8 @@ namespace ServiceLocator.Level
             // Setting Variables
             levelConfig = _levelConfig;
             levelParentPanel = _levelParentPanel;
+
+            levelControllers = new List<LevelController>();
             nextLevelPositions = new List<Vector3>();
         }
 
@@ -47,7 +51,7 @@ namespace ServiceLocator.Level
         public void Update()
         {
             DestroyLevels(true);
-            GenerateLevels();
+            CreateLevels();
         }
 
         private void StartLevels()
@@ -64,95 +68,72 @@ namespace ServiceLocator.Level
 
         private void DestroyLevels(bool _checkDespawnDistance = false)
         {
-            if (levelParentPanel.childCount > 0)
+            for (int i = levelControllers.Count - 1; i >= 0; i--)
             {
-                GameObject levelPrefab = levelParentPanel.GetChild(0).gameObject;
+                var levelController = levelControllers[i];
 
-                if (!_checkDespawnDistance ||
-                    (playerService.GetPlayerController().GetTransform().position.x - levelPrefab.transform.position.x)
+                if (!levelController.IsActive() || !_checkDespawnDistance ||
+                    (playerService.GetPlayerController().GetTransform().position.x -
+                    levelController.GetTransform().position.x)
                     > levelConfig.deSpawnDistance)
                 {
-                    Object.Destroy(levelPrefab);
+                    levelController.Destroy();
+                    levelControllers.Remove(levelController);
                 }
             }
         }
 
-        private void GenerateLevels()
+        private void CreateLevels()
         {
-            // Generating Levels
+            // Generating All Level Types
             for (int i = 0; i < levelConfig.levelData.Length; ++i)
             {
-                LevelData levelData = levelConfig.levelData[i];
-                nextLevelPositions[i] = GenerateLevel(
-                    levelData.levelType, levelData.groundPrefabs,
-                    levelData.groundSpawnOffsetDistanceRanges, levelData.groundSpawnOffsetHeightRanges, nextLevelPositions[i]);
+                nextLevelPositions[i] = CreateLevel(levelConfig.levelData[i], nextLevelPositions[i]);
             }
         }
-        private Vector3 GenerateLevel(LevelType _levelType, GameObject[] _gameObjects,
-            float[] _offsetDistanceRanges, float[] _offsetHeightRanges, Vector3 _nextPosition)
+        private Vector3 CreateLevel(LevelData _levelData, Vector3 _nextPosition)
         {
             if ((_nextPosition.x - playerService.GetPlayerController().GetTransform().position.x) < levelConfig.spawnDistance &&
                 _nextPosition.x <= playerService.GetPlayerController().GetTransform().position.x + levelConfig.spawnDistance)
             {
-                // Fetching Offset Distance
-                float offsetDistance = GetOffsetValue(_offsetDistanceRanges);
-                float offsetHeight = GetOffsetValue(_offsetHeightRanges);
+                // Fetching Random Prefabs, Offset Distance and Height for Level
+                LevelView levelPrefab = GetRandomValue(_levelData.levelPrefabs);
+                float levelOffsetDistance = GetRandomValue(_levelData.levelOffsetDistances);
+                float levelOffsetHeight = GetRandomValue(_levelData.levelOffsetHeights);
 
-                // Fetching Random Prefab
-                GameObject gameObject = GetRandomObjects(_gameObjects);
-
-                // Applying logic
-                if ((_nextPosition.x - playerService.GetPlayerController().GetTransform().position.x) < levelConfig.spawnDistance)
+                // If the distance between player and new platform position is 
+                if ((_nextPosition.x - playerService.GetPlayerController().GetTransform().position.x)
+                    < levelConfig.spawnDistance)
                 {
-                    // Fetching spawn position
+                    // Fetching spawn Position based on selected Prefab
                     Vector3 spawnPosition = new Vector3(
-                    _nextPosition.x - gameObject.transform.Find("StartPoint").position.x + offsetDistance,
-                    gameObject.transform.position.y + offsetHeight,
-                    gameObject.transform.position.z
+                    _nextPosition.x + levelOffsetDistance,
+                    levelPrefab.transform.position.y + levelOffsetHeight,
+                    levelPrefab.transform.position.z
                     );
 
-                    // Instantiating prefab
-                    GameObject newPlatform = Object.Instantiate(gameObject, spawnPosition, Quaternion.identity,
-                        levelParentPanel);
+                    // Creating Level
+                    var levelController = new LevelController(_levelData, levelPrefab,
+                        levelParentPanel, spawnPosition,
+                        collectibleService);
+                    levelControllers.Add(levelController);
 
-                    // Creating Collectibles
-                    if (_levelType == LevelType.GROUND_TERRAIN || _levelType == LevelType.GROUND_PLATFORM)
-                    {
-                        collectibleService.GenerateCollectibles(GetLevelBounds(newPlatform.transform));
-                    }
-
-                    // Setting new position
-                    return newPlatform.transform.Find("EndPoint").position;
+                    // Returning End Position of the New Level
+                    return levelController.GetEndPointTransform().position;
                 }
             }
             return _nextPosition;
         }
 
         // Getters
-        private float GetOffsetValue(float[] _offsetRanges)
+        private T GetRandomValue<T>(T[] _list)
         {
-            if (_offsetRanges.Length > 0)
+            if (_list.Length > 0)
             {
-                int rangeValue = Random.Range(0, _offsetRanges.Length);
-                return _offsetRanges[rangeValue];
+                int randomIndex = Random.Range(0, _list.Length);
+                return _list[randomIndex];
             }
-            return 0;
-        }
-        private GameObject GetRandomObjects(GameObject[] _gameObjects)
-        {
-            // Randomly selecting prefabs
-            int randomValue = Random.Range(0, _gameObjects.Length);
-            GameObject gameObject = _gameObjects[randomValue];
-            return gameObject;
-        }
-
-        private Bounds GetLevelBounds(Transform _levelTransform)
-        {
-            float topY = _levelTransform.position.y + (_levelTransform.localScale.y / 2);
-            float leftX = _levelTransform.position.x - (_levelTransform.localScale.x / 2);
-            float rightX = _levelTransform.position.x + (_levelTransform.localScale.x / 2);
-            return new Bounds(new Vector3(_levelTransform.position.x, topY, _levelTransform.position.z),
-                              new Vector3(rightX - leftX, 0f, 0f));
+            return default;
         }
     }
 }

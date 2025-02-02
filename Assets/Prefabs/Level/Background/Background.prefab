@@ -74,6 +74,7 @@ GameObject:
   - component: {fileID: 659953000727739397}
   - component: {fileID: 8303912199751041114}
   - component: {fileID: 533872406728620551}
+  - component: {fileID: 126969675962657305}
   m_Layer: 7
   m_Name: Background
   m_TagString: Ground
@@ -169,3 +170,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &126969675962657305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6472326123079625285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f5c831857f6a484eaae2e331a86a6dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelRenderer: {fileID: 8303912199751041114}
+  startPointTransform: {fileID: 2571232903174613506}
+  endPointTransform: {fileID: 4164909254628716525}

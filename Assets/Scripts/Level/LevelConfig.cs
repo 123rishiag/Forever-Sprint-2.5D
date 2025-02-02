@@ -18,9 +18,8 @@ namespace ServiceLocator.Level
         public LevelType levelType;
         public float startPositionOffset;
         [Space]
-        public GameObject[] groundPrefabs;
-        [Space]
-        public float[] groundSpawnOffsetDistanceRanges;
-        public float[] groundSpawnOffsetHeightRanges;
+        public LevelView[] levelPrefabs;
+        public float[] levelOffsetDistances;
+        public float[] levelOffsetHeights;
     }
 }

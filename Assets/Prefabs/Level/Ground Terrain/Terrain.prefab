@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 6466027321214994527}
   - component: {fileID: 6972247588667714311}
   - component: {fileID: 3254992414076778412}
+  - component: {fileID: 5076559134847764641}
   m_Layer: 7
   m_Name: Terrain
   m_TagString: Ground
@@ -138,6 +139,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5076559134847764641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5592399913904852559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f5c831857f6a484eaae2e331a86a6dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelRenderer: {fileID: 6972247588667714311}
+  startPointTransform: {fileID: 7070488685547916585}
+  endPointTransform: {fileID: 8890103376862238249}
 --- !u!1 &7856737838395308480
 GameObject:
   m_ObjectHideFlags: 0

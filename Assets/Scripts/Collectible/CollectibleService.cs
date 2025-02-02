@@ -72,8 +72,7 @@ namespace ServiceLocator.Collectible
                 }
             }
         }
-
-        public void GenerateCollectibles(Bounds _levelBoundary)
+        public void CreateCollectibles(Bounds _levelBoundary)
         {
             // If Random Probability is not in spawn Probability
             if (Random.value > collectibleConfig.spawnProbability) return;
@@ -87,25 +86,19 @@ namespace ServiceLocator.Collectible
             // Fetching Spacing Between Collectibles based on Collectible Counts and level boundaries
             float collectibleSpacing = GetCollectibleSpacing(_levelBoundary, collectibleSize, collectibleCount);
 
-            // Creating Collectibles on Plaform
-            CreateCollectibles(collectibleSize, _levelBoundary, collectibleCount,
-                collectibleSpacing);
-        }
-        private void CreateCollectibles(Vector2 _collectibleSize, Bounds _levelBoundary, int _collectibleCount,
-            float _collectibleSpacing)
-        {
             // Fetching Positions to spawn collectibles
-            float spawnPositionY = _levelBoundary.center.y + _collectibleSize.y;
-            float startPostionX = _levelBoundary.min.x;
+            float spawnPositionY = _levelBoundary.center.y + collectibleSize.y;
+            float startPositionX = _levelBoundary.min.x;
 
             // Fetching Random Index
             int randomIndex = Random.Range(0, collectibleConfig.collectibleData.Length);
 
-            for (int i = 0; i < _collectibleCount; ++i)
+            // Creating Collectibles
+            for (int i = 0; i < collectibleCount; ++i)
             {
-                float spawnX = startPostionX + (i * (_collectibleSize.x + _collectibleSpacing)) + _collectibleSpacing +
-                    (_collectibleSize.x / 2);
-                Vector3 spawnPosition = new Vector3(spawnX, spawnPositionY, 0f);
+                float spawnPositionX = startPositionX + (i * (collectibleSize.x + collectibleSpacing)) + collectibleSpacing +
+                    (collectibleSize.x / 2);
+                Vector3 spawnPosition = new Vector3(spawnPositionX, spawnPositionY, 0f);
 
                 var collectibleController = new CollectibleController(
                     collectibleConfig.collectibleData[randomIndex], collectibleConfig.collectiblePrefab,
@@ -122,7 +115,6 @@ namespace ServiceLocator.Collectible
             Renderer collectibleRenderer = collectibleConfig.collectiblePrefab.GetComponent<Renderer>();
             return new Vector2(collectibleRenderer.bounds.size.x, collectibleRenderer.bounds.size.y);
         }
-
         private int GetCollectibleCount(Bounds _levelBoundary, Vector2 _collectibleSize)
         {
             int minCollectibleCount = Mathf.FloorToInt((_levelBoundary.size.x / _collectibleSize.x) *
@@ -131,7 +123,6 @@ namespace ServiceLocator.Collectible
                 collectibleConfig.maxSpawnRatio);
             return Random.Range(minCollectibleCount, maxCollectibleCount + 1);
         }
-
         private float GetCollectibleSpacing(Bounds _levelBoundary, Vector2 _collectibleSize, int _collectibleCount)
         {
             return (_levelBoundary.size.x - (_collectibleSize.x * _collectibleCount)) / (_collectibleCount + 1);
