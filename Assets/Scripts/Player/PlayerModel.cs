@@ -20,6 +20,7 @@ namespace ServiceLocator.Player
             DashSpeedIncreaseFactor = _playerData.dashSpeedIncreaseFactor;
         }
 
+        // Getters
         public PlayerState PlayerState { get; set; }
         public int MaxHealth { get; private set; }
         public float MoveSpeed { get; private set; }

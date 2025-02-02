@@ -26,4 +26,4 @@ MonoBehaviour:
     rollDuration: 1
     slideDuration: 3
     dashDuration: 3
-    dashSpeedIncreaseFactor: 1.5
+    dashSpeedIncreaseFactor: 1.3

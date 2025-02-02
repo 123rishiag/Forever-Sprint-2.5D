@@ -118,7 +118,7 @@ namespace ServiceLocator.Level
                     // Creating Collectibles
                     if (_levelType == LevelType.GROUND_TERRAIN || _levelType == LevelType.GROUND_PLATFORM)
                     {
-                        collectibleService.GenerateCollectibles(newPlatform.transform);
+                        collectibleService.GenerateCollectibles(GetLevelBounds(newPlatform.transform));
                     }
 
                     // Setting new position
@@ -144,6 +144,15 @@ namespace ServiceLocator.Level
             int randomValue = Random.Range(0, _gameObjects.Length);
             GameObject gameObject = _gameObjects[randomValue];
             return gameObject;
+        }
+
+        private Bounds GetLevelBounds(Transform _levelTransform)
+        {
+            float topY = _levelTransform.position.y + (_levelTransform.localScale.y / 2);
+            float leftX = _levelTransform.position.x - (_levelTransform.localScale.x / 2);
+            float rightX = _levelTransform.position.x + (_levelTransform.localScale.x / 2);
+            return new Bounds(new Vector3(_levelTransform.position.x, topY, _levelTransform.position.z),
+                              new Vector3(rightX - leftX, 0f, 0f));
         }
     }
 }

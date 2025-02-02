@@ -55,7 +55,7 @@ namespace ServiceLocator.Main
             uiService.Init(this);
             scoreService.Init(uiService);
             playerService.Init(inputService, soundService, uiService, cameraService, this);
-            collectibleService.Init(playerService);
+            collectibleService.Init(playerService, scoreService, soundService);
             levelService.Init(playerService, collectibleService);
         }
 
