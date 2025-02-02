@@ -12,7 +12,7 @@ namespace ServiceLocator.Collectible
         private void OnTriggerEnter(Collider _collider)
         {
             gameService = GameObject.Find("GameManager").GetComponent<GameService>();
-            if (_collider.GetComponent<PlayerService>() != null)
+            if (_collider.GetComponent<PlayerView>() != null)
             {
                 gameService.GetGameController().GetScoreService().AddScore(10);
                 Destroy(gameObject);

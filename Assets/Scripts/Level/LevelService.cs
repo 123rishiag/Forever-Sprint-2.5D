@@ -56,7 +56,7 @@ namespace ServiceLocator.Level
             for (int i = 0; i < levelConfig.levelData.Length; ++i)
             {
                 // Adding the calculated position to the list
-                Vector3 startPosition = playerService.GetPlayerTransform().position
+                Vector3 startPosition = playerService.GetPlayerController().GetTransform().position
                     - Vector3.forward * levelConfig.levelData[i].startPositionOffset;
                 nextLevelPositions.Add(startPosition);
             }
@@ -69,7 +69,7 @@ namespace ServiceLocator.Level
                 GameObject levelPrefab = levelParentPanel.GetChild(0).gameObject;
 
                 if (!_checkDespawnDistance ||
-                    (playerService.GetPlayerTransform().position.x - levelPrefab.transform.position.x)
+                    (playerService.GetPlayerController().GetTransform().position.x - levelPrefab.transform.position.x)
                     > levelConfig.deSpawnDistance)
                 {
                     Object.Destroy(levelPrefab);
@@ -91,8 +91,8 @@ namespace ServiceLocator.Level
         private Vector3 GenerateLevel(LevelType _levelType, GameObject[] _gameObjects,
             float[] _offsetDistanceRanges, float[] _offsetHeightRanges, Vector3 _nextPosition)
         {
-            if ((_nextPosition.x - playerService.GetPlayerTransform().position.x) < levelConfig.spawnDistance &&
-                _nextPosition.x <= playerService.GetPlayerTransform().position.x + levelConfig.spawnDistance)
+            if ((_nextPosition.x - playerService.GetPlayerController().GetTransform().position.x) < levelConfig.spawnDistance &&
+                _nextPosition.x <= playerService.GetPlayerController().GetTransform().position.x + levelConfig.spawnDistance)
             {
                 // Fetching Offset Distance
                 float offsetDistance = GetOffsetValue(_offsetDistanceRanges);
@@ -102,7 +102,7 @@ namespace ServiceLocator.Level
                 GameObject gameObject = GetRandomObjects(_gameObjects);
 
                 // Applying logic
-                if ((_nextPosition.x - playerService.GetPlayerTransform().position.x) < levelConfig.spawnDistance)
+                if ((_nextPosition.x - playerService.GetPlayerController().GetTransform().position.x) < levelConfig.spawnDistance)
                 {
                     // Fetching spawn position
                     Vector3 spawnPosition = new Vector3(

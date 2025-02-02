@@ -5,6 +5,7 @@ using ServiceLocator.Player;
 using ServiceLocator.Score;
 using ServiceLocator.Sound;
 using ServiceLocator.UI;
+using ServiceLocator.Vision;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,6 +17,7 @@ namespace ServiceLocator.Main
         private GameService gameService;
 
         private InputService inputService;
+        private CameraService cameraService;
         private SoundService soundService;
         private UIService uiService;
         private ScoreService scoreService;
@@ -37,27 +39,30 @@ namespace ServiceLocator.Main
         private void CreateServices()
         {
             inputService = new InputService();
+            cameraService = new CameraService(gameService.virtualCamera);
             soundService = new SoundService(gameService.soundConfig, gameService.bgmSource, gameService.sfxSource);
             uiService = gameService.uiCanvas.GetComponent<UIService>();
             scoreService = new ScoreService();
-            playerService = gameService.playerPrefab.GetComponent<PlayerService>();
+            playerService = new PlayerService(gameService.playerConfig);
             collectibleService = new CollectibleService(gameService.collectibleConfig, gameService.collectibleParentPanel);
             levelService = new LevelService(gameService.levelConfig, gameService.levelParentPanel);
         }
         private void InjectDependencies()
         {
             inputService.Init();
+            // No Camera Service Init
             // No Sound Service Init
             uiService.Init(this);
             scoreService.Init(uiService);
-            playerService.Init(gameService.playerConfig.playerData, this, inputService, soundService, uiService);
+            playerService.Init(inputService, soundService, uiService, cameraService, this);
             collectibleService.Init(playerService);
             levelService.Init(playerService, collectibleService);
         }
 
         public void Reset()
         {
-            // No Sound Service Reset
+            // No Input Service Reset
+            // No Camera Service Reset
             soundService.Reset();
             // No UI Service Reset
             scoreService.Reset();
@@ -69,6 +74,7 @@ namespace ServiceLocator.Main
         public void Destroy()
         {
             inputService.Destroy();
+            // No Camera Service Destroy
             // No Sound Service Destroy
             uiService.Destroy();
             // No Score Service Destroy
@@ -77,13 +83,26 @@ namespace ServiceLocator.Main
             levelService.Destroy();
         }
 
+        public void FixedUpdate()
+        {
+            // No Input Service Fixed Update
+            // No Camera Service Fixed Update
+            // No Sound Service Fixed Update
+            // No UI Service Fixed Update
+            // No Score Service Fixed Update
+            playerService.FixedUpdate();
+            // No Collectible Service Fixed Update
+            // No Collectible Service Fixed Update
+        }
+
         public void Update()
         {
             inputService.Update();
+            // No Camera Service Update
             // No Sound Service Update
             // No UI Service Update
             // No Score Service Update
-            playerService.UpdatePlayer();
+            playerService.Update();
             collectibleService.Update();
             levelService.Update();
 
@@ -146,6 +165,7 @@ namespace ServiceLocator.Main
 
         // Getters
         public InputService GetInputService() => inputService;
+        public CameraService GetCameraService() => cameraService;
         public SoundService GetSoundService() => soundService;
         public UIService GetUIService() => uiService;
         public ScoreService GetScoreService() => scoreService;
