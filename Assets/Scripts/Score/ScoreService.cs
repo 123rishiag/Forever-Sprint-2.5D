@@ -22,14 +22,14 @@ namespace ServiceLocator.Score
         {
             // Setting Variables
             currentScore = 0;
-            uiService.UpdateScoreText(currentScore);
+            uiService.GetUIController().UpdateScoreText(currentScore);
         }
 
         // Setters
         public void AddScore(int _score)
         {
             currentScore += _score;
-            uiService.UpdateScoreText(currentScore);
+            uiService.GetUIController().UpdateScoreText(currentScore);
         }
     }
 }

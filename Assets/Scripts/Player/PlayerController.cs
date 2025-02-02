@@ -53,7 +53,7 @@ namespace ServiceLocator.Player
             currentSpeed = defaultSpeed;
             airJumpCount = 0;
 
-            uiService.UpdateHealthText(currentHealth);
+            uiService.GetUIController().UpdateHealthText(currentHealth);
         }
 
         public void Reset()
@@ -315,7 +315,7 @@ namespace ServiceLocator.Player
             else if (playerView.IsGrounded())
             {
                 --currentHealth;
-                uiService.UpdateHealthText(currentHealth);
+                uiService.GetUIController().UpdateHealthText(currentHealth);
                 if (currentHealth > 0)
                 {
                     playerModel.PlayerState = PlayerState.KNOCK;
@@ -409,7 +409,7 @@ namespace ServiceLocator.Player
             else if (playerView.HasGroundRight())
             {
                 --currentHealth;
-                uiService.UpdateHealthText(currentHealth);
+                uiService.GetUIController().UpdateHealthText(currentHealth);
                 if (currentHealth > 0)
                 {
                     playerModel.PlayerState = PlayerState.KNOCK;

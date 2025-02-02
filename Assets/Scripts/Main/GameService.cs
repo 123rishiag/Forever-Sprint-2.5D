@@ -20,7 +20,7 @@ namespace ServiceLocator.Main
         [SerializeField] public AudioSource sfxSource;
 
         [Header("UI Elements")]
-        [SerializeField] public UIService uiCanvas;
+        [SerializeField] public UIView uiCanvas;
 
         [Header("Game Elements")]
         [SerializeField] public PlayerConfig playerConfig;

@@ -41,7 +41,7 @@ namespace ServiceLocator.Main
             inputService = new InputService();
             cameraService = new CameraService(gameService.virtualCamera);
             soundService = new SoundService(gameService.soundConfig, gameService.bgmSource, gameService.sfxSource);
-            uiService = gameService.uiCanvas.GetComponent<UIService>();
+            uiService = new UIService(gameService.uiCanvas);
             scoreService = new ScoreService();
             playerService = new PlayerService(gameService.playerConfig);
             collectibleService = new CollectibleService(gameService.collectibleConfig, gameService.collectibleParentPanel);
@@ -116,22 +116,22 @@ namespace ServiceLocator.Main
         public void PlayGame()
         {
             Time.timeScale = 1f;
-            uiService.mainMenuPanel.SetActive(false);
+            uiService.GetUIController().EnableMainMenuPanel(false);
             soundService.PlaySoundEffect(SoundType.GAME_PLAY);
         }
         public void PauseGame()
         {
-            if (!uiService.pauseMenuPanel.activeInHierarchy)
+            if (!uiService.GetUIController().IsPauseMenuPanelEnabled())
             {
                 Time.timeScale = 0f;
-                uiService.pauseMenuPanel.SetActive(true);
+                uiService.GetUIController().EnablePauseMenuPanel(true);
                 soundService.PlaySoundEffect(SoundType.GAME_PAUSE);
             }
         }
         public void ResumeGame()
         {
             Time.timeScale = 1f;
-            uiService.pauseMenuPanel.SetActive(false);
+            uiService.GetUIController().EnablePauseMenuPanel(false);
             soundService.PlaySoundEffect(SoundType.GAME_PLAY);
         }
         public void RestartGame()
@@ -147,7 +147,7 @@ namespace ServiceLocator.Main
         public void GameOver()
         {
             Time.timeScale = 0f;
-            uiService.gameOverMenuPanel.SetActive(true);
+            uiService.GetUIController().EnableGameOverMenuPanel(true);
             soundService.PlaySoundEffect(SoundType.GAME_OVER);
         }
         public void QuitGame()
@@ -159,7 +159,7 @@ namespace ServiceLocator.Main
         public void MuteGame()
         {
             soundService.MuteGame();
-            uiService.SetMuteButtonText(soundService.IsMute);
+            uiService.GetUIController().SetMuteButtonText(soundService.IsMute);
             soundService.PlaySoundEffect(SoundType.BUTTON_CLICK);
         }
 
