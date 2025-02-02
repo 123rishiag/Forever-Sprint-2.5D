@@ -17,36 +17,36 @@ MonoBehaviour:
   levelData:
   - levelType: 0
     startPositionOffset: -100
-    groundPrefabs:
-    - {fileID: 6472326123079625285, guid: 1212b724f54b6d24e8fe761bc0d05f54, type: 3}
-    groundSpawnOffsetDistanceRanges: []
-    groundSpawnOffsetHeightRanges: []
+    levelPrefabs:
+    - {fileID: 126969675962657305, guid: c3f67b90844f5a6479c19c6201285f2c, type: 3}
+    levelOffsetDistances: []
+    levelOffsetHeights: []
   - levelType: 1
     startPositionOffset: -100
-    groundPrefabs:
-    - {fileID: 5592399913904852559, guid: b402555b7eb0cf54e80ae52ea6537830, type: 3}
-    groundSpawnOffsetDistanceRanges: []
-    groundSpawnOffsetHeightRanges: []
+    levelPrefabs:
+    - {fileID: 5076559134847764641, guid: b402555b7eb0cf54e80ae52ea6537830, type: 3}
+    levelOffsetDistances: []
+    levelOffsetHeights: []
   - levelType: 2
     startPositionOffset: 500
-    groundPrefabs:
-    - {fileID: 899953855723753725, guid: 07a932509930b4a4091fe76eccde5220, type: 3}
-    - {fileID: 4600710087669771945, guid: d6ffd66fd7c947845ae57b5623ac9623, type: 3}
-    - {fileID: 6470293764356551265, guid: a8705263ddf5c614a9742d5c07467a72, type: 3}
-    groundSpawnOffsetDistanceRanges:
+    levelPrefabs:
+    - {fileID: 6367198773044652360, guid: 07a932509930b4a4091fe76eccde5220, type: 3}
+    - {fileID: 6809108400671865427, guid: d6ffd66fd7c947845ae57b5623ac9623, type: 3}
+    - {fileID: 8471051340906058927, guid: a8705263ddf5c614a9742d5c07467a72, type: 3}
+    levelOffsetDistances:
     - 10
     - 15
     - 20
     - 25
     - 30
-    groundSpawnOffsetHeightRanges:
+    levelOffsetHeights:
     - 0
     - 1.5
     - 3
     - 5
   - levelType: 3
     startPositionOffset: -100
-    groundPrefabs:
-    - {fileID: 7675550939011953636, guid: 490496d63d9cfc449ab3b1aec3863d97, type: 3}
-    groundSpawnOffsetDistanceRanges: []
-    groundSpawnOffsetHeightRanges: []
+    levelPrefabs:
+    - {fileID: 7118628981640878553, guid: 490496d63d9cfc449ab3b1aec3863d97, type: 3}
+    levelOffsetDistances: []
+    levelOffsetHeights: []

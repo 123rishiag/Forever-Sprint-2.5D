@@ -92,7 +92,7 @@ namespace ServiceLocator.Main
             // No Score Service Fixed Update
             playerService.FixedUpdate();
             // No Collectible Service Fixed Update
-            // No Collectible Service Fixed Update
+            // No Level Service Fixed Update
         }
 
         public void Update()

@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 1987982990394661142}
   - component: {fileID: 99305465772578927}
   - component: {fileID: 1765473543328130759}
+  - component: {fileID: 8471051340906058927}
   m_Layer: 7
   m_Name: HighPlatform
   m_TagString: Ground
@@ -138,6 +139,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8471051340906058927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6470293764356551265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f5c831857f6a484eaae2e331a86a6dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelRenderer: {fileID: 99305465772578927}
+  startPointTransform: {fileID: 539757788072025023}
+  endPointTransform: {fileID: 834700653092709640}
 --- !u!1 &7422516124998897080
 GameObject:
   m_ObjectHideFlags: 0
