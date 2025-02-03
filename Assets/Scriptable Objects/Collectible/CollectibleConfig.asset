@@ -19,8 +19,10 @@ MonoBehaviour:
   deSpawnDistance: 100
   collectibleData:
   - collectibleType: 0
-    collectibleTexture: {fileID: 2800000, guid: fe3e0a556829be24bb87c912d79e872d, type: 3}
+    collectibleProperty:
+      collectibleTexture: {fileID: 2800000, guid: fe3e0a556829be24bb87c912d79e872d, type: 3}
     collectibleScore: 5
   - collectibleType: 1
-    collectibleTexture: {fileID: 2800000, guid: 988b6610bda0aca4286aff060b8d16b8, type: 3}
+    collectibleProperty:
+      collectibleTexture: {fileID: 2800000, guid: 988b6610bda0aca4286aff060b8d16b8, type: 3}
     collectibleScore: 10

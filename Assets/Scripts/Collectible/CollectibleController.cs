@@ -14,22 +14,31 @@ namespace ServiceLocator.Collectible
         private ScoreService scoreService;
         private SoundService soundService;
 
-        public CollectibleController(CollectibleData _collectibleData, CollectibleView _collectiblePrefab,
-            Transform _collectibleParentPanel, Vector3 _spawnPosition,
+        public CollectibleController(
+            CollectibleData _collectibleData, CollectibleView _collectiblePrefab, CollectibleProperty _collectibleProperty,
+            Vector3 _spawnPosition, Transform _collectibleParentPanel,
             ScoreService _scoreService, SoundService _soundService)
         {
             // Setting Variables
             collectibleModel = new CollectibleModel(_collectibleData);
             collectibleView = Object.Instantiate(_collectiblePrefab, _collectibleParentPanel).GetComponent<CollectibleView>();
             collectibleView.Init(this);
-            collectibleView.SetPosition(_spawnPosition);
 
             // Setting Services
             scoreService = _scoreService;
             soundService = _soundService;
+
+            // Setting Elements
+            Reset(_collectibleData, _collectibleProperty, _spawnPosition);
         }
 
-        public void Destroy() => Object.Destroy(collectibleView.gameObject);
+        public void Reset(CollectibleData _collectibleData, CollectibleProperty _collectibleProperty, Vector3 _spawnPosition)
+        {
+            collectibleModel.Reset(_collectibleData);
+            collectibleView.SetProperty(_collectibleProperty);
+            collectibleView.SetPosition(_spawnPosition);
+            collectibleView.ShowView();
+        }
 
         public void AddScore()
         {
@@ -42,5 +51,6 @@ namespace ServiceLocator.Collectible
         public bool IsActive() => collectibleView != null && collectibleView.gameObject.activeInHierarchy;
         public Transform GetTransform() => collectibleView.transform;
         public CollectibleModel GetModel() => collectibleModel;
+        public CollectibleView GetView() => collectibleView;
     }
 }

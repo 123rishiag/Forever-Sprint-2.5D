@@ -116,9 +116,8 @@ namespace ServiceLocator.Level
                     levelProperty.levelPosition.z
                     );
 
-                    // Creating Level
-                    LevelController levelController = null;
                     // Fetching Level
+                    LevelController levelController = null;
                     switch (_levelData.levelType)
                     {
                         case LevelType.BACKGORUND:

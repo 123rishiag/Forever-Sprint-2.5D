@@ -1,7 +1,6 @@
 using ServiceLocator.Player;
 using ServiceLocator.Score;
 using ServiceLocator.Sound;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ServiceLocator.Collectible
@@ -12,7 +11,7 @@ namespace ServiceLocator.Collectible
         private CollectibleConfig collectibleConfig;
         private Transform collectibleParentPanel;
 
-        private List<CollectibleController> collectibleControllers;
+        private CollectiblePool collectiblePool;
 
         // Private Services
         private PlayerService playerService;
@@ -24,8 +23,6 @@ namespace ServiceLocator.Collectible
             // Setting Variables
             collectibleConfig = _collectibleConfig;
             collectibleParentPanel = _collectibleParentPanel;
-
-            collectibleControllers = new List<CollectibleController>();
 
             // Setting Elements
             if (collectibleConfig.maxSpawnRatio < collectibleConfig.minSpawnRatio)
@@ -40,6 +37,10 @@ namespace ServiceLocator.Collectible
             playerService = _playerService;
             scoreService = _scoreService;
             soundService = _soundService;
+
+            // Setting Elements
+            collectiblePool = new CollectiblePool(collectibleConfig, collectibleParentPanel,
+                scoreService, soundService);
         }
 
         public void Reset()
@@ -58,17 +59,22 @@ namespace ServiceLocator.Collectible
         }
         private void DestroyCollectibles(bool _checkDespawnDistance = false)
         {
-            for (int i = collectibleControllers.Count - 1; i >= 0; i--)
+            for (int i = collectiblePool.pooledItems.Count - 1; i >= 0; i--)
             {
-                var collectibleController = collectibleControllers[i];
+                // Skipping if the pooled item's isUsed is false
+                if (!collectiblePool.pooledItems[i].isUsed)
+                {
+                    continue;
+                }
 
-                if (!collectibleController.IsActive() || !_checkDespawnDistance ||
+                var collectibleController = collectiblePool.pooledItems[i].Item;
+                if (!collectibleController.IsActive() ||
+                    !_checkDespawnDistance ||
                     (playerService.GetPlayerController().GetTransform().position.x -
                     collectibleController.GetTransform().position.x)
                     > collectibleConfig.deSpawnDistance)
                 {
-                    collectibleController.Destroy();
-                    collectibleControllers.Remove(collectibleController);
+                    ReturnCollectibleToPool(collectibleController);
                 }
             }
         }
@@ -92,6 +98,7 @@ namespace ServiceLocator.Collectible
 
             // Fetching Random Index
             int randomIndex = Random.Range(0, collectibleConfig.collectibleData.Length);
+            CollectibleData collectibleData = collectibleConfig.collectibleData[randomIndex];
 
             // Creating Collectibles
             for (int i = 0; i < collectibleCount; ++i)
@@ -100,13 +107,26 @@ namespace ServiceLocator.Collectible
                     (collectibleSize.x / 2);
                 Vector3 spawnPosition = new Vector3(spawnPositionX, spawnPositionY, 0f);
 
-                var collectibleController = new CollectibleController(
-                    collectibleConfig.collectibleData[randomIndex], collectibleConfig.collectiblePrefab,
-                    collectibleParentPanel, spawnPosition,
-                    scoreService, soundService);
-
-                collectibleControllers.Add(collectibleController);
+                // Fetching Controller
+                CollectibleController collectibleController = null;
+                switch (collectibleData.collectibleType)
+                {
+                    case CollectibleType.CUBE_ONE:
+                    case CollectibleType.CUBE_TWO:
+                        collectibleController = collectiblePool.GetCollectible<CollectibleController>(
+                    collectibleData, collectibleData.collectibleProperty, spawnPosition);
+                        break;
+                    default:
+                        Debug.LogWarning($"Unhandled CollectibleType: {collectibleData.collectibleType}");
+                        break;
+                }
             }
+        }
+
+        private void ReturnCollectibleToPool(CollectibleController _collectibleToReturn)
+        {
+            _collectibleToReturn.GetView().HideView();
+            collectiblePool.ReturnItem(_collectibleToReturn);
         }
 
         // Getters
