@@ -60,8 +60,8 @@ namespace ServiceLocator.Level
             for (int i = 0; i < levelConfig.levelData.Length; ++i)
             {
                 // Adding the calculated position to the list
-                Vector3 startPosition = playerService.GetPlayerController().GetTransform().position
-                    - Vector3.forward * levelConfig.levelData[i].startPositionOffset;
+                float platformStartX = playerService.GetPlayerController().GetTransform().position.x + levelConfig.levelData[i].startPositionOffset;
+                Vector3 startPosition = new Vector3(platformStartX, 0, 0);
                 nextLevelPositions.Add(startPosition);
             }
         }
