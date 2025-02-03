@@ -21,7 +21,13 @@ namespace ServiceLocator.Collectible
     public class CollectibleData
     {
         public CollectibleType collectibleType;
-        public Texture collectibleTexture;
+        public CollectibleProperty collectibleProperty;
         public int collectibleScore;
+    }
+
+    [Serializable]
+    public class CollectibleProperty
+    {
+        public Texture collectibleTexture;
     }
 }

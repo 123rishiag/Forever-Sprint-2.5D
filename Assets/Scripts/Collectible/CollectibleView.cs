@@ -16,15 +16,17 @@ namespace ServiceLocator.Collectible
         {
             // Setting Variables
             collectibleController = _collectibleController;
-
-            // Setting Elements
-            Texture newTexture = collectibleController.GetModel().CollectibleTexture;
-            collectibleMeshRenderer.material.SetTexture("_MainTex", newTexture);
         }
 
         // Setters
+        public void SetProperty(CollectibleProperty _collectibleProperty)
+        {
+            // Setting Texture
+            Texture newTexture = _collectibleProperty.collectibleTexture;
+            collectibleMeshRenderer.material.SetTexture("_MainTex", newTexture);
+        }
         public void SetPosition(Vector3 _position) => transform.position = _position;
-
+        public void ShowView() => gameObject.SetActive(true);
         public void HideView() => gameObject.SetActive(false);
 
         private void OnTriggerEnter(Collider _collider)
