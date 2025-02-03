@@ -4,6 +4,11 @@ namespace ServiceLocator.Level
     {
         public LevelModel(LevelData _levelData)
         {
+            Reset(_levelData);
+        }
+
+        public void Reset(LevelData _levelData)
+        {
             LevelType = _levelData.levelType;
         }
 

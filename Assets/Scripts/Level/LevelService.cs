@@ -11,7 +11,7 @@ namespace ServiceLocator.Level
         private LevelConfig levelConfig;
         private Transform levelParentPanel;
 
-        private List<LevelController> levelControllers;
+        private LevelPool levelPool;
         private List<Vector3> nextLevelPositions;
 
         // Private Services
@@ -23,9 +23,6 @@ namespace ServiceLocator.Level
             // Setting Variables
             levelConfig = _levelConfig;
             levelParentPanel = _levelParentPanel;
-
-            levelControllers = new List<LevelController>();
-            nextLevelPositions = new List<Vector3>();
         }
 
         public void Init(PlayerService _playerService, CollectibleService _collectibleService)
@@ -35,7 +32,10 @@ namespace ServiceLocator.Level
             collectibleService = _collectibleService;
 
             // Setting Elements
-            StartLevels();
+            levelPool = new LevelPool(levelConfig, levelParentPanel, collectibleService);
+            nextLevelPositions = new List<Vector3>();
+
+            SetLevelsStartPosition();
         }
 
         public void Reset()
@@ -54,7 +54,7 @@ namespace ServiceLocator.Level
             CreateLevels();
         }
 
-        private void StartLevels()
+        private void SetLevelsStartPosition()
         {
             // Initializing the start position of all Levels
             for (int i = 0; i < levelConfig.levelData.Length; ++i)
@@ -68,17 +68,21 @@ namespace ServiceLocator.Level
 
         private void DestroyLevels(bool _checkDespawnDistance = false)
         {
-            for (int i = levelControllers.Count - 1; i >= 0; i--)
+            for (int i = levelPool.pooledItems.Count - 1; i >= 0; i--)
             {
-                var levelController = levelControllers[i];
+                // Skipping if the pooled item's isUsed is false
+                if (!levelPool.pooledItems[i].isUsed)
+                {
+                    continue;
+                }
 
-                if (!levelController.IsActive() || !_checkDespawnDistance ||
-                    (playerService.GetPlayerController().GetTransform().position.x -
-                    levelController.GetTransform().position.x)
+                var levelController = levelPool.pooledItems[i].Item;
+                if (!levelController.IsActive() ||
+                    !_checkDespawnDistance ||
+                    (playerService.GetPlayerController().GetTransform().position.x - levelController.GetTransform().position.x)
                     > levelConfig.deSpawnDistance)
                 {
-                    levelController.Destroy();
-                    levelControllers.Remove(levelController);
+                    ReturnLevelToPool(levelController);
                 }
             }
         }
@@ -96,8 +100,8 @@ namespace ServiceLocator.Level
             if ((_nextPosition.x - playerService.GetPlayerController().GetTransform().position.x) < levelConfig.spawnDistance &&
                 _nextPosition.x <= playerService.GetPlayerController().GetTransform().position.x + levelConfig.spawnDistance)
             {
-                // Fetching Random Prefabs, Offset Distance and Height for Level
-                LevelView levelPrefab = GetRandomValue(_levelData.levelPrefabs);
+                // Fetching Random Property, Offset Distance and Height for Level
+                LevelProperty levelProperty = GetRandomValue(_levelData.levelProperties);
                 float levelOffsetDistance = GetRandomValue(_levelData.levelOffsetDistances);
                 float levelOffsetHeight = GetRandomValue(_levelData.levelOffsetHeights);
 
@@ -105,24 +109,40 @@ namespace ServiceLocator.Level
                 if ((_nextPosition.x - playerService.GetPlayerController().GetTransform().position.x)
                     < levelConfig.spawnDistance)
                 {
-                    // Fetching spawn Position based on selected Prefab
+                    // Fetching spawn Position based on selected Property
                     Vector3 spawnPosition = new Vector3(
                     _nextPosition.x + levelOffsetDistance,
-                    levelPrefab.transform.position.y + levelOffsetHeight,
-                    levelPrefab.transform.position.z
+                    levelProperty.levelPosition.y + levelOffsetHeight,
+                    levelProperty.levelPosition.z
                     );
 
                     // Creating Level
-                    var levelController = new LevelController(_levelData, levelPrefab,
-                        levelParentPanel, spawnPosition,
-                        collectibleService);
-                    levelControllers.Add(levelController);
+                    LevelController levelController = null;
+                    // Fetching Level
+                    switch (_levelData.levelType)
+                    {
+                        case LevelType.BACKGORUND:
+                        case LevelType.GROUND_TERRAIN:
+                        case LevelType.GROUND_PLATFORM:
+                        case LevelType.FOREGROUND:
+                            levelController = levelPool.GetLevel<LevelController>(_levelData, levelProperty, spawnPosition);
+                            break;
+                        default:
+                            Debug.LogWarning($"Unhandled LevelType: {_levelData.levelType}");
+                            break;
+                    }
 
                     // Returning End Position of the New Level
-                    return levelController.GetEndPointTransform().position;
+                    if (levelController != null) return levelController.GetEndPointTransform().position;
                 }
             }
             return _nextPosition;
+        }
+
+        private void ReturnLevelToPool(LevelController _levelToReturn)
+        {
+            _levelToReturn.GetView().HideView();
+            levelPool.ReturnItem(_levelToReturn);
         }
 
         // Getters

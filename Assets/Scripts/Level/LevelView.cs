@@ -5,16 +5,30 @@ namespace ServiceLocator.Level
     public class LevelView : MonoBehaviour
     {
         [Header("Level Settings")]
+        [SerializeField] private MeshRenderer levelMashRenderer;
         [SerializeField] private Transform startPointTransform;
         [SerializeField] private Transform endPointTransform;
 
         // Setters
+        public void SetProperty(LevelProperty _levelProperty)
+        {
+            // Setting Texture
+            Texture newTexture = _levelProperty.levelTexture;
+            levelMashRenderer.material.SetTexture("_MainTex", newTexture);
+
+            // Setting Transform
+            transform.position = _levelProperty.levelPosition;
+            transform.rotation = _levelProperty.levelRotation;
+            transform.localScale = _levelProperty.levelScale;
+        }
         public void SetPosition(Vector3 _position)
         {
-            _position.x -= startPointTransform.position.x;
-            transform.position = _position;
+            Vector3 newPosition = new Vector3(_position.x - startPointTransform.position.x,
+                _position.y,
+                transform.position.z);
+            transform.position = newPosition;
         }
-
+        public void ShowView() => gameObject.SetActive(true);
         public void HideView() => gameObject.SetActive(false);
 
         // Getters

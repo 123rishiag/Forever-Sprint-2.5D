@@ -1,3 +1,4 @@
+using ServiceLocator.Level;
 using ServiceLocator.Player;
 using UnityEngine;
 
@@ -31,6 +32,10 @@ namespace ServiceLocator.Collectible
             if (_collider.GetComponent<PlayerView>() != null)
             {
                 collectibleController.AddScore();
+            }
+            else if (_collider.GetComponent<LevelView>() != null)
+            {
+                HideView();
             }
         }
     }
