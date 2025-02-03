@@ -7,6 +7,7 @@ namespace ServiceLocator.Level
 
     public class LevelConfig : ScriptableObject
     {
+        public LevelView levelPrefab;
         public float spawnDistance;
         public float deSpawnDistance;
         public LevelData[] levelData;
@@ -18,8 +19,17 @@ namespace ServiceLocator.Level
         public LevelType levelType;
         public float startPositionOffset;
         [Space]
-        public LevelView[] levelPrefabs;
+        public LevelProperty[] levelProperties;
         public float[] levelOffsetDistances;
         public float[] levelOffsetHeights;
+    }
+
+    [Serializable]
+    public class LevelProperty
+    {
+        public Texture levelTexture;
+        public Vector3 levelPosition;
+        public Quaternion levelRotation;
+        public Vector3 levelScale;
     }
 }

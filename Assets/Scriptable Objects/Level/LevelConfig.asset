@@ -12,27 +12,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 385d7800ffff3c14794d28169ab34eda, type: 3}
   m_Name: LevelConfig
   m_EditorClassIdentifier: 
+  levelPrefab: {fileID: 5076559134847764641, guid: 58aaa3f46b45e7443b769b2052de5c1a, type: 3}
   spawnDistance: 30
   deSpawnDistance: 100
   levelData:
   - levelType: 0
     startPositionOffset: -100
-    levelPrefabs:
-    - {fileID: 126969675962657305, guid: c3f67b90844f5a6479c19c6201285f2c, type: 3}
+    levelProperties:
+    - levelTexture: {fileID: 2800000, guid: 9397418d1d7b12543bf27fb61b93bbea, type: 3}
+      levelPosition: {x: 0, y: 20, z: 2}
+      levelRotation: {x: 0, y: 0, z: 0, w: 0}
+      levelScale: {x: 10, y: 50, z: 2}
     levelOffsetDistances: []
     levelOffsetHeights: []
   - levelType: 1
     startPositionOffset: -100
-    levelPrefabs:
-    - {fileID: 5076559134847764641, guid: b402555b7eb0cf54e80ae52ea6537830, type: 3}
+    levelProperties:
+    - levelTexture: {fileID: 2800000, guid: aa0c741df9dd8634c8d84fd9ba2b0e3d, type: 3}
+      levelPosition: {x: 0, y: 0, z: 0}
+      levelRotation: {x: 0, y: 0, z: 0, w: 0}
+      levelScale: {x: 10, y: 10, z: 2}
     levelOffsetDistances: []
     levelOffsetHeights: []
   - levelType: 2
     startPositionOffset: 500
-    levelPrefabs:
-    - {fileID: 6367198773044652360, guid: 07a932509930b4a4091fe76eccde5220, type: 3}
-    - {fileID: 6809108400671865427, guid: d6ffd66fd7c947845ae57b5623ac9623, type: 3}
-    - {fileID: 8471051340906058927, guid: a8705263ddf5c614a9742d5c07467a72, type: 3}
+    levelProperties:
+    - levelTexture: {fileID: 2800000, guid: 3c227d230cca14c42822692b6aff3459, type: 3}
+      levelPosition: {x: 0, y: 6.5, z: 0}
+      levelRotation: {x: 0, y: 0, z: 0, w: 0}
+      levelScale: {x: 30, y: 3, z: 2}
+    - levelTexture: {fileID: 2800000, guid: 382df89af99b9f2459dd19206e68a63d, type: 3}
+      levelPosition: {x: 0, y: 8, z: 0}
+      levelRotation: {x: 0, y: 0, z: 0, w: 0}
+      levelScale: {x: 25, y: 6, z: 2}
+    - levelTexture: {fileID: 2800000, guid: b6fc60785b6a795478135ce6f7712c5a, type: 3}
+      levelPosition: {x: 0, y: 9.5, z: 0}
+      levelRotation: {x: 0, y: 0, z: 0, w: 0}
+      levelScale: {x: 20, y: 9, z: 2}
     levelOffsetDistances:
     - 10
     - 15
@@ -46,7 +62,10 @@ MonoBehaviour:
     - 5
   - levelType: 3
     startPositionOffset: -100
-    levelPrefabs:
-    - {fileID: 7118628981640878553, guid: 490496d63d9cfc449ab3b1aec3863d97, type: 3}
+    levelProperties:
+    - levelTexture: {fileID: 2800000, guid: d9c0dd5cdac07b145be73329e489869a, type: 3}
+      levelPosition: {x: 0, y: 0, z: -6}
+      levelRotation: {x: 0, y: 0, z: 0, w: 0}
+      levelScale: {x: 10, y: 10, z: 10}
     levelOffsetDistances: []
     levelOffsetHeights: []
