@@ -48,7 +48,7 @@ namespace ServiceLocator.Collectible
         }
 
         // Getters
-        public bool IsActive() => collectibleView != null && collectibleView.gameObject.activeInHierarchy;
+        public bool IsActive() => collectibleView.gameObject.activeInHierarchy;
         public Transform GetTransform() => collectibleView.transform;
         public CollectibleModel GetModel() => collectibleModel;
         public CollectibleView GetView() => collectibleView;

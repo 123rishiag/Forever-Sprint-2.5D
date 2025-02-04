@@ -79,8 +79,8 @@ namespace ServiceLocator.Main
             uiService.Destroy();
             // No Score Service Destroy
             // No Player Service Destroy
-            collectibleService.Destroy();
-            levelService.Destroy();
+            // No Collectible Service Destroy
+            // No Level Service Destroy
         }
 
         public void FixedUpdate()
