@@ -5,13 +5,14 @@ using ServiceLocator.Player;
 using ServiceLocator.Score;
 using ServiceLocator.Sound;
 using ServiceLocator.UI;
+using ServiceLocator.Utility;
 using ServiceLocator.Vision;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace ServiceLocator.Main
 {
-    public class GameController
+    public class GameController : IStateOwner<GameController>
     {
         // Private Variables
         private GameService gameService;
@@ -25,16 +26,19 @@ namespace ServiceLocator.Main
         private CollectibleService collectibleService;
         private LevelService levelService;
 
+        public GameController Owner { get; set; }
+        private GameStateMachine gameStateMachine;
+
         public GameController(GameService _gameService)
         {
-            // Setting Elements
-            Time.timeScale = 0f;
-
-            // Setting Variables
+            // Setting Services
             gameService = _gameService;
             CreateServices();
+
+            // Setting Elements
             InjectDependencies();
-            Reset();
+            CreateStateMachine();
+            gameStateMachine.ChangeState(GameState.GAME_START);
         }
         private void CreateServices()
         {
@@ -54,11 +58,16 @@ namespace ServiceLocator.Main
             // No Sound Service Init
             uiService.Init(this);
             scoreService.Init(uiService);
-            playerService.Init(inputService, soundService, uiService, cameraService, this);
+            playerService.Init(inputService, soundService, uiService, cameraService);
             collectibleService.Init(playerService, scoreService, soundService);
             levelService.Init(playerService, collectibleService);
         }
 
+        private void CreateStateMachine()
+        {
+            Owner = this;
+            gameStateMachine = new GameStateMachine(this);
+        }
         public void Reset()
         {
             // No Input Service Reset
@@ -83,73 +92,31 @@ namespace ServiceLocator.Main
             // No Level Service Destroy
         }
 
-        public void FixedUpdate()
-        {
-            // No Input Service Fixed Update
-            // No Camera Service Fixed Update
-            // No Sound Service Fixed Update
-            // No UI Service Fixed Update
-            // No Score Service Fixed Update
-            playerService.FixedUpdate();
-            // No Collectible Service Fixed Update
-            // No Level Service Fixed Update
-        }
-
         public void Update()
         {
-            inputService.Update();
-            // No Camera Service Update
-            // No Sound Service Update
-            // No UI Service Update
-            // No Score Service Update
-            playerService.Update();
-            collectibleService.Update();
-            levelService.Update();
-
-            // Checking Elements
-            if (inputService.IsEscapePressed)
-            {
-                PauseGame();
-            }
+            gameStateMachine.Update();
+        }
+        public void FixedUpdate()
+        {
+            gameStateMachine.FixedUpdate();
         }
 
         public void PlayGame()
         {
-            Time.timeScale = 1f;
-            uiService.GetUIController().EnableMainMenuPanel(false);
-            soundService.PlaySoundEffect(SoundType.GAME_PLAY);
-        }
-        public void PauseGame()
-        {
-            if (!uiService.GetUIController().IsPauseMenuPanelEnabled())
-            {
-                Time.timeScale = 0f;
-                uiService.GetUIController().EnablePauseMenuPanel(true);
-                soundService.PlaySoundEffect(SoundType.GAME_PAUSE);
-            }
-        }
-        public void ResumeGame()
-        {
-            Time.timeScale = 1f;
-            uiService.GetUIController().EnablePauseMenuPanel(false);
-            soundService.PlaySoundEffect(SoundType.GAME_PLAY);
+            soundService.PlaySoundEffect(SoundType.BUTTON_CLICK);
+            gameStateMachine.ChangeState(GameState.GAME_PLAY);
         }
         public void RestartGame()
         {
-            soundService.PlaySoundEffect(SoundType.GAME_PLAY);
-            SceneManager.LoadScene(0); // Reload 0th scene
+            soundService.PlaySoundEffect(SoundType.BUTTON_CLICK);
+            gameStateMachine.ChangeState(GameState.GAME_RESTART);
         }
         public void MainMenu()
         {
             soundService.PlaySoundEffect(SoundType.BUTTON_QUIT);
             SceneManager.LoadScene(0); // Reload 0th scene
         }
-        public void GameOver()
-        {
-            Time.timeScale = 0f;
-            uiService.GetUIController().EnableGameOverMenuPanel(true);
-            soundService.PlaySoundEffect(SoundType.GAME_OVER);
-        }
+
         public void QuitGame()
         {
             soundService.PlaySoundEffect(SoundType.BUTTON_QUIT);
@@ -158,9 +125,8 @@ namespace ServiceLocator.Main
 
         public void MuteGame()
         {
-            soundService.MuteGame();
             uiService.GetUIController().SetMuteButtonText(soundService.IsMute);
-            soundService.PlaySoundEffect(SoundType.BUTTON_CLICK);
+            soundService.MuteGame(); // Mute/unmute the game
         }
 
         // Getters
@@ -172,5 +138,7 @@ namespace ServiceLocator.Main
         public PlayerService GetPlayerService() => playerService;
         public CollectibleService GetCollectibleService() => collectibleService;
         public LevelService GetLevelService() => levelService;
+
+        public GameState GetCurrentState() => gameStateMachine.GetCurrentState();
     }
 }

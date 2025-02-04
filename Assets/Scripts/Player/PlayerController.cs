@@ -1,5 +1,4 @@
 using ServiceLocator.Controls;
-using ServiceLocator.Main;
 using ServiceLocator.Sound;
 using ServiceLocator.UI;
 using UnityEngine;
@@ -28,11 +27,9 @@ namespace ServiceLocator.Player
         private InputService inputService;
         private SoundService soundService;
         private UIService uiService;
-        private GameController gameController;
 
         public PlayerController(PlayerData _playerData, PlayerView _playerPrefab,
-            InputService _inputService, SoundService _soundService, UIService _uiService,
-            GameController _gameController)
+            InputService _inputService, SoundService _soundService, UIService _uiService)
         {
             // Setting Variables
             playerModel = new PlayerModel(_playerData);
@@ -43,22 +40,24 @@ namespace ServiceLocator.Player
             inputService = _inputService;
             soundService = _soundService;
             uiService = _uiService;
-            gameController = _gameController;
 
             // Setting Elements
             playerDefaultPosition = playerView.transform.position;
+            Reset();
+        }
 
+        public void Reset()
+        {
+            playerModel.Reset();
+            playerView.SetPosition(playerDefaultPosition);
+
+            // Setting Controller Reset
             currentHealth = playerModel.MaxHealth;
             defaultSpeed = playerModel.MoveSpeed * 100;
             currentSpeed = defaultSpeed;
             airJumpCount = 0;
 
             uiService.GetUIController().UpdateHealthText(currentHealth);
-        }
-
-        public void Reset()
-        {
-            playerView.transform.position = playerDefaultPosition;
         }
 
         public void FixedUpdate()
@@ -456,15 +455,18 @@ namespace ServiceLocator.Player
             }
         }
         private void HandleDeadState()
-        {
-            if (playerView.DeadFinished())
-            {
-                gameController.GameOver();
-            }
-        }
+        { }
         #endregion
 
         #region Getters
+        public bool IsAlive()
+        {
+            if (playerView.DeadFinished() && currentHealth <= 0)
+            {
+                return false;
+            }
+            return true;
+        }
         private bool IsFalling(out PlayerState _fallState)
         {
             if (playerVelocity.y < -playerModel.DeadFallThreshold)

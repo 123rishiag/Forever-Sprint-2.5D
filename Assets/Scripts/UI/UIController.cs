@@ -15,7 +15,7 @@ namespace ServiceLocator.UI
             gameController = _gameController;
 
             // Adding Listeners
-            uiView.pauseMenuResumeButton.onClick.AddListener(gameController.ResumeGame);
+            uiView.pauseMenuResumeButton.onClick.AddListener(gameController.PlayGame);
             uiView.pauseMenuMainMenuButton.onClick.AddListener(gameController.MainMenu);
 
             uiView.gameOverMenuRestartButton.onClick.AddListener(gameController.RestartGame);
@@ -28,7 +28,7 @@ namespace ServiceLocator.UI
         public void Destroy()
         {
             // Removing Listeners
-            uiView.pauseMenuResumeButton.onClick.RemoveListener(gameController.ResumeGame);
+            uiView.pauseMenuResumeButton.onClick.RemoveListener(gameController.PlayGame);
             uiView.pauseMenuMainMenuButton.onClick.RemoveListener(gameController.MainMenu);
 
             uiView.gameOverMenuRestartButton.onClick.RemoveListener(gameController.RestartGame);

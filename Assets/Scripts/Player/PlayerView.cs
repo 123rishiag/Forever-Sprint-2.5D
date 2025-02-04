@@ -47,6 +47,11 @@ namespace ServiceLocator.Player
             playerController = _playerController;
         }
 
+        public void SetPosition(Vector3 _position)
+        {
+            transform.position = _position;
+        }
+
         #region AnimationHandling
         public void PlayAnimation()
         {
