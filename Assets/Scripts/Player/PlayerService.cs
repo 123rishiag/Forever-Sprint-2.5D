@@ -1,5 +1,4 @@
 using ServiceLocator.Controls;
-using ServiceLocator.Main;
 using ServiceLocator.Sound;
 using ServiceLocator.UI;
 using ServiceLocator.Vision;
@@ -19,14 +18,11 @@ namespace ServiceLocator.Player
         }
 
         public void Init(InputService _inputService, SoundService _soundService, UIService _uiService,
-            CameraService _cameraService, GameController _gameController)
+            CameraService _cameraService)
         {
             // Setting Elements
             playerController = new PlayerController(playerConfig.playerData, playerConfig.playerPrefab,
-                _inputService, _soundService, _uiService,
-            _gameController);
-
-            _cameraService.FollowPosition(playerController.GetFollowTransform(), playerController.GetTransform());
+                _inputService, _soundService, _uiService);
         }
 
         public void Reset()
