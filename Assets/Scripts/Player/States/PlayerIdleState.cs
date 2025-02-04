@@ -15,6 +15,9 @@ namespace ServiceLocator.Player
             Owner.GetView().ResetProperty();
             Owner.GetView().GetAnimator().Play(PlayerView.idleHash);
 
+            // Setting Collider Dimensions
+            Owner.GetView().SetDefaultColliderDimensions();
+
             // Setting Elements
             Owner.AirJumpCount = 0;
         }

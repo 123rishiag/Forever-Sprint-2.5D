@@ -17,6 +17,9 @@ namespace ServiceLocator.Player
             Owner.GetView().ResetProperty();
             Owner.GetView().GetAnimator().Play(PlayerView.slideHash);
 
+            // Setting Collider Dimensions
+            Owner.GetView().SetSlideColliderDimensions();
+
             // Setting Elements
             Owner.SoundService.PlaySoundEffect(SoundType.PLAYER_SLIDE);
         }

@@ -16,6 +16,9 @@ namespace ServiceLocator.Player
             Owner.GetView().ResetProperty();
             Owner.GetView().GetAnimator().Play(PlayerView.rollHash);
 
+            // Setting Collider Dimensions
+            Owner.GetView().SetRollColliderDimensions();
+
             // Setting Elements
             Owner.SetVelocity(0f);
             Owner.RollTimer = Owner.GetModel().RollDuration;

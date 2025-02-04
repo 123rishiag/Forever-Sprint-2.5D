@@ -17,6 +17,9 @@ namespace ServiceLocator.Player
             Owner.GetView().SetDashFactorHash(Owner.GetModel().DashSpeedIncreaseFactor);
             Owner.GetView().GetAnimator().Play(PlayerView.dashHash);
 
+            // Setting Collider Dimensions
+            Owner.GetView().SetDefaultColliderDimensions();
+
             // Setting Elements
             Owner.CurrentSpeed *= Owner.GetModel().DashSpeedIncreaseFactor;
         }

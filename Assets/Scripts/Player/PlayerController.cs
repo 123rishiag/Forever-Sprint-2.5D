@@ -76,11 +76,7 @@ namespace ServiceLocator.Player
             playerStateMachine.FixedUpdate();
             HandleMovement();
         }
-        public void Update()
-        {
-            playerView.UpdateColliderDimensions(playerStateMachine.GetCurrentState());
-            playerStateMachine.Update();
-        }
+        public void Update() => playerStateMachine.Update();
 
         private void HandleMovement()
         {

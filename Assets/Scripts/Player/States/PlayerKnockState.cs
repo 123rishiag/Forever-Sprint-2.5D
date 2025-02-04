@@ -16,6 +16,9 @@ namespace ServiceLocator.Player
             Owner.GetView().ResetProperty();
             Owner.GetView().GetAnimator().Play(PlayerView.knockHash);
 
+            // Setting Collider Dimensions
+            Owner.GetView().SetDefaultColliderDimensions();
+
             // Setting Elements
             Owner.SoundService.PlaySoundEffect(SoundType.PLAYER_KNOCK);
         }

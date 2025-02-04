@@ -52,28 +52,22 @@ namespace ServiceLocator.Player
             transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
             animator.SetFloat(dashFactorHash, 0);
         }
-        #endregion
-
-        #region CollisonHandling
-        public void UpdateColliderDimensions(PlayerState _playerState)
+        public void SetDefaultColliderDimensions()
         {
-            switch (_playerState)
-            {
-                case PlayerState.ROLL:
-                    characterController.height = defaultHeight * rollingHeightMultiplier;
-                    characterController.center = new Vector3(defaultCenter.x, defaultHeight * rollingHeightMultiplier / 2,
-                        defaultCenter.z);
-                    break;
-                case PlayerState.SLIDE:
-                    characterController.height = defaultHeight * slidingHeightMultiplier;
-                    characterController.center = new Vector3(defaultCenter.x, defaultHeight * slidingHeightMultiplier / 2,
-                        defaultCenter.z);
-                    break;
-                default:
-                    characterController.height = defaultHeight;
-                    characterController.center = defaultCenter;
-                    break;
-            }
+            characterController.height = defaultHeight;
+            characterController.center = defaultCenter;
+        }
+        public void SetRollColliderDimensions()
+        {
+            characterController.height = defaultHeight * rollingHeightMultiplier;
+            characterController.center = new Vector3(defaultCenter.x, defaultHeight * rollingHeightMultiplier / 2,
+                defaultCenter.z);
+        }
+        public void SetSlideColliderDimensions()
+        {
+            characterController.height = defaultHeight * slidingHeightMultiplier;
+            characterController.center = new Vector3(defaultCenter.x, defaultHeight * slidingHeightMultiplier / 2,
+                defaultCenter.z);
         }
         #endregion
 
