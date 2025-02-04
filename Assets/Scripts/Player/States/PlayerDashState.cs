@@ -12,6 +12,12 @@ namespace ServiceLocator.Player
 
         public void OnStateEnter()
         {
+            // Setting Animator
+            Owner.GetView().ResetProperty();
+            Owner.GetView().SetDashFactorHash(Owner.GetModel().DashSpeedIncreaseFactor);
+            Owner.GetView().GetAnimator().Play(PlayerView.dashHash);
+
+            // Setting Elements
             Owner.CurrentSpeed *= Owner.GetModel().DashSpeedIncreaseFactor;
         }
         public void Update()

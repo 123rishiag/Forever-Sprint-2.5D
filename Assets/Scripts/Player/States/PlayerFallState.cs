@@ -11,6 +11,11 @@ namespace ServiceLocator.Player
 
         public void OnStateEnter()
         {
+            // Setting Animator
+            Owner.GetView().ResetProperty();
+            Owner.GetView().GetAnimator().Play(PlayerView.fallHash);
+
+            // Setting Elements
             Owner.SetVelocity(0f);
         }
         public void Update()

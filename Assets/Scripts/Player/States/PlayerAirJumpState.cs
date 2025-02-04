@@ -12,6 +12,11 @@ namespace ServiceLocator.Player
 
         public void OnStateEnter()
         {
+            // Setting Animator
+            Owner.GetView().ResetProperty();
+            Owner.GetView().GetAnimator().Play(PlayerView.airJumpHash);
+
+            // Setting Elements
             ++Owner.AirJumpCount;
             Owner.SetVelocity(Owner.GetModel().AirJumpForce);
             Owner.SoundService.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);

@@ -12,11 +12,13 @@ namespace ServiceLocator.Player
 
         public void OnStateEnter()
         {
-            Owner.SetVelocity(0f);
+            // Setting Animator
+            Owner.GetView().ResetProperty();
+            Owner.GetView().GetAnimator().Play(PlayerView.climbHash);
 
-            // Adding Offset
-            Owner.GetView().SetPosition(Owner.GetTransform().position + new Vector3(0.30f, 0f, 0f));
-            //playerView.transform.position += new Vector3(0.30f, -0.14f, 0f);
+            // Setting Elements
+            Owner.SetVelocity(0f);
+            Owner.GetView().SetPosition(Owner.GetTransform().position + new Vector3(0.30f, 0f, 0f)); // Adding offset
         }
         public void Update()
         {

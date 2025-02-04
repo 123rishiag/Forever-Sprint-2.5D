@@ -13,6 +13,11 @@ namespace ServiceLocator.Player
 
         public void OnStateEnter()
         {
+            // Setting Animator
+            Owner.GetView().ResetProperty();
+            Owner.GetView().GetAnimator().Play(PlayerView.slideHash);
+
+            // Setting Elements
             Owner.SoundService.PlaySoundEffect(SoundType.PLAYER_SLIDE);
         }
         public void Update()

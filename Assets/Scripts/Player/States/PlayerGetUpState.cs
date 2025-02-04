@@ -10,7 +10,12 @@ namespace ServiceLocator.Player
 
         public PlayerGetUpState(PlayerStateMachine _stateMachine) => stateMachine = _stateMachine;
 
-        public void OnStateEnter() { }
+        public void OnStateEnter()
+        {
+            // Setting Animator
+            Owner.GetView().ResetProperty();
+            Owner.GetView().GetAnimator().Play(PlayerView.getUpHash);
+        }
         public void Update()
         {
             if (Owner.GetView().GetUpFinished())

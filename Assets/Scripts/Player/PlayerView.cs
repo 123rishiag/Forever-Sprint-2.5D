@@ -21,89 +21,36 @@ namespace ServiceLocator.Player
         [SerializeField] private float rollingHeightMultiplier;
         [SerializeField] private float slidingHeightMultiplier;
 
-        // Private Variables
-        private PlayerController playerController;
-
         // Animator Hashes
-        private readonly int dashFactorHash = Animator.StringToHash("Dash Factor");
-        private readonly int idleHash = Animator.StringToHash("Idle");
-        private readonly int moveHash = Animator.StringToHash("Move");
-        private readonly int jumpHash = Animator.StringToHash("Jump");
-        private readonly int airJumpHash = Animator.StringToHash("Air Jump");
-        private readonly int fallHash = Animator.StringToHash("Fall");
-        private readonly int bigFallHash = Animator.StringToHash("Fall");
-        private readonly int deadFallHash = Animator.StringToHash("Fall");
-        private readonly int rollHash = Animator.StringToHash("Roll");
-        private readonly int slideHash = Animator.StringToHash("Slide");
-        private readonly int dashHash = Animator.StringToHash("Move");
-        private readonly int climbHash = Animator.StringToHash("Climb");
-        private readonly int knockHash = Animator.StringToHash("Knock");
-        private readonly int getUpHash = Animator.StringToHash("Get Up");
-        private readonly int deadHash = Animator.StringToHash("Dead");
+        public static readonly int dashFactorHash = Animator.StringToHash("Dash Factor");
+        public static readonly int idleHash = Animator.StringToHash("Idle");
+        public static readonly int moveHash = Animator.StringToHash("Move");
+        public static readonly int jumpHash = Animator.StringToHash("Jump");
+        public static readonly int airJumpHash = Animator.StringToHash("Air Jump");
+        public static readonly int fallHash = Animator.StringToHash("Fall");
+        public static readonly int bigFallHash = Animator.StringToHash("Fall");
+        public static readonly int deadFallHash = Animator.StringToHash("Fall");
+        public static readonly int rollHash = Animator.StringToHash("Roll");
+        public static readonly int slideHash = Animator.StringToHash("Slide");
+        public static readonly int dashHash = Animator.StringToHash("Move");
+        public static readonly int climbHash = Animator.StringToHash("Climb");
+        public static readonly int knockHash = Animator.StringToHash("Knock");
+        public static readonly int getUpHash = Animator.StringToHash("Get Up");
+        public static readonly int deadHash = Animator.StringToHash("Dead");
 
-        public void Init(PlayerController _playerController)
-        {
-            // Setting Variables
-            playerController = _playerController;
-        }
-
+        #region Setters
         public void SetPosition(Vector3 _position)
         {
             transform.position = _position;
         }
-
-        #region AnimationHandling
-        public void PlayAnimation(PlayerState _playerState)
+        public void SetDashFactorHash(float _dashFactor)
         {
+            animator.SetFloat(dashFactorHash, _dashFactor);
+        }
+        public void ResetProperty()
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
             animator.SetFloat(dashFactorHash, 0);
-            switch (_playerState)
-            {
-                case PlayerState.IDLE:
-                    animator.Play(idleHash);
-                    break;
-                case PlayerState.MOVE:
-                    animator.Play(moveHash);
-                    break;
-                case PlayerState.JUMP:
-                    animator.Play(jumpHash);
-                    break;
-                case PlayerState.AIR_JUMP:
-                    animator.Play(airJumpHash);
-                    break;
-                case PlayerState.FALL:
-                    animator.Play(fallHash);
-                    break;
-                case PlayerState.BIG_FALL:
-                    animator.Play(bigFallHash);
-                    break;
-                case PlayerState.DEAD_FALL:
-                    animator.Play(deadFallHash);
-                    break;
-                case PlayerState.ROLL:
-                    animator.Play(rollHash);
-                    break;
-                case PlayerState.SLIDE:
-                    animator.Play(slideHash);
-                    break;
-                case PlayerState.DASH:
-                    animator.SetFloat(dashFactorHash, playerController.GetModel().DashSpeedIncreaseFactor);
-                    animator.Play(dashHash);
-                    break;
-                case PlayerState.CLIMB:
-                    animator.Play(climbHash);
-                    break;
-                case PlayerState.KNOCK:
-                    animator.Play(knockHash);
-                    break;
-                case PlayerState.GET_UP:
-                    animator.Play(getUpHash);
-                    break;
-                case PlayerState.DEAD:
-                    animator.Play(deadHash);
-                    break;
-                default:
-                    break;
-            }
         }
         #endregion
 
