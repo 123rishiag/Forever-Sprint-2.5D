@@ -35,13 +35,16 @@ namespace ServiceLocator.Level
             levelPool = new LevelPool(levelConfig, levelParentPanel, collectibleService);
             nextLevelPositions = new List<Vector3>();
 
-            SetLevelsStartPosition();
+            Reset();
         }
 
         public void Reset()
         {
+            nextLevelPositions.Clear();
             DestroyLevels();
+            SetLevelsStartPosition();
         }
+
 
         public void Update()
         {
@@ -55,7 +58,8 @@ namespace ServiceLocator.Level
             for (int i = 0; i < levelConfig.levelData.Length; ++i)
             {
                 // Adding the calculated position to the list
-                float platformStartX = playerService.GetPlayerController().GetTransform().position.x + levelConfig.levelData[i].startPositionOffset;
+                float platformStartX = playerService.GetPlayerController().GetTransform().position.x +
+                    levelConfig.levelData[i].startPositionOffset;
                 Vector3 startPosition = new Vector3(platformStartX, 0, 0);
                 nextLevelPositions.Add(startPosition);
             }
