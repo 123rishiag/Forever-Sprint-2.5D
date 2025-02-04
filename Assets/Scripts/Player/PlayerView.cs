@@ -53,10 +53,10 @@ namespace ServiceLocator.Player
         }
 
         #region AnimationHandling
-        public void PlayAnimation()
+        public void PlayAnimation(PlayerState _playerState)
         {
             animator.SetFloat(dashFactorHash, 0);
-            switch (playerController.GetModel().PlayerState)
+            switch (_playerState)
             {
                 case PlayerState.IDLE:
                     animator.Play(idleHash);
@@ -108,9 +108,9 @@ namespace ServiceLocator.Player
         #endregion
 
         #region CollisonHandling
-        public void UpdateColliderDimensions()
+        public void UpdateColliderDimensions(PlayerState _playerState)
         {
-            switch (playerController.GetModel().PlayerState)
+            switch (_playerState)
             {
                 case PlayerState.ROLL:
                     characterController.height = defaultHeight * rollingHeightMultiplier;
