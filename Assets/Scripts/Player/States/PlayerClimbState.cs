@@ -20,7 +20,7 @@ namespace ServiceLocator.Player
             Owner.GetView().SetDefaultColliderDimensions();
 
             // Setting Elements
-            Owner.SetVelocity(0f);
+            Owner.SetVelocityY(0f);
             Owner.GetView().SetPosition(Owner.GetTransform().position + new Vector3(0.30f, 0f, 0f)); // Adding offset
         }
         public void Update()

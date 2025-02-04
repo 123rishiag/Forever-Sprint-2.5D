@@ -19,7 +19,8 @@ namespace ServiceLocator.Player
             Owner.GetView().SetDefaultColliderDimensions();
 
             // Setting Elements
-            Owner.SetVelocity(0f);
+            Owner.CurrentSpeed = Owner.DefaultSpeed;
+            Owner.SetVelocityY(0f);
         }
         public void Update()
         {
@@ -40,7 +41,7 @@ namespace ServiceLocator.Player
                 stateMachine.ChangeState(PlayerState.BIG_FALL);
             }
         }
-        public void FixedUpdate() { }
+        public void FixedUpdate() => Owner.Move();
         public void OnStateExit() { }
     }
 }

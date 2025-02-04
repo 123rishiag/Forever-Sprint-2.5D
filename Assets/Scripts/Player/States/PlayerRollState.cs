@@ -20,7 +20,8 @@ namespace ServiceLocator.Player
             Owner.GetView().SetRollColliderDimensions();
 
             // Setting Elements
-            Owner.SetVelocity(0f);
+            Owner.CurrentSpeed = Owner.DefaultSpeed;
+            Owner.SetVelocityY(0f);
             Owner.RollTimer = Owner.GetModel().RollDuration;
         }
         public void Update()
@@ -39,7 +40,7 @@ namespace ServiceLocator.Player
                 stateMachine.ChangeState(PlayerState.FALL);
             }
         }
-        public void FixedUpdate() { }
+        public void FixedUpdate() => Owner.Move();
         public void OnStateExit() { }
     }
 }

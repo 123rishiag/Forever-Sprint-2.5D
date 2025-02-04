@@ -20,7 +20,8 @@ namespace ServiceLocator.Player
             Owner.GetView().SetDefaultColliderDimensions();
 
             // Setting Elements
-            Owner.SetVelocity(Owner.GetModel().JumpForce);
+            Owner.CurrentSpeed = Owner.DefaultSpeed;
+            Owner.SetVelocityY(Owner.GetModel().JumpForce);
             Owner.SoundService.PlaySoundEffect(SoundType.PLAYER_JUMP);
         }
         public void Update()
@@ -38,7 +39,7 @@ namespace ServiceLocator.Player
                 stateMachine.ChangeState(PlayerState.FALL);
             }
         }
-        public void FixedUpdate() { }
+        public void FixedUpdate() => Owner.Move();
         public void OnStateExit() { }
     }
 }
