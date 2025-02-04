@@ -16,6 +16,9 @@ namespace ServiceLocator.Player
             Owner.GetView().ResetProperty();
             Owner.GetView().GetAnimator().Play(PlayerView.deadHash);
 
+            // Setting Collider Dimensions
+            Owner.GetView().SetDefaultColliderDimensions();
+
             // Setting Elements
             Owner.SoundService.PlaySoundEffect(SoundType.PLAYER_DEAD);
         }

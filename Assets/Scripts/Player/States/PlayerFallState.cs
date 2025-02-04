@@ -15,6 +15,9 @@ namespace ServiceLocator.Player
             Owner.GetView().ResetProperty();
             Owner.GetView().GetAnimator().Play(PlayerView.fallHash);
 
+            // Setting Collider Dimensions
+            Owner.GetView().SetDefaultColliderDimensions();
+
             // Setting Elements
             Owner.SetVelocity(0f);
         }

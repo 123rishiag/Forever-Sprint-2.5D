@@ -16,6 +16,9 @@ namespace ServiceLocator.Player
             Owner.GetView().ResetProperty();
             Owner.GetView().GetAnimator().Play(PlayerView.jumpHash);
 
+            // Setting Collider Dimensions
+            Owner.GetView().SetDefaultColliderDimensions();
+
             // Setting Elements
             Owner.SetVelocity(Owner.GetModel().JumpForce);
             Owner.SoundService.PlaySoundEffect(SoundType.PLAYER_JUMP);
