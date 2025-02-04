@@ -4,7 +4,6 @@ namespace ServiceLocator.Player
     {
         public PlayerModel(PlayerData _playerData)
         {
-            Reset();
             MaxHealth = _playerData.maxHealth;
             MoveSpeed = _playerData.moveSpeed;
             JumpForce = _playerData.jumpForce;
@@ -20,13 +19,7 @@ namespace ServiceLocator.Player
             DashSpeedIncreaseFactor = _playerData.dashSpeedIncreaseFactor;
         }
 
-        public void Reset()
-        {
-            PlayerState = PlayerState.IDLE;
-        }
-
         // Getters
-        public PlayerState PlayerState { get; set; }
         public int MaxHealth { get; private set; }
         public float MoveSpeed { get; private set; }
         public float JumpForce { get; private set; }

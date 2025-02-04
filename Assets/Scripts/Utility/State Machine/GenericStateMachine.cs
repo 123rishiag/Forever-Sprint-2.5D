@@ -31,9 +31,9 @@ namespace ServiceLocator.Utility
 
         protected void SetOwner()
         {
-            foreach (IState<T, U> _gameState in States.Values)
+            foreach (IState<T, U> _state in States.Values)
             {
-                _gameState.Owner = owner;
+                _state.Owner = owner;
             }
         }
     }
