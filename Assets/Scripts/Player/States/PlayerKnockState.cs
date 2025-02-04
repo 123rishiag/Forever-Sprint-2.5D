@@ -12,6 +12,11 @@ namespace ServiceLocator.Player
 
         public void OnStateEnter()
         {
+            // Setting Animator
+            Owner.GetView().ResetProperty();
+            Owner.GetView().GetAnimator().Play(PlayerView.knockHash);
+
+            // Setting Elements
             Owner.SoundService.PlaySoundEffect(SoundType.PLAYER_KNOCK);
         }
         public void Update()

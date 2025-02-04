@@ -9,7 +9,12 @@ namespace ServiceLocator.Player
 
         public PlayerDeadFallState(PlayerStateMachine _stateMachine) => stateMachine = _stateMachine;
 
-        public void OnStateEnter() { }
+        public void OnStateEnter()
+        {
+            // Setting Animator
+            Owner.GetView().ResetProperty();
+            Owner.GetView().GetAnimator().Play(PlayerView.deadFallHash);
+        }
         public void Update()
         {
             if (Owner.InputService.WasJumpPressed && Owner.AirJumpCount < Owner.GetModel().AirJumpAllowed)

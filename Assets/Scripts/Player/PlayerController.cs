@@ -38,7 +38,6 @@ namespace ServiceLocator.Player
             // Setting Variables
             playerModel = new PlayerModel(_playerData);
             playerView = Object.Instantiate(_playerPrefab).GetComponent<PlayerView>();
-            playerView.Init(this);
 
             // Setting Services
             InputService = _inputService;
@@ -79,10 +78,8 @@ namespace ServiceLocator.Player
         }
         public void Update()
         {
-            ResetZAxis();
-            playerView.PlayAnimation(playerStateMachine.GetCurrentState());
-            playerStateMachine.Update();
             playerView.UpdateColliderDimensions(playerStateMachine.GetCurrentState());
+            playerStateMachine.Update();
         }
 
         private void HandleMovement()
@@ -108,8 +105,6 @@ namespace ServiceLocator.Player
 
         // Setters
         public void SetVelocity(float _velocity) => PlayerVelocity.y = _velocity;
-        private void ResetZAxis() => playerView.SetPosition(
-            new Vector3(GetTransform().position.x, GetTransform().position.y, 0f));
         public void DecreaseHealth()
         {
             --CurrentHealth;

@@ -11,6 +11,11 @@ namespace ServiceLocator.Player
 
         public void OnStateEnter()
         {
+            // Setting Animator
+            Owner.GetView().ResetProperty();
+            Owner.GetView().GetAnimator().Play(PlayerView.idleHash);
+
+            // Setting Elements
             Owner.AirJumpCount = 0;
         }
         public void Update()
