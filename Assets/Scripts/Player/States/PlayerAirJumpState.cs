@@ -20,8 +20,9 @@ namespace ServiceLocator.Player
             Owner.GetView().SetDefaultColliderDimensions();
 
             // Setting Elements
+            Owner.CurrentSpeed = Owner.DefaultSpeed;
             ++Owner.AirJumpCount;
-            Owner.SetVelocity(Owner.GetModel().AirJumpForce);
+            Owner.SetVelocityY(Owner.GetModel().AirJumpForce);
             Owner.SoundService.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);
         }
         public void Update()
@@ -43,7 +44,7 @@ namespace ServiceLocator.Player
                 stateMachine.ChangeState(PlayerState.FALL);
             }
         }
-        public void FixedUpdate() { }
+        public void FixedUpdate() => Owner.Move();
         public void OnStateExit() { }
     }
 }

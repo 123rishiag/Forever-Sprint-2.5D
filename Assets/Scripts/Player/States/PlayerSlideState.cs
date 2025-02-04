@@ -21,6 +21,7 @@ namespace ServiceLocator.Player
             Owner.GetView().SetSlideColliderDimensions();
 
             // Setting Elements
+            Owner.CurrentSpeed = Owner.DefaultSpeed;
             Owner.SoundService.PlaySoundEffect(SoundType.PLAYER_SLIDE);
         }
         public void Update()
@@ -49,7 +50,7 @@ namespace ServiceLocator.Player
                 stateMachine.ChangeState(PlayerState.IDLE);
             }
         }
-        public void FixedUpdate() { }
+        public void FixedUpdate() => Owner.Move();
         public void OnStateExit() { }
     }
 }

@@ -15,7 +15,8 @@ namespace ServiceLocator.Player
             Owner.GetView().ResetProperty();
             Owner.GetView().GetAnimator().Play(PlayerView.bigFallHash);
 
-            // Setting Collider Dimensions
+            // Setting Elements
+            Owner.CurrentSpeed = Owner.DefaultSpeed;
             Owner.GetView().SetDefaultColliderDimensions();
         }
         public void Update()
@@ -37,7 +38,7 @@ namespace ServiceLocator.Player
                 stateMachine.ChangeState(PlayerState.DEAD_FALL);
             }
         }
-        public void FixedUpdate() { }
+        public void FixedUpdate() => Owner.Move();
         public void OnStateExit() { }
     }
 }

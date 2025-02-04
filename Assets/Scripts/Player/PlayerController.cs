@@ -13,7 +13,6 @@ namespace ServiceLocator.Player
         private PlayerView playerView;
 
         private Vector3 playerDefaultPosition;
-        private Vector3 playerDirection;
         public Vector3 PlayerVelocity;
 
         public int CurrentHealth { get; set; }
@@ -71,36 +70,19 @@ namespace ServiceLocator.Player
             playerStateMachine.ChangeState(PlayerState.IDLE);
         }
 
-        public void FixedUpdate()
-        {
-            playerStateMachine.FixedUpdate();
-            HandleMovement();
-        }
+        public void FixedUpdate() => playerStateMachine.FixedUpdate();
         public void Update() => playerStateMachine.Update();
 
-        private void HandleMovement()
+        public void Move()
         {
-            if (playerStateMachine.GetCurrentState() == PlayerState.IDLE ||
-                playerStateMachine.GetCurrentState() == PlayerState.CLIMB ||
-                playerStateMachine.GetCurrentState() == PlayerState.KNOCK ||
-                playerStateMachine.GetCurrentState() == PlayerState.GET_UP) return;
-
-            if (playerStateMachine.GetCurrentState() != PlayerState.DASH)
-                CurrentSpeed = DefaultSpeed;
-
-            if (playerStateMachine.GetCurrentState() == PlayerState.DEAD) PlayerVelocity.x = 0f;
-            else PlayerVelocity.x = CurrentSpeed * Time.fixedDeltaTime; // Default movement direction
-
-            PlayerVelocity.y -= playerModel.GravityForce * Time.fixedDeltaTime; // Apply gravity
-
-            playerDirection.x = PlayerVelocity.x; // Update horizontal movement
-            playerDirection.y = PlayerVelocity.y; // Update vertical movement
-
-            playerView.GetCharacterController().Move(playerDirection * Time.fixedDeltaTime); // Apply movement
+            PlayerVelocity.x = CurrentSpeed * Time.fixedDeltaTime; // Applying Movement
+            PlayerVelocity.y -= playerModel.GravityForce * Time.fixedDeltaTime; // Applying gravity
+            playerView.GetCharacterController().Move(PlayerVelocity * Time.fixedDeltaTime); // Applying movement
         }
 
         // Setters
-        public void SetVelocity(float _velocity) => PlayerVelocity.y = _velocity;
+        public void SetVelocityX(float _velocity) => PlayerVelocity.x = _velocity;
+        public void SetVelocityY(float _velocity) => PlayerVelocity.y = _velocity;
         public void DecreaseHealth()
         {
             --CurrentHealth;

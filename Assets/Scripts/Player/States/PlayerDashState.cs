@@ -54,7 +54,7 @@ namespace ServiceLocator.Player
                 stateMachine.ChangeState(PlayerState.IDLE);
             }
         }
-        public void FixedUpdate() { }
+        public void FixedUpdate() => Owner.Move();
         public void OnStateExit() { }
     }
 }

@@ -125,8 +125,8 @@ namespace ServiceLocator.Main
 
         public void MuteGame()
         {
-            uiService.GetUIController().SetMuteButtonText(soundService.IsMute);
             soundService.MuteGame(); // Mute/unmute the game
+            uiService.GetUIController().SetMuteButtonText(soundService.IsMute);
         }
 
         // Getters
