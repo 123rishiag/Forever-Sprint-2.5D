@@ -1,7 +1,6 @@
 using ServiceLocator.Controls;
 using ServiceLocator.Sound;
 using ServiceLocator.UI;
-using ServiceLocator.Vision;
 
 namespace ServiceLocator.Player
 {
@@ -17,8 +16,7 @@ namespace ServiceLocator.Player
             playerConfig = _playerConfig;
         }
 
-        public void Init(InputService _inputService, SoundService _soundService, UIService _uiService,
-            CameraService _cameraService)
+        public void Init(InputService _inputService, SoundService _soundService, UIService _uiService)
         {
             // Setting Elements
             playerController = new PlayerController(playerConfig.playerData, playerConfig.playerPrefab,
