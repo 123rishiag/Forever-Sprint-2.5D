@@ -58,7 +58,7 @@ namespace ServiceLocator.Main
             // No Sound Service Init
             uiService.Init(this);
             scoreService.Init(uiService);
-            playerService.Init(inputService, soundService, uiService, cameraService);
+            playerService.Init(inputService, soundService, uiService);
             collectibleService.Init(playerService, scoreService, soundService);
             levelService.Init(playerService, collectibleService);
         }
