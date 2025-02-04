@@ -43,7 +43,7 @@ namespace ServiceLocator.Level
         }
 
         // Getters
-        public bool IsActive() => levelView != null && levelView.gameObject.activeInHierarchy;
+        public bool IsActive() => levelView.gameObject.activeInHierarchy;
         public Transform GetTransform() => levelView.transform;
         public Transform GetEndPointTransform() => levelView.GetEndPointTransform();
         public Bounds GetLevelBounds() => levelView.GetLevelBounds();

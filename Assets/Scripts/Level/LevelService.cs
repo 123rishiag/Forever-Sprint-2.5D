@@ -43,11 +43,6 @@ namespace ServiceLocator.Level
             DestroyLevels();
         }
 
-        public void Destroy()
-        {
-            DestroyLevels();
-        }
-
         public void Update()
         {
             DestroyLevels(true);

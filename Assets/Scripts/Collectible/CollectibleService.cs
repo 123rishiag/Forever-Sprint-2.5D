@@ -48,11 +48,6 @@ namespace ServiceLocator.Collectible
             DestroyCollectibles();
         }
 
-        public void Destroy()
-        {
-            DestroyCollectibles();
-        }
-
         public void Update()
         {
             DestroyCollectibles(true);
