@@ -19,36 +19,36 @@ MonoBehaviour:
   - levelType: 0
     startPositionOffset: -100
     levelProperties:
-    - levelTexture: {fileID: 2800000, guid: 9397418d1d7b12543bf27fb61b93bbea, type: 3}
-      levelPosition: {x: 0, y: 20, z: 2}
+    - levelTexture: {fileID: 2800000, guid: 1bc049e424bae9342a919e0b2f012089, type: 3}
+      levelPosition: {x: 0, y: 20, z: 2.5}
       levelRotation: {x: 0, y: 0, z: 0, w: 0}
-      levelScale: {x: 10, y: 50, z: 2}
+      levelScale: {x: 50, y: 50, z: 1}
     levelOffsetDistances: []
     levelOffsetHeights: []
   - levelType: 1
     startPositionOffset: -100
     levelProperties:
-    - levelTexture: {fileID: 2800000, guid: aa0c741df9dd8634c8d84fd9ba2b0e3d, type: 3}
+    - levelTexture: {fileID: 2800000, guid: f738789400f0625409766f6890a76e51, type: 3}
       levelPosition: {x: 0, y: 0, z: 0}
       levelRotation: {x: 0, y: 0, z: 0, w: 0}
-      levelScale: {x: 10, y: 10, z: 2}
+      levelScale: {x: 10, y: 10, z: 4}
     levelOffsetDistances: []
     levelOffsetHeights: []
   - levelType: 2
     startPositionOffset: 100
     levelProperties:
-    - levelTexture: {fileID: 2800000, guid: 3c227d230cca14c42822692b6aff3459, type: 3}
+    - levelTexture: {fileID: 2800000, guid: 3aad4ef633b4de247a2d3685edf57d93, type: 3}
       levelPosition: {x: 0, y: 6.5, z: 0}
       levelRotation: {x: 0, y: 0, z: 0, w: 0}
-      levelScale: {x: 30, y: 3, z: 2}
-    - levelTexture: {fileID: 2800000, guid: 382df89af99b9f2459dd19206e68a63d, type: 3}
+      levelScale: {x: 30, y: 3, z: 4}
+    - levelTexture: {fileID: 2800000, guid: 25059aeb5080021408c76ec6cee7b124, type: 3}
       levelPosition: {x: 0, y: 8, z: 0}
       levelRotation: {x: 0, y: 0, z: 0, w: 0}
-      levelScale: {x: 25, y: 6, z: 2}
-    - levelTexture: {fileID: 2800000, guid: b6fc60785b6a795478135ce6f7712c5a, type: 3}
+      levelScale: {x: 25, y: 6, z: 4}
+    - levelTexture: {fileID: 2800000, guid: 3fa7eb7460d1d194482d1cb1a1d021d8, type: 3}
       levelPosition: {x: 0, y: 9.5, z: 0}
       levelRotation: {x: 0, y: 0, z: 0, w: 0}
-      levelScale: {x: 20, y: 9, z: 2}
+      levelScale: {x: 20, y: 9, z: 4}
     levelOffsetDistances:
     - 10
     - 15
@@ -63,8 +63,8 @@ MonoBehaviour:
   - levelType: 3
     startPositionOffset: -100
     levelProperties:
-    - levelTexture: {fileID: 2800000, guid: d9c0dd5cdac07b145be73329e489869a, type: 3}
-      levelPosition: {x: 0, y: 0, z: -6}
+    - levelTexture: {fileID: 2800000, guid: 6b3bb6acfcebaa94c91c0be09ec21799, type: 3}
+      levelPosition: {x: 0, y: 0, z: -7}
       levelRotation: {x: 0, y: 0, z: 0, w: 0}
       levelScale: {x: 10, y: 10, z: 10}
     levelOffsetDistances: []

@@ -51,7 +51,7 @@ namespace ServiceLocator.Level
             // Creating Controller
             switch (levelData.levelType)
             {
-                case LevelType.BACKGORUND:
+                case LevelType.BACKGROUND:
                 case LevelType.GROUND_TERRAIN:
                 case LevelType.GROUND_PLATFORM:
                 case LevelType.FOREGROUND:
