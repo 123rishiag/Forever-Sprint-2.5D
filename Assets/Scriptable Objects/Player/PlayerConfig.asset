@@ -15,7 +15,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 1974195060330079199, guid: c45effa8abdea714ca659e1bbda74035, type: 3}
   playerData:
     maxHealth: 3
-    moveSpeed: 10
+    moveSpeed: 8
     jumpForce: 10
     airJumpForce: 8
     airJumpAllowed: 1
