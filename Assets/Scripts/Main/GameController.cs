@@ -1,5 +1,6 @@
 using ServiceLocator.Collectible;
 using ServiceLocator.Controls;
+using ServiceLocator.Event;
 using ServiceLocator.Level;
 using ServiceLocator.Player;
 using ServiceLocator.Score;
@@ -17,6 +18,7 @@ namespace ServiceLocator.Main
         // Private Variables
         private GameService gameService;
 
+        private EventService eventService;
         private InputService inputService;
         private CameraService cameraService;
         private SoundService soundService;
@@ -42,6 +44,7 @@ namespace ServiceLocator.Main
         }
         private void CreateServices()
         {
+            eventService = new EventService();
             inputService = new InputService();
             cameraService = new CameraService(gameService.virtualCamera);
             soundService = new SoundService(gameService.soundConfig, gameService.bgmSource, gameService.sfxSource);
@@ -55,11 +58,11 @@ namespace ServiceLocator.Main
         {
             inputService.Init();
             // No Camera Service Init
-            // No Sound Service Init
-            uiService.Init(this);
-            scoreService.Init(uiService);
+            soundService.Init(eventService);
+            uiService.Init(this, eventService);
+            scoreService.Init(eventService);
             playerService.Init(inputService, soundService, uiService);
-            collectibleService.Init(playerService, scoreService, soundService);
+            collectibleService.Init(eventService, playerService);
             levelService.Init(playerService, collectibleService);
         }
 
@@ -84,9 +87,9 @@ namespace ServiceLocator.Main
         {
             inputService.Destroy();
             // No Camera Service Destroy
-            // No Sound Service Destroy
+            soundService.Destroy();
             uiService.Destroy();
-            // No Score Service Destroy
+            scoreService.Destroy();
             // No Player Service Destroy
             // No Collectible Service Destroy
             // No Level Service Destroy
@@ -130,6 +133,7 @@ namespace ServiceLocator.Main
         }
 
         // Getters
+        public EventService GetEventService() => eventService;
         public InputService GetInputService() => inputService;
         public CameraService GetCameraService() => cameraService;
         public SoundService GetSoundService() => soundService;
@@ -138,7 +142,5 @@ namespace ServiceLocator.Main
         public PlayerService GetPlayerService() => playerService;
         public CollectibleService GetCollectibleService() => collectibleService;
         public LevelService GetLevelService() => levelService;
-
-        public GameState GetCurrentState() => gameStateMachine.GetCurrentState();
     }
 }

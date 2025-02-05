@@ -1,3 +1,4 @@
+using ServiceLocator.Event;
 using ServiceLocator.Main;
 
 namespace ServiceLocator.UI
@@ -8,13 +9,21 @@ namespace ServiceLocator.UI
         private UIView uiView;
         private GameController gameController;
 
-        public UIController(UIView _uiCanvas, GameController _gameController)
+        // Private Services
+        private EventService eventService;
+
+        public UIController(UIView _uiCanvas, GameController _gameController, EventService _eventService)
         {
             // Setting Variables
             uiView = _uiCanvas.GetComponent<UIView>();
             gameController = _gameController;
 
+            // Setting Services
+            eventService = _eventService;
+
             // Adding Listeners
+            eventService.UpdateScoreEvent.AddListener(UpdateScoreText);
+
             uiView.pauseMenuResumeButton.onClick.AddListener(gameController.PlayGame);
             uiView.pauseMenuMainMenuButton.onClick.AddListener(gameController.MainMenu);
 
@@ -28,6 +37,8 @@ namespace ServiceLocator.UI
         public void Destroy()
         {
             // Removing Listeners
+            eventService.UpdateScoreEvent.RemoveListener(UpdateScoreText);
+
             uiView.pauseMenuResumeButton.onClick.RemoveListener(gameController.PlayGame);
             uiView.pauseMenuMainMenuButton.onClick.RemoveListener(gameController.MainMenu);
 
@@ -44,7 +55,7 @@ namespace ServiceLocator.UI
         {
             uiView.UpdateHealthText(_health);
         }
-        public void UpdateScoreText(int _score)
+        private void UpdateScoreText(int _score)
         {
             uiView.UpdateScoreText(_score);
         }

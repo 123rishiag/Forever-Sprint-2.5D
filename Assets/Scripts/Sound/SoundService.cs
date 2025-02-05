@@ -1,3 +1,4 @@
+using ServiceLocator.Event;
 using System;
 using UnityEngine;
 
@@ -14,6 +15,9 @@ namespace ServiceLocator.Sound
         private float bgmVolume;
         private float sfxVolume;
 
+        // Private Services
+        private EventService eventService;
+
         public SoundService(SoundConfig _soundConfig, AudioSource _bgmSource, AudioSource _sfxSource)
         {
             // Setting Variables
@@ -24,6 +28,21 @@ namespace ServiceLocator.Sound
             IsMute = false;
             bgmVolume = bgmSource.volume;
             sfxVolume = sfxSource.volume;
+        }
+
+        public void Init(EventService _eventService)
+        {
+            // Setting Services
+            eventService = _eventService;
+
+            // Adding Listeners
+            eventService.OnCollectiblePickupEvent.AddListener(PlayCollectiblePickupSound);
+        }
+
+        public void Destroy()
+        {
+            // Removing Listeners
+            eventService.OnCollectiblePickupEvent.RemoveListener(PlayCollectiblePickupSound);
         }
 
         public void Reset()
@@ -72,6 +91,9 @@ namespace ServiceLocator.Sound
                 Debug.LogError("No Audio Clip selected.");
         }
 
+        public void PlayCollectiblePickupSound(int _) => PlaySoundEffect(SoundType.COLLECTIBLE_PICKUP);
+
+        // Getters
         private AudioClip GetSoundClip(SoundType _soundType)
         {
             SoundData sound = Array.Find(soundConfig.soundData, item => item.soundType == _soundType);
