@@ -20,7 +20,7 @@ namespace ServiceLocator.Player
             Owner.GetView().SetDefaultColliderDimensions();
 
             // Setting Elements
-            Owner.SoundService.PlaySoundEffect(SoundType.PLAYER_KNOCK);
+            Owner.EventService.PlaySoundEffectEvent.Invoke(SoundType.PLAYER_KNOCK);
         }
         public void Update()
         {

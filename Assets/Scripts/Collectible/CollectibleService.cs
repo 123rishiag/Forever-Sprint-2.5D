@@ -1,5 +1,4 @@
 using ServiceLocator.Event;
-using ServiceLocator.Player;
 using UnityEngine;
 
 namespace ServiceLocator.Collectible
@@ -14,7 +13,6 @@ namespace ServiceLocator.Collectible
 
         // Private Services
         private EventService eventService;
-        private PlayerService playerService;
 
         public CollectibleService(CollectibleConfig _collectibleConfig, Transform _collectibleParentPanel)
         {
@@ -29,15 +27,23 @@ namespace ServiceLocator.Collectible
             }
         }
 
-        public void Init(EventService _eventService, PlayerService _playerService)
+        public void Init(EventService _eventService)
         {
             // Setting Services
             eventService = _eventService;
-            playerService = _playerService;
 
             // Setting Elements
             collectiblePool = new CollectiblePool(collectibleConfig, collectibleParentPanel,
                eventService);
+
+            // Adding Listeners
+            eventService.CreateCollectiblesEvent.AddListener(CreateCollectibles);
+        }
+
+        public void Destroy()
+        {
+            // Removing Listeners
+            eventService.CreateCollectiblesEvent.RemoveListener(CreateCollectibles);
         }
 
         public void Reset()
@@ -62,7 +68,7 @@ namespace ServiceLocator.Collectible
                 var collectibleController = collectiblePool.pooledItems[i].Item;
                 if (!collectibleController.IsActive() ||
                     !_checkDespawnDistance ||
-                    (playerService.GetPlayerController().GetTransform().position.x -
+                    (eventService.GetPlayerTransformEvent.Invoke<Transform>().position.x -
                     collectibleController.GetTransform().position.x)
                     > collectibleConfig.deSpawnDistance)
                 {
@@ -70,7 +76,7 @@ namespace ServiceLocator.Collectible
                 }
             }
         }
-        public void CreateCollectibles(Bounds _levelBoundary)
+        private void CreateCollectibles(Bounds _levelBoundary)
         {
             // If Random Probability is not in spawn Probability
             if (Random.value > collectibleConfig.spawnProbability) return;

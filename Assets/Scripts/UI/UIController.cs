@@ -22,7 +22,8 @@ namespace ServiceLocator.UI
             eventService = _eventService;
 
             // Adding Listeners
-            eventService.UpdateScoreEvent.AddListener(UpdateScoreText);
+            eventService.UpdateHealthUIEvent.AddListener(UpdateHealthText);
+            eventService.UpdateScoreUIEvent.AddListener(UpdateScoreText);
 
             uiView.pauseMenuResumeButton.onClick.AddListener(gameController.PlayGame);
             uiView.pauseMenuMainMenuButton.onClick.AddListener(gameController.MainMenu);
@@ -34,10 +35,12 @@ namespace ServiceLocator.UI
             uiView.mainMenuQuitButton.onClick.AddListener(gameController.QuitGame);
             uiView.mainMenuMuteButton.onClick.AddListener(gameController.MuteGame);
         }
+
         public void Destroy()
         {
             // Removing Listeners
-            eventService.UpdateScoreEvent.RemoveListener(UpdateScoreText);
+            eventService.UpdateHealthUIEvent.RemoveListener(UpdateHealthText);
+            eventService.UpdateScoreUIEvent.RemoveListener(UpdateScoreText);
 
             uiView.pauseMenuResumeButton.onClick.RemoveListener(gameController.PlayGame);
             uiView.pauseMenuMainMenuButton.onClick.RemoveListener(gameController.MainMenu);
@@ -50,19 +53,12 @@ namespace ServiceLocator.UI
             uiView.mainMenuMuteButton.onClick.RemoveListener(gameController.MuteGame);
         }
 
+        public void Reset() => UpdateScoreText(0);
+
         // Setters
-        public void UpdateHealthText(int _health)
-        {
-            uiView.UpdateHealthText(_health);
-        }
-        private void UpdateScoreText(int _score)
-        {
-            uiView.UpdateScoreText(_score);
-        }
-        public void SetMuteButtonText(bool _isMute)
-        {
-            uiView.SetMuteButtonText(_isMute);
-        }
+        private void UpdateHealthText(int _health) => uiView.UpdateHealthText(_health);
+        private void UpdateScoreText(int _score) => uiView.UpdateScoreText(_score);
+        public void SetMuteButtonText(bool _isMute) => uiView.SetMuteButtonText(_isMute);
         public void EnablePauseMenuPanel(bool _flag) => uiView.pauseMenuPanel.SetActive(_flag);
         public void EnableGameOverMenuPanel(bool _flag) => uiView.gameOverMenuPanel.SetActive(_flag);
         public void EnableMainMenuPanel(bool _flag) => uiView.mainMenuPanel.SetActive(_flag);

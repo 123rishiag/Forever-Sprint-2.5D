@@ -23,7 +23,7 @@ namespace ServiceLocator.Player
             Owner.CurrentSpeed = Owner.DefaultSpeed;
             ++Owner.AirJumpCount;
             Owner.SetVelocityY(Owner.GetModel().AirJumpForce);
-            Owner.SoundService.PlaySoundEffect(SoundType.PLAYER_AIR_JUMP);
+            Owner.EventService.PlaySoundEffectEvent.Invoke(SoundType.PLAYER_AIR_JUMP);
         }
         public void Update()
         {

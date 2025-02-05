@@ -34,10 +34,10 @@ namespace ServiceLocator.Score
         }
 
         // Setters
-        public void AddScore(int _score)
+        private void AddScore(int _score)
         {
             currentScore += _score;
-            eventService.UpdateScoreEvent.Invoke(currentScore);
+            eventService.UpdateScoreUIEvent.Invoke(currentScore);
         }
     }
 }

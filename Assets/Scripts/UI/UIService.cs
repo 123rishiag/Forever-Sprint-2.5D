@@ -6,25 +6,27 @@ namespace ServiceLocator.UI
     public class UIService
     {
         // Private Variables
-        private UIView uiCanvas;
         private UIController uiController;
 
-        public UIService(UIView _uiCanvas)
+        private UIView uiCanvas;
+        private GameController gameController;
+
+        public UIService(UIView _uiCanvas, GameController _gameController)
         {
             // Setting Variables
             uiCanvas = _uiCanvas;
+            gameController = _gameController;
         }
 
-        public void Init(GameController _gameController, EventService _eventService)
+        public void Init(EventService _eventService)
         {
             // Setting Elements
-            uiController = new UIController(uiCanvas, _gameController, _eventService);
+            uiController = new UIController(uiCanvas, gameController, _eventService);
         }
 
-        public void Destroy()
-        {
-            uiController.Destroy();
-        }
+        public void Destroy() => uiController.Destroy();
+
+        public void Reset() => uiController.Reset();
 
         // Getters
         public UIController GetUIController() => uiController;

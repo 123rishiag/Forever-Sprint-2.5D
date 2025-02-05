@@ -36,13 +36,13 @@ namespace ServiceLocator.Sound
             eventService = _eventService;
 
             // Adding Listeners
-            eventService.OnCollectiblePickupEvent.AddListener(PlayCollectiblePickupSound);
+            eventService.PlaySoundEffectEvent.AddListener(PlaySoundEffect);
         }
 
         public void Destroy()
         {
             // Removing Listeners
-            eventService.OnCollectiblePickupEvent.RemoveListener(PlayCollectiblePickupSound);
+            eventService.PlaySoundEffectEvent.RemoveListener(PlaySoundEffect);
         }
 
         public void Reset()
@@ -90,8 +90,6 @@ namespace ServiceLocator.Sound
             else
                 Debug.LogError("No Audio Clip selected.");
         }
-
-        public void PlayCollectiblePickupSound(int _) => PlaySoundEffect(SoundType.COLLECTIBLE_PICKUP);
 
         // Getters
         private AudioClip GetSoundClip(SoundType _soundType)

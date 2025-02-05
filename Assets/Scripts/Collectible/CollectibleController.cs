@@ -1,4 +1,5 @@
 using ServiceLocator.Event;
+using ServiceLocator.Sound;
 using UnityEngine;
 
 namespace ServiceLocator.Collectible
@@ -40,6 +41,7 @@ namespace ServiceLocator.Collectible
         public void AddScore()
         {
             eventService.OnCollectiblePickupEvent.Invoke(collectibleModel.CollectibleScore);
+            eventService.PlaySoundEffectEvent.Invoke(SoundType.COLLECTIBLE_PICKUP);
             collectibleView.HideView();
         }
 
