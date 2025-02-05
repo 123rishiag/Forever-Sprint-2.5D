@@ -1,5 +1,4 @@
-using ServiceLocator.Collectible;
-using ServiceLocator.Player;
+using ServiceLocator.Event;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,8 +14,7 @@ namespace ServiceLocator.Level
         private List<Vector3> nextLevelPositions;
 
         // Private Services
-        private PlayerService playerService;
-        private CollectibleService collectibleService;
+        private EventService eventService;
 
         public LevelService(LevelConfig _levelConfig, Transform _levelParentPanel)
         {
@@ -25,14 +23,13 @@ namespace ServiceLocator.Level
             levelParentPanel = _levelParentPanel;
         }
 
-        public void Init(PlayerService _playerService, CollectibleService _collectibleService)
+        public void Init(EventService _eventService)
         {
             // Setting Services
-            playerService = _playerService;
-            collectibleService = _collectibleService;
+            eventService = _eventService;
 
             // Setting Elements
-            levelPool = new LevelPool(levelConfig, levelParentPanel, collectibleService);
+            levelPool = new LevelPool(levelConfig, levelParentPanel, eventService);
             nextLevelPositions = new List<Vector3>();
 
             Reset();
@@ -58,7 +55,7 @@ namespace ServiceLocator.Level
             for (int i = 0; i < levelConfig.levelData.Length; ++i)
             {
                 // Adding the calculated position to the list
-                float platformStartX = playerService.GetPlayerController().GetTransform().position.x +
+                float platformStartX = eventService.GetPlayerTransformEvent.Invoke<Transform>().position.x +
                     levelConfig.levelData[i].startPositionOffset;
                 Vector3 startPosition = new Vector3(platformStartX, 0, 0);
                 nextLevelPositions.Add(startPosition);
@@ -78,7 +75,8 @@ namespace ServiceLocator.Level
                 var levelController = levelPool.pooledItems[i].Item;
                 if (!levelController.IsActive() ||
                     !_checkDespawnDistance ||
-                    (playerService.GetPlayerController().GetTransform().position.x - levelController.GetTransform().position.x)
+                    (eventService.GetPlayerTransformEvent.Invoke<Transform>().position.x -
+                    levelController.GetTransform().position.x)
                     > levelConfig.deSpawnDistance)
                 {
                     ReturnLevelToPool(levelController);
@@ -96,8 +94,10 @@ namespace ServiceLocator.Level
         }
         private Vector3 CreateLevel(LevelData _levelData, Vector3 _nextPosition)
         {
-            if ((_nextPosition.x - playerService.GetPlayerController().GetTransform().position.x) < levelConfig.spawnDistance &&
-                _nextPosition.x <= playerService.GetPlayerController().GetTransform().position.x + levelConfig.spawnDistance)
+            if ((_nextPosition.x - eventService.GetPlayerTransformEvent.Invoke<Transform>().position.x) <
+                levelConfig.spawnDistance &&
+                _nextPosition.x <= eventService.GetPlayerTransformEvent.Invoke<Transform>().position.x +
+                levelConfig.spawnDistance)
             {
                 // Fetching Random Property, Offset Distance and Height for Level
                 LevelProperty levelProperty = GetRandomValue(_levelData.levelProperties);
@@ -105,7 +105,7 @@ namespace ServiceLocator.Level
                 float levelOffsetHeight = GetRandomValue(_levelData.levelOffsetHeights);
 
                 // If the distance between player and new platform position is 
-                if ((_nextPosition.x - playerService.GetPlayerController().GetTransform().position.x)
+                if ((_nextPosition.x - eventService.GetPlayerTransformEvent.Invoke<Transform>().position.x)
                     < levelConfig.spawnDistance)
                 {
                     // Fetching spawn Position based on selected Property

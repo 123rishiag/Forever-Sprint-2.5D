@@ -1,6 +1,5 @@
 using ServiceLocator.Controls;
-using ServiceLocator.Sound;
-using ServiceLocator.UI;
+using ServiceLocator.Event;
 
 namespace ServiceLocator.Player
 {
@@ -16,27 +15,17 @@ namespace ServiceLocator.Player
             playerConfig = _playerConfig;
         }
 
-        public void Init(InputService _inputService, SoundService _soundService, UIService _uiService)
+        public void Init(EventService _eventService, InputService _inputService)
         {
             // Setting Elements
             playerController = new PlayerController(playerConfig.playerData, playerConfig.playerPrefab,
-                _inputService, _soundService, _uiService);
+                _eventService, _inputService);
         }
 
-        public void Reset()
-        {
-            playerController.Reset();
-        }
-
-        public void FixedUpdate()
-        {
-            playerController.FixedUpdate();
-        }
-
-        public void Update()
-        {
-            playerController.Update();
-        }
+        public void Destroy() => playerController.Destroy();
+        public void Reset() => playerController.Reset();
+        public void FixedUpdate() => playerController.FixedUpdate();
+        public void Update() => playerController.Update();
 
         // Getters
         public PlayerController GetPlayerController() => playerController;

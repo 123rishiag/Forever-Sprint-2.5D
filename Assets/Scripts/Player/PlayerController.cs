@@ -1,6 +1,5 @@
 using ServiceLocator.Controls;
-using ServiceLocator.Sound;
-using ServiceLocator.UI;
+using ServiceLocator.Event;
 using ServiceLocator.Utility;
 using UnityEngine;
 
@@ -27,21 +26,22 @@ namespace ServiceLocator.Player
         private PlayerStateMachine playerStateMachine;
 
         // Private Services
+        public EventService EventService { get; private set; }
         public InputService InputService { get; private set; }
-        public SoundService SoundService { get; private set; }
-        public UIService UIService { get; private set; }
 
         public PlayerController(PlayerData _playerData, PlayerView _playerPrefab,
-            InputService _inputService, SoundService _soundService, UIService _uiService)
+            EventService _eventService, InputService _inputService)
         {
             // Setting Variables
             playerModel = new PlayerModel(_playerData);
             playerView = Object.Instantiate(_playerPrefab).GetComponent<PlayerView>();
 
             // Setting Services
+            EventService = _eventService;
             InputService = _inputService;
-            SoundService = _soundService;
-            UIService = _uiService;
+
+            // Adding Listeners
+            EventService.GetPlayerTransformEvent.AddListener(GetTransform);
 
             // Setting Elements
             playerDefaultPosition = playerView.transform.position;
@@ -55,13 +55,19 @@ namespace ServiceLocator.Player
             playerStateMachine = new PlayerStateMachine(this);
         }
 
+        public void Destroy()
+        {
+            // Removing Listeners
+            EventService.GetPlayerTransformEvent.RemoveListener(GetTransform);
+        }
+
         public void Reset()
         {
             playerView.SetPosition(playerDefaultPosition);
 
             // Setting Controller Reset
             CurrentHealth = playerModel.MaxHealth;
-            UIService.GetUIController().UpdateHealthText(CurrentHealth);
+            EventService.UpdateHealthUIEvent.Invoke(CurrentHealth);
 
             DefaultSpeed = playerModel.MoveSpeed * 100;
             CurrentSpeed = DefaultSpeed;
@@ -86,7 +92,7 @@ namespace ServiceLocator.Player
         public void DecreaseHealth()
         {
             --CurrentHealth;
-            UIService.GetUIController().UpdateHealthText(CurrentHealth);
+            EventService.UpdateHealthUIEvent.Invoke(CurrentHealth);
 
             if (CurrentHealth > 0)
             {

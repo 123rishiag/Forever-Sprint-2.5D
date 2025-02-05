@@ -48,7 +48,7 @@ namespace ServiceLocator.Main
             inputService = new InputService();
             cameraService = new CameraService(gameService.virtualCamera);
             soundService = new SoundService(gameService.soundConfig, gameService.bgmSource, gameService.sfxSource);
-            uiService = new UIService(gameService.uiCanvas);
+            uiService = new UIService(gameService.uiCanvas, this);
             scoreService = new ScoreService();
             playerService = new PlayerService(gameService.playerConfig);
             collectibleService = new CollectibleService(gameService.collectibleConfig, gameService.collectibleParentPanel);
@@ -59,11 +59,11 @@ namespace ServiceLocator.Main
             inputService.Init();
             // No Camera Service Init
             soundService.Init(eventService);
-            uiService.Init(this, eventService);
+            uiService.Init(eventService);
             scoreService.Init(eventService);
-            playerService.Init(inputService, soundService, uiService);
-            collectibleService.Init(eventService, playerService);
-            levelService.Init(playerService, collectibleService);
+            playerService.Init(eventService, inputService);
+            collectibleService.Init(eventService);
+            levelService.Init(eventService);
         }
 
         private void CreateStateMachine()
@@ -76,7 +76,7 @@ namespace ServiceLocator.Main
             // No Input Service Reset
             // No Camera Service Reset
             soundService.Reset();
-            // No UI Service Reset
+            uiService.Reset();
             scoreService.Reset();
             playerService.Reset();
             collectibleService.Reset();
@@ -90,8 +90,8 @@ namespace ServiceLocator.Main
             soundService.Destroy();
             uiService.Destroy();
             scoreService.Destroy();
-            // No Player Service Destroy
-            // No Collectible Service Destroy
+            playerService.Destroy();
+            collectibleService.Destroy();
             // No Level Service Destroy
         }
 

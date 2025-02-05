@@ -22,7 +22,7 @@ namespace ServiceLocator.Player
 
             // Setting Elements
             Owner.CurrentSpeed = Owner.DefaultSpeed;
-            Owner.SoundService.PlaySoundEffect(SoundType.PLAYER_SLIDE);
+            Owner.EventService.PlaySoundEffectEvent.Invoke(SoundType.PLAYER_SLIDE);
         }
         public void Update()
         {

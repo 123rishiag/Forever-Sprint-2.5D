@@ -1,4 +1,4 @@
-using ServiceLocator.Collectible;
+using ServiceLocator.Event;
 using ServiceLocator.Utility;
 using UnityEngine;
 
@@ -16,17 +16,17 @@ namespace ServiceLocator.Level
 
 
         // Private Services
-        private CollectibleService collectibleService;
+        private EventService eventService;
 
         public LevelPool(LevelConfig _levelConfig, Transform _levelParentPanel,
-            CollectibleService _collectibleService)
+            EventService _eventService)
         {
             // Setting Variables
             levelConfig = _levelConfig;
             levelParentPanel = _levelParentPanel;
 
             // Setting Services
-            collectibleService = _collectibleService;
+            eventService = _eventService;
         }
 
         public LevelController GetLevel<T>(LevelData _levelData, LevelProperty _levelProperty, Vector2 _spawnPosition)
@@ -57,7 +57,7 @@ namespace ServiceLocator.Level
                 case LevelType.FOREGROUND:
                     return new LevelController(levelData, levelConfig.levelPrefab, levelProperty,
                         spawnPosition, levelParentPanel,
-                        collectibleService);
+                        eventService);
                 default:
                     Debug.LogWarning($"Unhandled LevelType: {levelData.levelType}");
                     return null;

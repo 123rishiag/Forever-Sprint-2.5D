@@ -1,4 +1,4 @@
-using ServiceLocator.Collectible;
+using ServiceLocator.Event;
 using UnityEngine;
 
 namespace ServiceLocator.Level
@@ -10,18 +10,18 @@ namespace ServiceLocator.Level
         private LevelView levelView;
 
         // Private Services
-        private CollectibleService collectibleService;
+        private EventService eventService;
 
         public LevelController(LevelData _levelData, LevelView _levelPrefab, LevelProperty _levelProperty,
             Vector3 _spawnPosition, Transform _levelParentPanel,
-            CollectibleService _collectibleService)
+            EventService _eventService)
         {
             // Setting Variables
             levelModel = new LevelModel(_levelData);
             levelView = Object.Instantiate(_levelPrefab, _levelParentPanel).GetComponent<LevelView>();
 
             // Setting Services
-            collectibleService = _collectibleService;
+            eventService = _eventService;
 
             // Setting Elements
             Reset(_levelData, _levelProperty,
@@ -38,7 +38,7 @@ namespace ServiceLocator.Level
             // Create Collectibles
             if (levelModel.LevelType == LevelType.GROUND_TERRAIN || levelModel.LevelType == LevelType.GROUND_PLATFORM)
             {
-                collectibleService.CreateCollectibles(levelView.GetLevelBounds());
+                eventService.CreateCollectiblesEvent.Invoke(levelView.GetLevelBounds());
             }
         }
 

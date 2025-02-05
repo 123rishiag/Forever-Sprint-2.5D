@@ -22,7 +22,7 @@ namespace ServiceLocator.Player
             // Setting Elements
             Owner.CurrentSpeed = Owner.DefaultSpeed;
             Owner.SetVelocityY(Owner.GetModel().JumpForce);
-            Owner.SoundService.PlaySoundEffect(SoundType.PLAYER_JUMP);
+            Owner.EventService.PlaySoundEffectEvent.Invoke(SoundType.PLAYER_JUMP);
         }
         public void Update()
         {

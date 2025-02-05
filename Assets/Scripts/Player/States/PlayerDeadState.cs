@@ -20,7 +20,7 @@ namespace ServiceLocator.Player
             Owner.GetView().SetDefaultColliderDimensions();
 
             // Setting Elements
-            Owner.SoundService.PlaySoundEffect(SoundType.PLAYER_DEAD);
+            Owner.EventService.PlaySoundEffectEvent.Invoke(SoundType.PLAYER_DEAD);
         }
         public void Update() { }
         public void FixedUpdate() { }
