@@ -1,6 +1,5 @@
+using ServiceLocator.Event;
 using ServiceLocator.Player;
-using ServiceLocator.Score;
-using ServiceLocator.Sound;
 using UnityEngine;
 
 namespace ServiceLocator.Collectible
@@ -14,9 +13,8 @@ namespace ServiceLocator.Collectible
         private CollectiblePool collectiblePool;
 
         // Private Services
+        private EventService eventService;
         private PlayerService playerService;
-        private ScoreService scoreService;
-        private SoundService soundService;
 
         public CollectibleService(CollectibleConfig _collectibleConfig, Transform _collectibleParentPanel)
         {
@@ -31,16 +29,15 @@ namespace ServiceLocator.Collectible
             }
         }
 
-        public void Init(PlayerService _playerService, ScoreService _scoreService, SoundService _soundService)
+        public void Init(EventService _eventService, PlayerService _playerService)
         {
             // Setting Services
+            eventService = _eventService;
             playerService = _playerService;
-            scoreService = _scoreService;
-            soundService = _soundService;
 
             // Setting Elements
             collectiblePool = new CollectiblePool(collectibleConfig, collectibleParentPanel,
-                scoreService, soundService);
+               eventService);
         }
 
         public void Reset()

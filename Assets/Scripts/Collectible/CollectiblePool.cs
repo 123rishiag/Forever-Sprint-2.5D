@@ -1,5 +1,4 @@
-using ServiceLocator.Score;
-using ServiceLocator.Sound;
+using ServiceLocator.Event;
 using ServiceLocator.Utility;
 using UnityEngine;
 
@@ -17,19 +16,17 @@ namespace ServiceLocator.Collectible
 
 
         // Private Services
-        private ScoreService scoreService;
-        private SoundService soundService;
+        private EventService eventService;
 
         public CollectiblePool(CollectibleConfig _collectibleConfig, Transform _collectibleParentPanel,
-            ScoreService _scoreService, SoundService _soundService)
+            EventService _eventService)
         {
             // Setting Variables
             collectibleConfig = _collectibleConfig;
             collectibleParentPanel = _collectibleParentPanel;
 
             // Setting Services
-            scoreService = _scoreService;
-            soundService = _soundService;
+            eventService = _eventService;
         }
 
         public CollectibleController GetCollectible<T>(
@@ -60,7 +57,7 @@ namespace ServiceLocator.Collectible
                     return new CollectibleController(
                     collectibleData, collectibleConfig.collectiblePrefab, collectibleProperty,
                     spawnPosition, collectibleParentPanel,
-                    scoreService, soundService);
+                    eventService);
                 default:
                     Debug.LogWarning($"Unhandled CollectibleType: {collectibleData.collectibleType}");
                     return null;

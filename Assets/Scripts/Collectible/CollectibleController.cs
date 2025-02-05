@@ -1,5 +1,4 @@
-using ServiceLocator.Score;
-using ServiceLocator.Sound;
+using ServiceLocator.Event;
 using UnityEngine;
 
 namespace ServiceLocator.Collectible
@@ -11,13 +10,12 @@ namespace ServiceLocator.Collectible
         private CollectibleView collectibleView;
 
         // Private Services
-        private ScoreService scoreService;
-        private SoundService soundService;
+        private EventService eventService;
 
         public CollectibleController(
             CollectibleData _collectibleData, CollectibleView _collectiblePrefab, CollectibleProperty _collectibleProperty,
             Vector3 _spawnPosition, Transform _collectibleParentPanel,
-            ScoreService _scoreService, SoundService _soundService)
+            EventService _eventService)
         {
             // Setting Variables
             collectibleModel = new CollectibleModel(_collectibleData);
@@ -25,8 +23,7 @@ namespace ServiceLocator.Collectible
             collectibleView.Init(this);
 
             // Setting Services
-            scoreService = _scoreService;
-            soundService = _soundService;
+            eventService = _eventService;
 
             // Setting Elements
             Reset(_collectibleData, _collectibleProperty, _spawnPosition);
@@ -42,9 +39,8 @@ namespace ServiceLocator.Collectible
 
         public void AddScore()
         {
-            scoreService.AddScore(collectibleModel.CollectibleScore);
+            eventService.OnCollectiblePickupEvent.Invoke(collectibleModel.CollectibleScore);
             collectibleView.HideView();
-            soundService.PlaySoundEffect(SoundType.COLLECTIBLE_PICKUP);
         }
 
         // Getters

@@ -1,4 +1,4 @@
-using ServiceLocator.UI;
+using ServiceLocator.Event;
 
 namespace ServiceLocator.Score
 {
@@ -8,28 +8,36 @@ namespace ServiceLocator.Score
         private int currentScore;
 
         // Private Services
-        private UIService uiService;
+        private EventService eventService;
 
         public ScoreService() { }
 
-        public void Init(UIService _uiService)
+        public void Init(EventService _eventService)
         {
             // Setting Services
-            uiService = _uiService;
+            eventService = _eventService;
+
+            // Adding Listeners
+            eventService.OnCollectiblePickupEvent.AddListener(AddScore);
         }
 
         public void Reset()
         {
             // Setting Variables
             currentScore = 0;
-            uiService.GetUIController().UpdateScoreText(currentScore);
+        }
+
+        public void Destroy()
+        {
+            // Removing Listeners
+            eventService.OnCollectiblePickupEvent.RemoveListener(AddScore);
         }
 
         // Setters
         public void AddScore(int _score)
         {
             currentScore += _score;
-            uiService.GetUIController().UpdateScoreText(currentScore);
+            eventService.UpdateScoreEvent.Invoke(currentScore);
         }
     }
 }
