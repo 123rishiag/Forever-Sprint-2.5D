@@ -24,6 +24,7 @@ MonoBehaviour:
     bigFallThreshold: 10
     deadFallThreshold: 18
     rollDuration: 1
+    rollSpeedDecreaseFactor: 2
     slideDuration: 3
     dashDuration: 3
     dashSpeedIncreaseFactor: 1.3
