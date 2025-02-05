@@ -30,6 +30,7 @@ namespace ServiceLocator.Player
 
         [Header("Roll Settings")]
         public float rollDuration;
+        public float rollSpeedDecreaseFactor;
 
         [Header("Slide Settings")]
         public float slideDuration;

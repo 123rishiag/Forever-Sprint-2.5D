@@ -20,7 +20,7 @@ namespace ServiceLocator.Player
             Owner.GetView().SetRollColliderDimensions();
 
             // Setting Elements
-            Owner.CurrentSpeed = Owner.DefaultSpeed;
+            Owner.CurrentSpeed = Owner.DefaultSpeed / Owner.GetModel().RollSpeedDecreaseFactor;
             Owner.SetVelocityY(0f);
             Owner.RollTimer = Owner.GetModel().RollDuration;
         }

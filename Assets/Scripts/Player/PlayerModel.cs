@@ -14,6 +14,7 @@ namespace ServiceLocator.Player
             BigFallThreshold = _playerData.bigFallThreshold;
             DeadFallThreshold = _playerData.deadFallThreshold;
             RollDuration = _playerData.rollDuration;
+            RollSpeedDecreaseFactor = _playerData.rollSpeedDecreaseFactor;
             SlideDuration = _playerData.slideDuration;
             DashDuration = _playerData.dashDuration;
             DashSpeedIncreaseFactor = _playerData.dashSpeedIncreaseFactor;
@@ -30,6 +31,7 @@ namespace ServiceLocator.Player
         public float BigFallThreshold { get; private set; }
         public float DeadFallThreshold { get; private set; }
         public float RollDuration { get; private set; }
+        public float RollSpeedDecreaseFactor { get; private set; }
         public float SlideDuration { get; private set; }
         public float DashDuration { get; private set; }
         public float DashSpeedIncreaseFactor { get; private set; }
