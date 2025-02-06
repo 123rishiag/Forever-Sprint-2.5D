@@ -1,4 +1,5 @@
 using Cinemachine;
+using ServiceLocator.Controls;
 using UnityEngine;
 
 namespace ServiceLocator.Vision
@@ -6,18 +7,45 @@ namespace ServiceLocator.Vision
     public class CameraService
     {
         // Private Variables
-        private CinemachineVirtualCamera virtualCamera;
+        private CinemachineVirtualCamera mainCamera;
+        private Camera miniCamera;
 
-        public CameraService(CinemachineVirtualCamera _virtualCamera)
+        // Private Services
+        private InputService inputService;
+
+        public CameraService(CinemachineVirtualCamera _mainCamera, Camera _miniCamera)
         {
             // Setting Variables
-            virtualCamera = _virtualCamera;
+            mainCamera = _mainCamera;
+            miniCamera = _miniCamera;
         }
 
-        public void FollowPosition(Transform _followTransform, Transform _lookAtTransform)
+        public void Init(InputService _inputService)
         {
-            virtualCamera.Follow = _followTransform;
-            virtualCamera.LookAt = _lookAtTransform;
+            // Setting Services
+            inputService = _inputService;
+        }
+
+        public void Update() => ToggleMiniCamera();
+
+        // Setters
+        public void SetMainCameraPosition(Transform _followTransform, Transform _lookAtTransform)
+        {
+            mainCamera.Follow = _followTransform;
+            mainCamera.LookAt = _lookAtTransform;
+        }
+        public void SetMiniCameraParent(Transform _parentTransform) =>
+            miniCamera.transform.SetParent(_parentTransform.transform, false);
+
+        public void ToggleMiniCamera()
+        {
+            if (inputService.WasToggleMiniCameraPressed)
+            {
+                GameObject miniCameraGameObject = miniCamera.transform.gameObject;
+                if (miniCameraGameObject.activeInHierarchy) miniCameraGameObject.SetActive(false);
+                else miniCameraGameObject.SetActive(true);
+            }
+
         }
     }
 }

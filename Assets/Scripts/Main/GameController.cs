@@ -46,7 +46,7 @@ namespace ServiceLocator.Main
         {
             eventService = new EventService();
             inputService = new InputService();
-            cameraService = new CameraService(gameService.virtualCamera);
+            cameraService = new CameraService(gameService.mainCamera, gameService.miniCamera);
             soundService = new SoundService(gameService.soundConfig, gameService.bgmSource, gameService.sfxSource);
             uiService = new UIService(gameService.uiCanvas, this);
             scoreService = new ScoreService();
@@ -57,7 +57,7 @@ namespace ServiceLocator.Main
         private void InjectDependencies()
         {
             inputService.Init();
-            // No Camera Service Init
+            cameraService.Init(inputService);
             soundService.Init(eventService);
             uiService.Init(eventService);
             scoreService.Init(eventService);
@@ -95,14 +95,9 @@ namespace ServiceLocator.Main
             // No Level Service Destroy
         }
 
-        public void Update()
-        {
-            gameStateMachine.Update();
-        }
-        public void FixedUpdate()
-        {
-            gameStateMachine.FixedUpdate();
-        }
+        public void FixedUpdate() => gameStateMachine.FixedUpdate();
+
+        public void Update() => gameStateMachine.Update();
 
         public void PlayGame()
         {

@@ -12,7 +12,8 @@ namespace ServiceLocator.Main
     {
         // Inspector Elements
         [Header("Camera Elements")]
-        [SerializeField] public CinemachineVirtualCamera virtualCamera;
+        [SerializeField] public CinemachineVirtualCamera mainCamera;
+        [SerializeField] public Camera miniCamera;
 
         [Header("Sound Elements")]
         [SerializeField] public SoundConfig soundConfig;
@@ -32,25 +33,13 @@ namespace ServiceLocator.Main
         // Private Variables
         private GameController gameController;
 
-        private void Start()
-        {
-            gameController = new GameController(this);
-        }
+        private void Start() => gameController = new GameController(this);
 
-        private void FixedUpdate()
-        {
-            gameController.FixedUpdate();
-        }
+        private void FixedUpdate() => gameController.FixedUpdate();
 
-        private void Update()
-        {
-            gameController.Update();
-        }
+        private void Update() => gameController.Update();
 
-        private void OnDestroy()
-        {
-            gameController.Destroy();
-        }
+        private void OnDestroy() => gameController.Destroy();
 
         // Getters
         public GameController GetGameController() => gameController;

@@ -18,12 +18,14 @@ namespace ServiceLocator.Main
 
             // Setting Camera
             var playerController = Owner.GetPlayerService().GetPlayerController();
-            Owner.GetCameraService().FollowPosition(playerController.GetFollowTransform(), playerController.GetTransform());
+            Owner.GetCameraService().SetMainCameraPosition(playerController.GetFollowTransform(),
+                playerController.GetTransform());
+            Owner.GetCameraService().SetMiniCameraParent(playerController.GetTransform());
         }
         public void Update()
         {
             Owner.GetInputService().Update();
-            // No Camera Service Update
+            Owner.GetCameraService().Update();
             // No Sound Service Update
             // No UI Service Update
             // No Score Service Update
