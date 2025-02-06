@@ -103,6 +103,15 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleMiniCamera"",
+                    ""type"": ""Button"",
+                    ""id"": ""58c72c94-9fb5-4037-a925-9dde5c54a215"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -114,6 +123,17 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Escape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8ecea5fa-fa8c-4846-8313-2ecc17648e26"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleMiniCamera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -130,6 +150,7 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
         // Game
         m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
         m_Game_Escape = m_Game.FindAction("Escape", throwIfNotFound: true);
+        m_Game_ToggleMiniCamera = m_Game.FindAction("ToggleMiniCamera", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -254,11 +275,13 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Game;
     private List<IGameActions> m_GameActionsCallbackInterfaces = new List<IGameActions>();
     private readonly InputAction m_Game_Escape;
+    private readonly InputAction m_Game_ToggleMiniCamera;
     public struct GameActions
     {
         private @InputControls m_Wrapper;
         public GameActions(@InputControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Escape => m_Wrapper.m_Game_Escape;
+        public InputAction @ToggleMiniCamera => m_Wrapper.m_Game_ToggleMiniCamera;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -271,6 +294,9 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
             @Escape.started += instance.OnEscape;
             @Escape.performed += instance.OnEscape;
             @Escape.canceled += instance.OnEscape;
+            @ToggleMiniCamera.started += instance.OnToggleMiniCamera;
+            @ToggleMiniCamera.performed += instance.OnToggleMiniCamera;
+            @ToggleMiniCamera.canceled += instance.OnToggleMiniCamera;
         }
 
         private void UnregisterCallbacks(IGameActions instance)
@@ -278,6 +304,9 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
             @Escape.started -= instance.OnEscape;
             @Escape.performed -= instance.OnEscape;
             @Escape.canceled -= instance.OnEscape;
+            @ToggleMiniCamera.started -= instance.OnToggleMiniCamera;
+            @ToggleMiniCamera.performed -= instance.OnToggleMiniCamera;
+            @ToggleMiniCamera.canceled -= instance.OnToggleMiniCamera;
         }
 
         public void RemoveCallbacks(IGameActions instance)
@@ -304,5 +333,6 @@ public partial class @InputControls: IInputActionCollection2, IDisposable
     public interface IGameActions
     {
         void OnEscape(InputAction.CallbackContext context);
+        void OnToggleMiniCamera(InputAction.CallbackContext context);
     }
 }

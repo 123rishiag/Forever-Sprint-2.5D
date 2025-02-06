@@ -23,6 +23,7 @@ namespace ServiceLocator.Controls
             IsSlidePressed = inputControls.Player.Slide.IsPressed();
             IsDashPressed = inputControls.Player.Dash.IsPressed();
             IsEscapePressed = inputControls.Game.Escape.IsPressed();
+            WasToggleMiniCameraPressed = inputControls.Game.ToggleMiniCamera.WasPressedThisFrame();
         }
 
         public bool WasJumpPressed { get; private set; }
@@ -32,5 +33,7 @@ namespace ServiceLocator.Controls
         public bool IsDashPressed { get; private set; }
 
         public bool IsEscapePressed { get; private set; }
+
+        public bool WasToggleMiniCameraPressed { get; private set; }
     }
 }
