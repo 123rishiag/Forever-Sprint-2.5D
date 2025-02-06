@@ -1,6 +1,7 @@
 # Forever Sprint 2.5D
 
 ## Overview
+
 Forever Sprint 2.5D is an action-packed **endless runner** where players **jump, dash, slide, and climb** through dynamically generated levels while collecting 
 collectibles. The game integrates various design patterns, including **Service Locator**, **Dependency Injection**, **Model-View-Controller (MVC)**, 
 **Observer Pattern**, **Object Pooling**, and **State Machine**, ensuring modularity and scalability. **Scriptable Objects** handle flexible data storage, 
@@ -9,6 +10,7 @@ while **Unity's New Input System** provides precise player controls.
 ---
 
 ## Architectural Overview
+
 Below is the block diagram illustrating the **core architecture**:
 
 ![Architectural Overview -- Adding Soon](docs/block_diagram.png)
@@ -108,6 +110,7 @@ Stores reusable configurations for collectibles, levels and player etc.
 ---
 
 ## Development Workflow
+
 | **Branch**                         | **Feature**                                        |
 |-------------------------------------|----------------------------------------------------|
 | `Branch-0-Game-Setup`              | Initial project setup.                            |
@@ -128,6 +131,7 @@ Stores reusable configurations for collectibles, levels and player etc.
 ---
 
 ## Events
+
 | **Event Name**                 | **Description**                                      |
 |--------------------------------|------------------------------------------------------|
 | `GetPlayerTransformEvent`      | Returns the player's `Transform`.                    |
@@ -163,6 +167,7 @@ Stores reusable configurations for collectibles, levels and player etc.
 ---
 
 ## Setting Up the Project
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/123rishiag/Forever-Sprint-2.5D.git
@@ -172,11 +177,13 @@ Stores reusable configurations for collectibles, levels and player etc.
 ---
 
 ## Video Demo
+
 [Watch the Gameplay Demo](https://www.loom.com/share/bc7e1eaa35ba4ea486a278d4bab17028?sid=60d4b5e5-eeca-45e4-af23-5027c8240ed6)  
 [Watch the Architecture Explanation](https://www.loom.com/share/2c637015af0a4544ad7ba3a5777664cc?sid=d7b4c8a9-5bc5-492c-9a9f-657de6d7faf9)
 
 ---
 
 ## Play Link
+
 [Play the Game](https://123rishiag.github.io/Forever-Sprint-2.5D/)
 ---
