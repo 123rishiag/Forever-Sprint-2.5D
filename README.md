@@ -176,7 +176,7 @@ Stores reusable configurations for collectibles, levels and player etc.
 10. **CameraService**: Handles camera setting such as setting object to follow for Main & Mini Camera and toogling for Mini Camera.
     - **CameraConfig**: Stores camera-related configurations.
 
-11. **Utility Services**: Provides generic, reusable utilities for better performance and scalability.
+11. **Utilities**: Provides generic, reusable utilities for better performance and scalability.
     - **GenericObjectPool**: Handles **object pooling** for collectible & levels.
     - **GenericStateMachine**: Manages **state transitions for modular components**.
     - **IState**: Interface defining state behaviors.
