@@ -1,6 +1,6 @@
-# **Forever Sprint 2.5D**
+# Forever Sprint 2.5D
 
-## **Overview**
+## Overview
 Forever Sprint 2.5D is an action-packed **endless runner** where players **jump, dash, slide, and climb** through dynamically generated levels while collecting 
 collectibles. The game integrates various design patterns, including **Service Locator**, **Dependency Injection**, **Model-View-Controller (MVC)**, 
 **Observer Pattern**, **Object Pooling**, and **State Machine**, ensuring modularity and scalability. **Scriptable Objects** handle flexible data storage, 
@@ -8,14 +8,14 @@ while **Unity's New Input System** provides precise player controls.
 
 ---
 
-## **Architectural Overview**
+## Architectural Overview
 Below is the block diagram illustrating the **core architecture**:
 
 ![Architectural Overview -- Adding Soon](docs/block_diagram.png)
 
 ---
 
-## **Gameplay Elements**
+## Gameplay Elements
 
 ### **1. Controls**
 | **Action**         | **Key/Input**                |
@@ -79,19 +79,35 @@ Below is the block diagram illustrating the **core architecture**:
 
 ---
 
-## **Events**
-| **Event Name**                 | **Description**                                      |
-|--------------------------------|------------------------------------------------------|
-| `GetPlayerTransformEvent`      | Returns the player's `Transform`.                    |
-| `CreateCollectiblesEvent`      | Generates new collectibles on level.                 |
-| `OnCollectiblePickupEvent`     | Triggered when a player picks up a collectible.      |
-| `UpdateHealthUIEvent`          | Updates the health display in the UI.                |
-| `UpdateScoreUIEvent`           | Updates the score display in the UI.                 |
-| `PlaySoundEffectEvent`         | Plays a specific sound effect.                       |
+## Design Patterns and Programming Principles
+
+### 1. **Service Locator**  
+Centralizes access to shared services such as `UIService`, `SoundService`, and `EventService`.
+
+### 2. **Dependency Injection**  
+Decouples services for flexibility and maintainability.
+
+### 3. **Model-View-Controller (MVC)**  
+Separates concerns for data, visuals, and interactions:
+- **Controller**: Coordinates interactions between the model and view.
+- **Model**: Handles data and game logic.
+- **View**: Manages visuals and rendering.
+
+### 4. **Observer Pattern**  
+Enables event-driven communication between game elements, ensuring modular design.
+
+### 5. **Object Pooling**  
+Optimizes memory usage for collectibles & levels.
+
+### 6. **State Machine** 
+Manages transitions between states like `Game_Start`, `Game_Play`, and `Game_Over`.
+
+### 7. **Scriptable Objects**  
+Stores reusable configurations for collectibles, levels and player etc.
 
 ---
 
-## **Development Workflow**
+## Development Workflow
 | **Branch**                         | **Feature**                                        |
 |-------------------------------------|----------------------------------------------------|
 | `Branch-0-Game-Setup`              | Initial project setup.                            |
@@ -111,7 +127,42 @@ Below is the block diagram illustrating the **core architecture**:
 
 ---
 
-## **Setting Up the Project**
+## Events
+| **Event Name**                 | **Description**                                      |
+|--------------------------------|------------------------------------------------------|
+| `GetPlayerTransformEvent`      | Returns the player's `Transform`.                    |
+| `CreateCollectiblesEvent`      | Generates new collectibles on level.                 |
+| `OnCollectiblePickupEvent`     | Triggered when a player picks up a collectible.      |
+| `UpdateHealthUIEvent`          | Updates the health display in the UI.                |
+| `UpdateScoreUIEvent`           | Updates the score display in the UI.                 |
+| `PlaySoundEffectEvent`         | Plays a specific sound effect.                       |
+
+---
+
+## Script and Asset Hierarchy
+
+1. **Scripts**:
+   - **Main**: Core game mechanics and states.
+   - **Player**: Player behavior.
+   - **Level**: Procedural level system.
+   - **Collectible**: Collectible system.
+   - **Score**: Score system.
+   - **Camera**: Camera maintenance.
+   - **UI**: Menus and in-game UI.
+   - **Sound**: Audio playback.
+   - **Event**: Event-based communication.
+   - **Input**: Decoupled new input system.
+   - **Utility**: Game utilities like Generic Object Pooling and Generic State Machine.
+
+2. **Assets**:
+   - **Character Model & Animations**: From Adobe Mixamo.
+   - **Prefabs**: Self-created using Unity tools.
+   - **Art**: Art is downloaded from [Screaming Brain Studios](https://screamingbrainstudios.itch.io/).
+   - **Sounds**: Royalty-free sources.
+
+---
+
+## Setting Up the Project
 1. Clone the repository:
    ```bash
    git clone https://github.com/123rishiag/Forever-Sprint-2.5D.git
@@ -120,12 +171,12 @@ Below is the block diagram illustrating the **core architecture**:
 
 ---
 
-## **Video Demo**
+## Video Demo
 [Watch the Gameplay Demo](https://www.loom.com/share/bc7e1eaa35ba4ea486a278d4bab17028?sid=60d4b5e5-eeca-45e4-af23-5027c8240ed6)  
 [Watch the Architecture Explanation](https://www.loom.com/share/2c637015af0a4544ad7ba3a5777664cc?sid=d7b4c8a9-5bc5-492c-9a9f-657de6d7faf9)
 
 ---
 
-## **Play Link**
+## Play Link
 [Play the Game](https://123rishiag.github.io/Forever-Sprint-2.5D/)
 ---
