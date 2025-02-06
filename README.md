@@ -49,7 +49,7 @@ Below is the block diagram illustrating the **core architecture**:
 | `IDLE`             | The player stands still.                  |
 | `MOVE`             | The player is running.                    |
 | `JUMP`             | The player performs a normal jump.        |
-| `AIR_JUMP`         | Allows a jump mid-air.                    |
+| `AIR_JUMP`         | Allow jumps mid-air.                      |
 | `FALL`             | The player is falling.                    |
 | `BIG_FALL`         | The player is falling from a great height.|
 | `DEAD_FALL`        | Falling with height great enough to die.  |
@@ -106,6 +106,81 @@ Manages transitions between states like `Game_Start`, `Game_Play`, and `Game_Ove
 
 ### 7. **Scriptable Objects**  
 Stores reusable configurations for collectibles, levels and player etc.
+
+---
+
+## Services and Components
+
+1. **GameService**: Manages and fetches the core game components and initializes the `GameController`.
+   - **GameController**: Centralized service for managing the game's core mechanics, including game state transitions and controller management.
+   - **GameStateMachine**: A specific implementation of `GenericStateMachine` that governs the overall game flow.
+     - **GameStartState**: Prepares the game.
+     - **GameMenuState**: Displays the main menu.
+     - **GamePlayState**: Manages active gameplay.
+     - **GamePauseState**: Displays the pause menu.
+     - **GameRestartState**: Resets the game for replay.
+     - **GameOverState**: Handles game-over logic.
+
+2. **PlayerService**: Manages player movement, animations, and interactions.
+   - **PlayerConfig**: Stores properties like speed and health for players.
+   - **PlayerController**: Handles **player input and movement logic**.
+   - **PlayerModel**: Stores **player attributes** like speed, jump force, and health.
+   - **PlayerView**: Manages **animations and player rendering**.
+   - **PlayerStateMachine**: A specific implementation of `GenericStateMachine` that manages player state transitions.
+     - **PlayerIdleState**: The player remains stationary.
+     - **PlayerMoveState**: The player runs forward.
+     - **PlayerJumpState**: Handles jumping mechanics.
+     - **PlayerAirJumpState**: Manages jumps in mid-air.
+     - **PlayerFallState**: Controls normal falling behavior.
+     - **PlayerBigFallState**: Triggers after falling from a high altitude.
+     - **PlayerDeadFallState**: Results in death when falling from a fatal height.
+     - **PlayerRollState**: A recovery move performed after a big fall.
+     - **PlayerSlideState**: Enables the player to slide under obstacles.
+     - **PlayerDashState**: Grants a burst of forward momentum.
+     - **PlayerClimbState**: Handles climbing mechanics.
+     - **PlayerKnockState**: Triggers on impact from collision with levels while dashing or fatal falls.
+     - **PlayerGetUpState**: Recovery from the knocked state.
+     - **PlayerDeadState**: The player is dead.
+
+3. **LevelService**: Manages the procedural generation and updates of level structures dynamically.
+   - **LevelType**: Enum defining **types of terrain**.
+   - **LevelConfig**: Stores **configuration settings** for level layouts.
+   - **LevelPool**: Implements **object pooling** to optimize performance.
+   - **LevelController**: Handles **level functionalities** on creation.
+   - **LevelModel**: Stores **level configurations**.
+   - **LevelView**: Controls the **visual representation of levels**.
+
+4. **CollectibleService**: Manages collectible behavior, spawning, and interaction logic.
+   - **CollectibleType**: Enum defining collectible types.
+   - **CollectibleConfig**: Stores **configuration settings** for collectibles.
+   - **CollectiblePool**: Implements **object pooling** to optimize collectible instantiation.
+   - **CollectibleController**: Handles **collectible functionalities**.
+   - **CollectibleModel**: Defines **collectible attributes**.
+   - **CollectibleView**: Controls the **visual representation of collectibles**.
+
+5. **ScoreService**: Manages **score tracking and updates** the UI dynamically.
+
+6. **EventService**: Manages event-driven communication across services.
+   - **EventController**: Inherits from `EventController` to manage event registrations and notifications.
+
+7. **SoundService**: Manages sound effects and background music for immersive gameplay.
+   - **SoundType**: Enum categorizing sound effects (e.g., jumping, sliding, dashing).
+   - **SoundConfig**: Stores audio clips for game.
+
+8. **UIService**: Manages user interface interactions and HUD updates dynamically.
+   - **UIController**: Handles menu interactions and HUD logic.
+   - **UIView**: Manages the visual representation of UI elements.
+
+9. **InputService**: Processes and manages game and player inputs using Unity's New Input System for precise control.
+
+10. **CameraService**: Handles camera setting such as setting object to follow for Main & Mini Camera and toogling for Mini Camera.
+    - **CameraConfig**: Stores camera-related configurations.
+
+11. **Utility Services**: Provides generic, reusable utilities for better performance and scalability.
+    - **GenericObjectPool**: Handles **object pooling** for collectible & levels.
+    - **GenericStateMachine**: Manages **state transitions for modular components**.
+    - **IState**: Interface defining state behaviors.
+    - **IStateOwner**: Interface for state machine controllers.
 
 ---
 
@@ -186,4 +261,5 @@ Stores reusable configurations for collectibles, levels and player etc.
 ## Play Link
 
 [Play the Game](https://123rishiag.github.io/Forever-Sprint-2.5D/)
+
 ---
