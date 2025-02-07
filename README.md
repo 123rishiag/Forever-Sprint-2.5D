@@ -13,7 +13,7 @@ while **Unity's New Input System** provides precise player controls.
 
 Below is the block diagram illustrating the **core architecture**:
 
-![Architectural Overview -- Adding Soon](docs/block_diagram.png)
+![Architectural Overview](docs/block_diagram.png)
 
 ---
 
